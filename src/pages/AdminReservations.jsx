@@ -108,10 +108,27 @@ export default function AdminReservations() {
                       <p className="font-medium text-gray-900">{r.customer_name}</p>
                       <p className="text-xs text-gray-500">{r.customer_email}</p>
                     </td>
-                    <td className="px-4 py-3 text-gray-600">{r.facility_name}</td>
-                    <td className="px-4 py-3 text-gray-600">{r.unit_name || "—"}</td>
+                    <td className="px-4 py-3">
+                       <p className="text-gray-800 font-medium">{r.facility_name}</p>
+                       {r.facility_type === "business_center" && (
+                         <span className="text-xs text-purple-600 font-medium">Business Center</span>
+                       )}
+                     </td>
+                    <td className="px-4 py-3">
+                       <p className="text-gray-700">{r.unit_name || "—"}</p>
+                       {r.unit_type && <p className="text-xs text-gray-400">{r.unit_type}</p>}
+                       {r.unit_size && <p className="text-xs text-gray-400">{r.unit_size}</p>}
+                       {r.unit_features?.length > 0 && (
+                         <p className="text-xs text-gray-400">{r.unit_features.join(", ")}</p>
+                       )}
+                     </td>
                     <td className="px-4 py-3 text-gray-600">
                       {r.move_in_date ? format(new Date(r.move_in_date), "MMM d, yyyy") : "—"}
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge className={`border-0 text-xs ${typeColors[r.reservation_type] || "bg-gray-100 text-gray-600"}`}>
+                        {r.reservation_type || "reservation"}
+                      </Badge>
                     </td>
                     <td className="px-4 py-3">
                       <Badge className={`border-0 text-xs ${statusColors[r.status]}`}>
