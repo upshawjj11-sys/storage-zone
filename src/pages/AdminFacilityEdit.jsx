@@ -169,12 +169,26 @@ export default function AdminFacilityEdit() {
               <div><Label>Banner Title</Label><Input value={form.banner_title} onChange={(e) => update("banner_title", e.target.value)} /></div>
               <div><Label>Banner Subtitle</Label><Input value={form.banner_subtitle} onChange={(e) => update("banner_subtitle", e.target.value)} /></div>
               <div>
-                <Label>Banner Image</Label>
-                {form.banner_image && <img src={form.banner_image} alt="" className="w-full h-48 object-cover rounded-xl mb-2" />}
-                <label className="flex items-center gap-2 px-4 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit">
-                  <Upload className="w-4 h-4" /> Upload Banner Image
-                  <input type="file" accept="image/*" className="hidden" onChange={handleBannerUpload} />
-                </label>
+                <Label className="text-base font-semibold mb-3 block">Banner / Slider Images</Label>
+                <p className="text-xs text-gray-500 mb-3">These images rotate as a slider on the facility page. First image is used as the main banner.</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                  {(form.photos || []).map((url, i) => (
+                    <div key={i} className="relative group">
+                      <img src={url} alt="" className="w-full h-32 object-cover rounded-xl" />
+                      {i === 0 && <span className="absolute top-2 left-2 bg-[#E8792F] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Main</span>}
+                      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition">
+                        {i > 0 && <button onClick={() => { const p=[...form.photos]; [p[i-1],p[i]]=[p[i],p[i-1]]; update("photos",p); }} className="bg-white rounded-full p-1 shadow text-gray-700 hover:text-[#1B365D]">←</button>}
+                        {i < form.photos.length-1 && <button onClick={() => { const p=[...form.photos]; [p[i],p[i+1]]=[p[i+1],p[i]]; update("photos",p); }} className="bg-white rounded-full p-1 shadow text-gray-700 hover:text-[#1B365D]">→</button>}
+                        <button onClick={() => update("photos", form.photos.filter((_, j) => j !== i))} className="bg-red-500 text-white rounded-full p-1 shadow"><X className="w-3 h-3" /></button>
+                      </div>
+                    </div>
+                  ))}
+                  <label className="h-32 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition text-gray-400">
+                    <Upload className="w-5 h-5 mb-1" />
+                    <span className="text-xs">Add Photo</span>
+                    <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                  </label>
+                </div>
               </div>
             </CardContent>
           </Card>
