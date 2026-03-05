@@ -27,7 +27,7 @@ function SectionEditor({ section, onChange, onRemove, index }) {
   const [open, setOpen] = useState(false);
   const data = section.data || {};
 
-  const updateData = (key, val) => onChange({ ...section, data: { ...data, [key] } });
+  const updateData = (key, val) => onChange({ ...section, data: { ...data, [key]: val } });
 
   // Helper to edit arrays of objects (features, faqs, testimonials, stats)
   const updateItem = (arr, i, key, val) => {
