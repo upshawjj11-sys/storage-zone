@@ -34,6 +34,7 @@ export default function AdminFacilityEdit() {
   const [form, setForm] = useState({
     name: "", slug: "", address: "", city: "", state: "", zip: "",
     phone: "", email: "", about: "", status: "active",
+    facility_type: "self_storage",
     banner_image: "", banner_title: "", banner_subtitle: "",
     features: [], photos: [], videos: [], hours: defaultHours,
     faqs: [], reviews: [], units: [],
