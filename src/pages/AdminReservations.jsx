@@ -41,11 +41,17 @@ export default function AdminReservations() {
     moved_out: "bg-gray-100 text-gray-600",
   };
 
+  const typeColors = {
+    inquiry: "bg-purple-100 text-purple-700",
+    reservation: "bg-blue-100 text-blue-700",
+    rental: "bg-indigo-100 text-indigo-700",
+  };
+
   return (
     <div className="p-6 md:p-8 max-w-7xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Reservations</h1>
-        <p className="text-gray-500 mt-1">Manage customer reservations and rentals.</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Reservations & Inquiries</h1>
+        <p className="text-gray-500 mt-1">Manage customer reservations, rentals, and business center inquiries.</p>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
