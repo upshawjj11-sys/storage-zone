@@ -152,16 +152,29 @@ export default function AdminFacilityEdit() {
                 <div><Label>Phone</Label><Input value={form.phone} onChange={(e) => update("phone", e.target.value)} /></div>
                 <div><Label>Email</Label><Input value={form.email} onChange={(e) => update("email", e.target.value)} /></div>
               </div>
-              <div>
-                <Label>Status</Label>
-                <Select value={form.status} onValueChange={(v) => update("status", v)}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="inactive">Inactive</SelectItem>
-                    <SelectItem value="coming_soon">Coming Soon</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Facility Type</Label>
+                  <Select value={form.facility_type || "self_storage"} onValueChange={(v) => update("facility_type", v)}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="self_storage">Self Storage</SelectItem>
+                      <SelectItem value="business_center">Business Center</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-gray-400 mt-1">Business Centers use "Inquire" instead of Reserve/Rent.</p>
+                </div>
+                <div>
+                  <Label>Status</Label>
+                  <Select value={form.status} onValueChange={(v) => update("status", v)}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="inactive">Inactive</SelectItem>
+                      <SelectItem value="coming_soon">Coming Soon</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <div><Label>About</Label><Textarea rows={5} value={form.about} onChange={(e) => update("about", e.target.value)} /></div>
             </CardContent>
