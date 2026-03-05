@@ -56,6 +56,9 @@ import AdminFacilities from './pages/AdminFacilities';
 import AdminReservations from './pages/AdminReservations';
 import AdminPages from './pages/AdminPages';
 import AdminPopups from './pages/AdminPopups';
+import AdminFacilityEdit from './pages/AdminFacilityEdit';
+import AdminPageEdit from './pages/AdminPageEdit';
+import AdminPopupEdit from './pages/AdminPopupEdit';
 import __Layout from './Layout.jsx';
 
 
@@ -69,6 +72,9 @@ export const PAGES = {
     "AdminReservations": AdminReservations,
     "AdminPages": AdminPages,
     "AdminPopups": AdminPopups,
+    "AdminFacilityEdit": AdminFacilityEdit,
+    "AdminPageEdit": AdminPageEdit,
+    "AdminPopupEdit": AdminPopupEdit,
 }
 
 export const pagesConfig = {
