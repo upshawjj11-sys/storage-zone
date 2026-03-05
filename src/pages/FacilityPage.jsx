@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, Play } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import ImageSlider from "../components/shared/ImageSlider";
 
 export default function FacilityPage() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -16,13 +17,10 @@ export default function FacilityPage() {
   const [openFaq, setOpenFaq] = useState(null);
   const [showReserve, setShowReserve] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState(null);
+  const [lightboxIdx, setLightboxIdx] = useState(null);
   const [reserveForm, setReserveForm] = useState({
-    customer_name: "",
-    customer_email: "",
-    customer_phone: "",
-    move_in_date: "",
-    notes: "",
-    reservation_type: "reservation",
+    customer_name: "", customer_email: "", customer_phone: "",
+    move_in_date: "", notes: "", reservation_type: "reservation",
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -50,37 +48,23 @@ export default function FacilityPage() {
     setSubmitted(true);
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-[#1B365D] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
+  if (isLoading) return <div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-[#1B365D] border-t-transparent rounded-full animate-spin" /></div>;
+  if (!facility) return <div className="min-h-screen flex items-center justify-center"><p className="text-gray-500">Facility not found.</p></div>;
 
-  if (!facility) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Facility not found.</p>
-      </div>
-    );
-  }
+  // Build slider images: banner first, then photos
+  const bannerImages = [
+    ...(facility.banner_image ? [facility.banner_image] : []),
+    ...(facility.photos || []),
+  ];
+  if (!bannerImages.length) bannerImages.push("https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1920&q=80");
 
   return (
     <div className="bg-white">
-      {/* Banner */}
-      <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
-        <img
-          src={
-            facility.banner_image ||
-            facility.photos?.[0] ||
-            "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1920&q=80"
-          }
-          alt={facility.name}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
+      {/* Banner Slider */}
+      <div className="relative h-[40vh] md:h-[55vh]">
+        <ImageSlider images={bannerImages} className="absolute inset-0" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 pointer-events-none">
           <div className="max-w-7xl mx-auto">
             <h1 className="text-3xl md:text-5xl font-black text-white mb-2">{facility.banner_title || facility.name}</h1>
             <p className="text-white/80 text-lg">{facility.banner_subtitle || `${facility.city}, ${facility.state}`}</p>
@@ -99,9 +83,7 @@ export default function FacilityPage() {
                   <MapPin className="w-5 h-5 text-[#E8792F] mt-0.5" />
                   <div>
                     <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Address</p>
-                    <p className="text-sm font-medium text-gray-900 mt-1">
-                      {facility.address}, {facility.city}, {facility.state} {facility.zip}
-                    </p>
+                    <p className="text-sm font-medium text-gray-900 mt-1">{facility.address}, {facility.city}, {facility.state} {facility.zip}</p>
                   </div>
                 </div>
               )}
@@ -110,9 +92,7 @@ export default function FacilityPage() {
                   <Phone className="w-5 h-5 text-[#E8792F] mt-0.5" />
                   <div>
                     <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Phone</p>
-                    <a href={`tel:${facility.phone}`} className="text-sm font-medium text-gray-900 mt-1 block">
-                      {facility.phone}
-                    </a>
+                    <a href={`tel:${facility.phone}`} className="text-sm font-medium text-gray-900 mt-1 block">{facility.phone}</a>
                   </div>
                 </div>
               )}
@@ -121,9 +101,7 @@ export default function FacilityPage() {
                   <Mail className="w-5 h-5 text-[#E8792F] mt-0.5" />
                   <div>
                     <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Email</p>
-                    <a href={`mailto:${facility.email}`} className="text-sm font-medium text-gray-900 mt-1 block">
-                      {facility.email}
-                    </a>
+                    <a href={`mailto:${facility.email}`} className="text-sm font-medium text-gray-900 mt-1 block">{facility.email}</a>
                   </div>
                 </div>
               )}
@@ -165,17 +143,8 @@ export default function FacilityPage() {
                   {facility.units.map((unit, i) => (
                     <div
                       key={i}
-                      className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
-                        unit.available
-                          ? "bg-white border-gray-200 hover:border-[#E8792F] hover:shadow-md cursor-pointer"
-                          : "bg-gray-50 border-gray-100 opacity-60"
-                      }`}
-                      onClick={() => {
-                        if (unit.available) {
-                          setSelectedUnit(unit);
-                          setShowReserve(true);
-                        }
-                      }}
+                      className={`flex items-center justify-between p-4 rounded-xl border transition-all ${unit.available ? "bg-white border-gray-200 hover:border-[#E8792F] hover:shadow-md cursor-pointer" : "bg-gray-50 border-gray-100 opacity-60"}`}
+                      onClick={() => { if (unit.available) { setSelectedUnit(unit); setShowReserve(true); } }}
                     >
                       <div>
                         <p className="font-semibold text-gray-900">{unit.name}</p>
@@ -183,11 +152,7 @@ export default function FacilityPage() {
                       </div>
                       <div className="text-right">
                         <p className="font-bold text-xl text-[#1B365D]">${unit.price}/mo</p>
-                        {unit.available ? (
-                          <Badge className="bg-green-100 text-green-700 border-0 mt-1">Available</Badge>
-                        ) : (
-                          <Badge variant="secondary" className="mt-1">Occupied</Badge>
-                        )}
+                        {unit.available ? <Badge className="bg-green-100 text-green-700 border-0 mt-1">Available</Badge> : <Badge variant="secondary" className="mt-1">Occupied</Badge>}
                       </div>
                     </div>
                   ))}
@@ -195,13 +160,15 @@ export default function FacilityPage() {
               </div>
             ) : null}
 
-            {/* Photos */}
+            {/* Photo Gallery */}
             {facility.photos?.length > 0 && (
               <div>
                 <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Photos</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {facility.photos.map((url, i) => (
-                    <img key={i} src={url} alt="" className="w-full h-48 object-cover rounded-xl" />
+                    <button key={i} onClick={() => setLightboxIdx(i)} className="overflow-hidden rounded-xl group">
+                      <img src={url} alt="" className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
+                    </button>
                   ))}
                 </div>
               </div>
@@ -231,10 +198,7 @@ export default function FacilityPage() {
                       <div className="flex items-center gap-2 mb-2">
                         <div className="flex">
                           {Array.from({ length: 5 }).map((_, j) => (
-                            <Star
-                              key={j}
-                              className={`w-4 h-4 ${j < r.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
-                            />
+                            <Star key={j} className={`w-4 h-4 ${j < r.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`} />
                           ))}
                         </div>
                         <span className="text-sm font-medium text-gray-700">{r.name}</span>
@@ -253,20 +217,11 @@ export default function FacilityPage() {
                 <div className="space-y-2">
                   {facility.faqs.map((faq, i) => (
                     <div key={i} className="border rounded-xl overflow-hidden">
-                      <button
-                        onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                        className="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 hover:bg-gray-50 transition"
-                      >
+                      <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 hover:bg-gray-50 transition">
                         {faq.question}
-                        {openFaq === i ? (
-                          <ChevronUp className="w-5 h-5 text-gray-400" />
-                        ) : (
-                          <ChevronDown className="w-5 h-5 text-gray-400" />
-                        )}
+                        {openFaq === i ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
                       </button>
-                      {openFaq === i && (
-                        <div className="px-4 pb-4 text-sm text-gray-600 leading-relaxed">{faq.answer}</div>
-                      )}
+                      {openFaq === i && <div className="px-4 pb-4 text-sm text-gray-600 leading-relaxed">{faq.answer}</div>}
                     </div>
                   ))}
                 </div>
@@ -277,12 +232,9 @@ export default function FacilityPage() {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-              {/* Hours */}
               {facility.hours?.length > 0 && (
                 <div className="bg-gray-50 rounded-2xl p-6">
-                  <h3 className="font-bold text-[#1B365D] mb-3 flex items-center gap-2">
-                    <Clock className="w-5 h-5" /> Hours
-                  </h3>
+                  <h3 className="font-bold text-[#1B365D] mb-3 flex items-center gap-2"><Clock className="w-5 h-5" /> Hours</h3>
                   <div className="space-y-2">
                     {facility.hours.map((h, i) => (
                       <div key={i} className="flex justify-between text-sm">
@@ -293,16 +245,10 @@ export default function FacilityPage() {
                   </div>
                 </div>
               )}
-
-              {/* Reserve CTA */}
               <div className="bg-[#1B365D] rounded-2xl p-6 text-center">
                 <h3 className="text-xl font-bold text-white mb-2">Reserve Your Unit</h3>
                 <p className="text-white/70 text-sm mb-4">No commitment. Cancel anytime.</p>
-                <Button
-                  className="w-full rounded-full font-semibold py-5"
-                  style={{ background: "#E8792F" }}
-                  onClick={() => setShowReserve(true)}
-                >
+                <Button className="w-full rounded-full font-semibold py-5" style={{ background: "#E8792F" }} onClick={() => setShowReserve(true)}>
                   Reserve Now
                 </Button>
               </div>
@@ -311,68 +257,45 @@ export default function FacilityPage() {
         </div>
       </div>
 
+      {/* Lightbox */}
+      {lightboxIdx !== null && (
+        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center" onClick={() => setLightboxIdx(null)}>
+          <button className="absolute top-4 right-4 text-white bg-white/10 rounded-full p-2 hover:bg-white/20" onClick={() => setLightboxIdx(null)}>✕</button>
+          <button className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-white/10 rounded-full p-2 hover:bg-white/20" onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx - 1 + facility.photos.length) % facility.photos.length); }}>
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <img src={facility.photos[lightboxIdx]} alt="" className="max-h-[85vh] max-w-[85vw] rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
+          <button className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-white/10 rounded-full p-2 hover:bg-white/20" onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx + 1) % facility.photos.length); }}>
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+      )}
+
       {/* Reserve Dialog */}
       <Dialog open={showReserve} onOpenChange={(open) => { setShowReserve(open); if (!open) setSubmitted(false); }}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>{submitted ? "Reservation Submitted!" : "Reserve a Unit"}</DialogTitle>
-            <DialogDescription>
-              {submitted
-                ? "We'll be in touch shortly to confirm your reservation."
-                : `${facility.name} ${selectedUnit ? `• ${selectedUnit.name} (${selectedUnit.size})` : ""}`}
-            </DialogDescription>
+            <DialogDescription>{submitted ? "We'll be in touch shortly to confirm your reservation." : `${facility.name} ${selectedUnit ? `• ${selectedUnit.name} (${selectedUnit.size})` : ""}`}</DialogDescription>
           </DialogHeader>
           {submitted ? (
             <div className="text-center py-6">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check className="w-8 h-8 text-green-600" />
-              </div>
-              <Button onClick={() => { setShowReserve(false); setSubmitted(false); }} className="rounded-full">
-                Close
-              </Button>
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><Check className="w-8 h-8 text-green-600" /></div>
+              <Button onClick={() => { setShowReserve(false); setSubmitted(false); }} className="rounded-full">Close</Button>
             </div>
           ) : (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>Full Name *</Label>
-                  <Input
-                    value={reserveForm.customer_name}
-                    onChange={(e) => setReserveForm({ ...reserveForm, customer_name: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <Label>Email *</Label>
-                  <Input
-                    type="email"
-                    value={reserveForm.customer_email}
-                    onChange={(e) => setReserveForm({ ...reserveForm, customer_email: e.target.value })}
-                  />
-                </div>
+                <div><Label>Full Name *</Label><Input value={reserveForm.customer_name} onChange={(e) => setReserveForm({ ...reserveForm, customer_name: e.target.value })} /></div>
+                <div><Label>Email *</Label><Input type="email" value={reserveForm.customer_email} onChange={(e) => setReserveForm({ ...reserveForm, customer_email: e.target.value })} /></div>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>Phone</Label>
-                  <Input
-                    value={reserveForm.customer_phone}
-                    onChange={(e) => setReserveForm({ ...reserveForm, customer_phone: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <Label>Move-in Date</Label>
-                  <Input
-                    type="date"
-                    value={reserveForm.move_in_date}
-                    onChange={(e) => setReserveForm({ ...reserveForm, move_in_date: e.target.value })}
-                  />
-                </div>
+                <div><Label>Phone</Label><Input value={reserveForm.customer_phone} onChange={(e) => setReserveForm({ ...reserveForm, customer_phone: e.target.value })} /></div>
+                <div><Label>Move-in Date</Label><Input type="date" value={reserveForm.move_in_date} onChange={(e) => setReserveForm({ ...reserveForm, move_in_date: e.target.value })} /></div>
               </div>
               <div>
                 <Label>Type</Label>
-                <Select
-                  value={reserveForm.reservation_type}
-                  onValueChange={(v) => setReserveForm({ ...reserveForm, reservation_type: v })}
-                >
+                <Select value={reserveForm.reservation_type} onValueChange={(v) => setReserveForm({ ...reserveForm, reservation_type: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="reservation">Reservation (Hold a Unit)</SelectItem>
@@ -380,20 +303,8 @@ export default function FacilityPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label>Notes</Label>
-                <Textarea
-                  value={reserveForm.notes}
-                  onChange={(e) => setReserveForm({ ...reserveForm, notes: e.target.value })}
-                  placeholder="Anything we should know?"
-                />
-              </div>
-              <Button
-                className="w-full rounded-full font-semibold py-5"
-                style={{ background: "#E8792F" }}
-                onClick={handleReserve}
-                disabled={submitting || !reserveForm.customer_name || !reserveForm.customer_email}
-              >
+              <div><Label>Notes</Label><Textarea value={reserveForm.notes} onChange={(e) => setReserveForm({ ...reserveForm, notes: e.target.value })} placeholder="Anything we should know?" /></div>
+              <Button className="w-full rounded-full font-semibold py-5" style={{ background: "#E8792F" }} onClick={handleReserve} disabled={submitting || !reserveForm.customer_name || !reserveForm.customer_email}>
                 {submitting ? "Submitting..." : "Submit Reservation"}
               </Button>
             </div>
