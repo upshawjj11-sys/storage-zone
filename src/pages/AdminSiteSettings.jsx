@@ -214,9 +214,38 @@ export default function AdminSiteSettings() {
 
             <Card>
               <CardHeader><CardTitle>CTA Button</CardTitle></CardHeader>
-              <CardContent className="grid md:grid-cols-2 gap-4">
-                <div><Label>Button Text</Label><Input value={form.nav_cta_text} onChange={(e) => update("nav_cta_text", e.target.value)} placeholder="Get Started" /></div>
-                <div><Label>Button URL</Label><Input value={form.nav_cta_url} onChange={(e) => update("nav_cta_url", e.target.value)} placeholder="/Locations" /></div>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div><Label>Button Text</Label><Input className="mt-1" value={form.nav_cta_text || ""} onChange={(e) => update("nav_cta_text", e.target.value)} placeholder="Get Started" /></div>
+                  <div><Label>Button URL</Label><Input className="mt-1" value={form.nav_cta_url || ""} onChange={(e) => update("nav_cta_url", e.target.value)} placeholder="/Locations" /></div>
+                </div>
+                <div>
+                  <Label>Button Style</Label>
+                  <Select value={form.nav_cta_style || "filled"} onValueChange={(v) => update("nav_cta_style", v)}>
+                    <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="filled">Filled (solid background)</SelectItem>
+                      <SelectItem value="outline">Outline (border only)</SelectItem>
+                      <SelectItem value="ghost">Ghost (text only)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Button Color</Label>
+                    <div className="flex items-center gap-2 mt-1">
+                      <input type="color" value={form.nav_cta_bg_color || "#E8792F"} onChange={(e) => update("nav_cta_bg_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
+                      <Input value={form.nav_cta_bg_color || ""} onChange={(e) => update("nav_cta_bg_color", e.target.value)} placeholder="#E8792F" />
+                    </div>
+                  </div>
+                  <div>
+                    <Label>Button Text Color</Label>
+                    <div className="flex items-center gap-2 mt-1">
+                      <input type="color" value={form.nav_cta_text_color || "#ffffff"} onChange={(e) => update("nav_cta_text_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
+                      <Input value={form.nav_cta_text_color || ""} onChange={(e) => update("nav_cta_text_color", e.target.value)} placeholder="#ffffff" />
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
