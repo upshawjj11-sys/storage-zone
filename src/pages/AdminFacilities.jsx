@@ -26,6 +26,17 @@ export default function AdminFacilities() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-facilities"] }),
   });
 
+  const duplicateFacility = async (f) => {
+    const { id, created_date, updated_date, created_by, ...data } = f;
+    await base44.entities.Facility.create({
+      ...data,
+      name: `${data.name} (Copy)`,
+      slug: `${data.slug || data.name.toLowerCase().replace(/\s+/g,"-")}-copy`,
+      status: "inactive",
+    });
+    queryClient.invalidateQueries({ queryKey: ["admin-facilities"] });
+  };
+
   const statusColors = {
     active: "bg-green-100 text-green-700",
     inactive: "bg-gray-100 text-gray-600",
