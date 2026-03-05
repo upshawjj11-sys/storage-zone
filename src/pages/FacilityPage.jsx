@@ -212,11 +212,10 @@ export default function FacilityPage() {
     ) : null,
   };
 
-  const bannerImages = [
-    ...(facility.banner_image ? [facility.banner_image] : []),
-    ...(facility.photos || []),
-  ];
-  if (!bannerImages.length) bannerImages.push("https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1920&q=80");
+  // Banner: use dedicated banner_image first, then photos, then fallback
+  const bannerImages = facility.banner_image
+    ? [facility.banner_image]
+    : (facility.photos?.length > 0 ? facility.photos : ["https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1920&q=80"]);
 
   return (
     <div className="bg-white">
