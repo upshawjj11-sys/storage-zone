@@ -142,6 +142,7 @@ export default function Locations() {
                 placeholder="Search by city, state, or zip..."
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setUserLocation(null); }}
+                onKeyDown={(e) => e.key === "Enter" && e.target.blur()}
                 className="pl-12 h-14 rounded-2xl text-base bg-white border-0 shadow-xl"
               />
             </div>
