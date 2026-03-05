@@ -221,39 +221,48 @@ export default function AdminSiteSettings() {
             </Card>
 
             <Card>
-              <CardHeader><CardTitle>CTA Button</CardTitle></CardHeader>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>CTA Buttons</CardTitle>
+                  <Button size="sm" variant="outline" onClick={addCtaButton} className="gap-1"><Plus className="w-3 h-3" /> Add Button</Button>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">Add one or more call-to-action buttons to the navbar.</p>
+              </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div><Label>Button Text</Label><Input className="mt-1" value={form.nav_cta_text || ""} onChange={(e) => update("nav_cta_text", e.target.value)} placeholder="Get Started" /></div>
-                  <div><Label>Button URL</Label><Input className="mt-1" value={form.nav_cta_url || ""} onChange={(e) => update("nav_cta_url", e.target.value)} placeholder="/Locations" /></div>
-                </div>
-                <div>
-                  <Label>Button Style</Label>
-                  <Select value={form.nav_cta_style || "filled"} onValueChange={(v) => update("nav_cta_style", v)}>
-                    <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="filled">Filled (solid background)</SelectItem>
-                      <SelectItem value="outline">Outline (border only)</SelectItem>
-                      <SelectItem value="ghost">Ghost (text only)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label>Button Color</Label>
-                    <div className="flex items-center gap-2 mt-1">
-                      <input type="color" value={form.nav_cta_bg_color || "#E8792F"} onChange={(e) => update("nav_cta_bg_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
-                      <Input value={form.nav_cta_bg_color || ""} onChange={(e) => update("nav_cta_bg_color", e.target.value)} placeholder="#E8792F" />
+                {(form.nav_cta_buttons || []).length === 0 && <p className="text-sm text-gray-400">No CTA buttons yet. Click "Add Button" to create one.</p>}
+                {(form.nav_cta_buttons || []).map((btn, i) => (
+                  <div key={i} className="p-4 border rounded-xl bg-gray-50 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-gray-700">Button {i + 1}</span>
+                      <Button size="icon" variant="ghost" className="text-red-400 h-7 w-7" onClick={() => removeCtaButton(i)}><Trash2 className="w-3.5 h-3.5" /></Button>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      <div><Label className="text-xs">Button Text</Label><Input className="mt-1" value={btn.text || ""} onChange={(e) => updateCtaButton(i, "text", e.target.value)} placeholder="Pay Online" /></div>
+                      <div><Label className="text-xs">Button URL</Label><Input className="mt-1" value={btn.url || ""} onChange={(e) => updateCtaButton(i, "url", e.target.value)} placeholder="https://..." /></div>
+                    </div>
+                    <div>
+                      <Label className="text-xs">Style</Label>
+                      <Select value={btn.style || "filled"} onValueChange={(v) => updateCtaButton(i, "style", v)}>
+                        <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="filled">Filled</SelectItem>
+                          <SelectItem value="outline">Outline</SelectItem>
+                          <SelectItem value="ghost">Ghost</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="flex items-center gap-2">
+                        <Label className="text-xs">Color</Label>
+                        <input type="color" value={btn.bg_color || "#E8792F"} onChange={(e) => updateCtaButton(i, "bg_color", e.target.value)} className="h-8 w-10 p-0.5 rounded border" />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Label className="text-xs">Text Color</Label>
+                        <input type="color" value={btn.text_color || "#ffffff"} onChange={(e) => updateCtaButton(i, "text_color", e.target.value)} className="h-8 w-10 p-0.5 rounded border" />
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <Label>Button Text Color</Label>
-                    <div className="flex items-center gap-2 mt-1">
-                      <input type="color" value={form.nav_cta_text_color || "#ffffff"} onChange={(e) => update("nav_cta_text_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
-                      <Input value={form.nav_cta_text_color || ""} onChange={(e) => update("nav_cta_text_color", e.target.value)} placeholder="#ffffff" />
-                    </div>
-                  </div>
-                </div>
+                ))}
               </CardContent>
             </Card>
           </div>
