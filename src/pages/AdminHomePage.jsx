@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { Save, Upload, Plus, Trash2, GripVertical, Eye, EyeOff, ChevronDown, ChevronUp } from "lucide-react";
+import { Save, Upload, Plus, Trash2, GripVertical, ChevronDown, ChevronUp } from "lucide-react";
+import IconPicker from "../components/admin/IconPicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 const SECTION_TYPES = [
-  { value: "features", label: "Features Grid" },
+  { value: "pillars", label: "Pillars / Value Props (with icons)" },
+  { value: "features", label: "Features Grid (with icons)" },
   { value: "locations", label: "Locations Grid" },
   { value: "testimonials", label: "Testimonials" },
   { value: "cta_banner", label: "CTA Banner" },
