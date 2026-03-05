@@ -51,6 +51,11 @@ import Home from './pages/Home';
 import Locations from './pages/Locations';
 import FacilityPage from './pages/FacilityPage';
 import PublicPage from './pages/PublicPage';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminFacilities from './pages/AdminFacilities';
+import AdminReservations from './pages/AdminReservations';
+import AdminPages from './pages/AdminPages';
+import AdminPopups from './pages/AdminPopups';
 import __Layout from './Layout.jsx';
 
 
@@ -59,6 +64,11 @@ export const PAGES = {
     "Locations": Locations,
     "FacilityPage": FacilityPage,
     "PublicPage": PublicPage,
+    "AdminDashboard": AdminDashboard,
+    "AdminFacilities": AdminFacilities,
+    "AdminReservations": AdminReservations,
+    "AdminPages": AdminPages,
+    "AdminPopups": AdminPopups,
 }
 
 export const pagesConfig = {
