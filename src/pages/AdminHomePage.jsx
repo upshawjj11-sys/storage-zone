@@ -232,8 +232,7 @@ function SectionEditor({ section, onChange, onRemove, index }) {
 export default function AdminHomePage() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
-    hero_title: "", hero_subtitle: "", hero_image: "", hero_badge_text: "Secure & Climate Controlled",
-    hero_cta_text: "Find Your Unit", hero_cta_link: "", hero_cta2_text: "View Locations", hero_cta2_link: "",
+    hero_title: "", hero_subtitle: "", hero_image: "", hero_images: [], hero_badge_text: "",
     hero_overlay_opacity: 0.6, sections: [],
   });
   const [newSectionType, setNewSectionType] = useState("features");
