@@ -315,29 +315,32 @@ export default function AdminHomePage() {
         <Card>
           <CardHeader><CardTitle>Hero Section</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            <div><Label>Badge Text (small tag above title)</Label><Input value={form.hero_badge_text} onChange={(e) => update("hero_badge_text", e.target.value)} placeholder="Secure & Climate Controlled" /></div>
-            <div><Label>Title</Label><Input value={form.hero_title} onChange={(e) => update("hero_title", e.target.value)} placeholder="Your Space, Your Storage" /></div>
-            <div><Label>Subtitle</Label><Textarea rows={2} value={form.hero_subtitle} onChange={(e) => update("hero_subtitle", e.target.value)} placeholder="Find the perfect storage unit near you." /></div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div><Label>Primary CTA Text</Label><Input value={form.hero_cta_text} onChange={(e) => update("hero_cta_text", e.target.value)} /></div>
-              <div><Label>Primary CTA Link</Label><Input value={form.hero_cta_link} onChange={(e) => update("hero_cta_link", e.target.value)} placeholder="/Locations" /></div>
-            </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div><Label>Secondary CTA Text</Label><Input value={form.hero_cta2_text} onChange={(e) => update("hero_cta2_text", e.target.value)} /></div>
-              <div><Label>Secondary CTA Link</Label><Input value={form.hero_cta2_link} onChange={(e) => update("hero_cta2_link", e.target.value)} /></div>
-            </div>
+            <div><Label>Badge Text (small tag above title)</Label><Input value={form.hero_badge_text || ""} onChange={(e) => update("hero_badge_text", e.target.value)} placeholder="WE'RE OPEN. CONTACTLESS LEASING AVAILABLE." /></div>
+            <div><Label>Title</Label><Input value={form.hero_title || ""} onChange={(e) => update("hero_title", e.target.value)} placeholder="Your Space, Your Storage" /></div>
+            <div><Label>Subtitle</Label><Textarea rows={2} value={form.hero_subtitle || ""} onChange={(e) => update("hero_subtitle", e.target.value)} placeholder="Find the perfect storage unit near you." /></div>
             <div>
               <Label>Background Overlay Opacity ({Math.round((form.hero_overlay_opacity || 0.6) * 100)}%)</Label>
               <input type="range" min={0} max={1} step={0.05} value={form.hero_overlay_opacity || 0.6} onChange={(e) => update("hero_overlay_opacity", parseFloat(e.target.value))} className="w-full mt-1" />
             </div>
             <div>
-              <Label>Hero Background Image</Label>
-              {form.hero_image && <img src={form.hero_image} alt="" className="w-full h-40 object-cover rounded-xl mb-2" />}
+              <Label>Hero Carousel Images</Label>
+              <p className="text-xs text-gray-500 mb-2">Add multiple images — they will auto-rotate in the carousel.</p>
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                {(form.hero_images || []).map((img, idx) => (
+                  <div key={idx} className="relative group">
+                    <img src={img} alt="" className="w-full h-24 object-cover rounded-lg border" />
+                    <button
+                      onClick={() => removeHeroImage(idx)}
+                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                    >×</button>
+                    {idx === 0 && <span className="absolute bottom-1 left-1 bg-black/60 text-white text-xs px-1.5 rounded">Main</span>}
+                  </div>
+                ))}
+              </div>
               <label className="flex items-center gap-2 px-4 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit">
-                <Upload className="w-4 h-4" /> Upload Image
+                <Upload className="w-4 h-4" /> Add Carousel Image
                 <input type="file" accept="image/*" className="hidden" onChange={handleHeroUpload} />
               </label>
-              {form.hero_image && <button className="text-xs text-red-500 mt-1 block" onClick={() => update("hero_image", "")}>Remove image</button>}
             </div>
           </CardContent>
         </Card>
