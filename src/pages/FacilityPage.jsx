@@ -51,6 +51,161 @@ export default function FacilityPage() {
   if (isLoading) return <div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-[#1B365D] border-t-transparent rounded-full animate-spin" /></div>;
   if (!facility) return <div className="min-h-screen flex items-center justify-center"><p className="text-gray-500">Facility not found.</p></div>;
 
+  const DEFAULT_ORDER = ["contact", "about", "features", "units", "photos", "videos", "reviews", "faq"];
+  const rawOrder = facility.sections_order?.length > 0 ? facility.sections_order : DEFAULT_ORDER;
+  const sectionsOrder = [
+    ...rawOrder.filter((k) => DEFAULT_ORDER.includes(k)),
+    ...DEFAULT_ORDER.filter((k) => !rawOrder.includes(k)),
+  ];
+
+  const sectionMap = {
+    contact: facility.address || facility.phone || facility.email ? (
+      <div key="contact" className="grid sm:grid-cols-3 gap-4">
+        {facility.address && (
+          <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+            <MapPin className="w-5 h-5 text-[#E8792F] mt-0.5" />
+            <div>
+              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Address</p>
+              <p className="text-sm font-medium text-gray-900 mt-1">{facility.address}, {facility.city}, {facility.state} {facility.zip}</p>
+            </div>
+          </div>
+        )}
+        {facility.phone && (
+          <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+            <Phone className="w-5 h-5 text-[#E8792F] mt-0.5" />
+            <div>
+              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Phone</p>
+              <a href={`tel:${facility.phone}`} className="text-sm font-medium text-gray-900 mt-1 block">{facility.phone}</a>
+            </div>
+          </div>
+        )}
+        {facility.email && (
+          <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+            <Mail className="w-5 h-5 text-[#E8792F] mt-0.5" />
+            <div>
+              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Email</p>
+              <a href={`mailto:${facility.email}`} className="text-sm font-medium text-gray-900 mt-1 block">{facility.email}</a>
+            </div>
+          </div>
+        )}
+      </div>
+    ) : null,
+
+    about: facility.about ? (
+      <div key="about">
+        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">About This Location</h2>
+        <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">{facility.about}</p>
+      </div>
+    ) : null,
+
+    features: facility.features?.length > 0 ? (
+      <div key="features">
+        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Features & Amenities</h2>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {facility.features.map((f, i) => (
+            <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
+              <Check className="w-5 h-5 text-[#2A9D8F]" />
+              <span className="text-sm font-medium text-gray-700">{f}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null,
+
+    units: facility.unit_grid_widget_code ? (
+      <div key="units">
+        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Available Units</h2>
+        <div dangerouslySetInnerHTML={{ __html: facility.unit_grid_widget_code }} />
+      </div>
+    ) : facility.units?.length > 0 ? (
+      <div key="units">
+        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Available Units</h2>
+        <div className="space-y-3">
+          {facility.units.map((unit, i) => (
+            <div
+              key={i}
+              className={`flex items-center justify-between p-4 rounded-xl border transition-all ${unit.available ? "bg-white border-gray-200 hover:border-[#E8792F] hover:shadow-md cursor-pointer" : "bg-gray-50 border-gray-100 opacity-60"}`}
+              onClick={() => { if (unit.available) { setSelectedUnit(unit); setShowReserve(true); } }}
+            >
+              <div>
+                <p className="font-semibold text-gray-900">{unit.name}</p>
+                <p className="text-sm text-gray-500">{unit.size} • {unit.type}</p>
+              </div>
+              <div className="text-right">
+                <p className="font-bold text-xl text-[#1B365D]">${unit.price}/mo</p>
+                {unit.available ? <Badge className="bg-green-100 text-green-700 border-0 mt-1">Available</Badge> : <Badge variant="secondary" className="mt-1">Occupied</Badge>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null,
+
+    photos: facility.photos?.length > 0 ? (
+      <div key="photos">
+        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Photos</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {facility.photos.map((url, i) => (
+            <button key={i} onClick={() => setLightboxIdx(i)} className="overflow-hidden rounded-xl group">
+              <img src={url} alt="" className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
+            </button>
+          ))}
+        </div>
+      </div>
+    ) : null,
+
+    videos: facility.videos?.length > 0 ? (
+      <div key="videos">
+        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Videos</h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {facility.videos.map((url, i) => (
+            <div key={i} className="rounded-xl overflow-hidden aspect-video">
+              <iframe src={url} className="w-full h-full" allowFullScreen />
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null,
+
+    reviews: facility.reviews?.length > 0 ? (
+      <div key="reviews">
+        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Customer Reviews</h2>
+        <div className="space-y-4">
+          {facility.reviews.map((r, i) => (
+            <div key={i} className="p-5 bg-gray-50 rounded-xl">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="flex">
+                  {Array.from({ length: 5 }).map((_, j) => (
+                    <Star key={j} className={`w-4 h-4 ${j < r.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`} />
+                  ))}
+                </div>
+                <span className="text-sm font-medium text-gray-700">{r.name}</span>
+              </div>
+              <p className="text-gray-600 text-sm leading-relaxed">{r.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null,
+
+    faq: facility.faqs?.length > 0 ? (
+      <div key="faq">
+        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Frequently Asked Questions</h2>
+        <div className="space-y-2">
+          {facility.faqs.map((faq, i) => (
+            <div key={i} className="border rounded-xl overflow-hidden">
+              <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 hover:bg-gray-50 transition">
+                {faq.question}
+                {openFaq === i ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+              </button>
+              {openFaq === i && <div className="px-4 pb-4 text-sm text-gray-600 leading-relaxed">{faq.answer}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null,
+  };
+
   // Build slider images: banner first, then photos
   const bannerImages = [
     ...(facility.banner_image ? [facility.banner_image] : []),
