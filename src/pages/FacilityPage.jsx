@@ -11,6 +11,7 @@ export default function FacilityPage() {
   const urlParams = new URLSearchParams(window.location.search);
   const facilityId = urlParams.get("id");
   const [openFaq, setOpenFaq] = useState(null);
+  const [hoursTab, setHoursTab] = useState("office");
   const [showDialog, setShowDialog] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [lightboxIdx, setLightboxIdx] = useState(null);
