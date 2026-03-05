@@ -247,32 +247,75 @@ export default function AdminFacilityEdit() {
         </TabsContent>
 
         <TabsContent value="hours">
-          <Card>
-            <CardContent className="p-6 space-y-3">
-              {form.hours.map((h, i) => (
-                <div key={i} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
-                  <span className="w-24 font-medium text-sm text-gray-700">{h.day}</span>
-                  <Switch checked={!h.closed} onCheckedChange={(v) => {
-                    const hours = [...form.hours];
-                    hours[i] = { ...hours[i], closed: !v };
-                    update("hours", hours);
-                  }} />
-                  {!h.closed && (
-                    <>
-                      <Input className="w-32" value={h.open} onChange={(e) => {
-                        const hours = [...form.hours]; hours[i] = { ...hours[i], open: e.target.value }; update("hours", hours);
-                      }} />
-                      <span className="text-gray-400">to</span>
-                      <Input className="w-32" value={h.close} onChange={(e) => {
-                        const hours = [...form.hours]; hours[i] = { ...hours[i], close: e.target.value }; update("hours", hours);
-                      }} />
-                    </>
+          <div className="space-y-6">
+            {/* Office Hours */}
+            <Card>
+              <CardHeader><CardTitle className="text-base">Office / Front Desk Hours</CardTitle></CardHeader>
+              <CardContent className="p-6 pt-0 space-y-3">
+                {form.hours.map((h, i) => (
+                  <div key={i} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+                    <span className="w-24 font-medium text-sm text-gray-700">{h.day}</span>
+                    <Switch checked={!h.closed} onCheckedChange={(v) => {
+                      const hours = [...form.hours]; hours[i] = { ...hours[i], closed: !v }; update("hours", hours);
+                    }} />
+                    {!h.closed ? (
+                      <>
+                        <Input className="w-32" value={h.open} onChange={(e) => {
+                          const hours = [...form.hours]; hours[i] = { ...hours[i], open: e.target.value }; update("hours", hours);
+                        }} />
+                        <span className="text-gray-400">to</span>
+                        <Input className="w-32" value={h.close} onChange={(e) => {
+                          const hours = [...form.hours]; hours[i] = { ...hours[i], close: e.target.value }; update("hours", hours);
+                        }} />
+                      </>
+                    ) : <span className="text-sm text-gray-500">Closed</span>}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Access Hours */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-base">Access Hours <span className="text-xs font-normal text-gray-400">(gate / storage access)</span></CardTitle>
+                  {form.access_hours.length === 0 && (
+                    <Button variant="outline" size="sm" className="gap-1 text-xs" onClick={() => update("access_hours", defaultHours.map(h => ({ ...h })))}>
+                      <Plus className="w-3 h-3" /> Add Access Hours
+                    </Button>
                   )}
-                  {h.closed && <span className="text-sm text-gray-500">Closed</span>}
+                  {form.access_hours.length > 0 && (
+                    <Button variant="ghost" size="sm" className="text-red-500 text-xs" onClick={() => update("access_hours", [])}>
+                      Remove Access Hours
+                    </Button>
+                  )}
                 </div>
-              ))}
-            </CardContent>
-          </Card>
+              </CardHeader>
+              {form.access_hours.length > 0 && (
+                <CardContent className="p-6 pt-0 space-y-3">
+                  {form.access_hours.map((h, i) => (
+                    <div key={i} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+                      <span className="w-24 font-medium text-sm text-gray-700">{h.day}</span>
+                      <Switch checked={!h.closed} onCheckedChange={(v) => {
+                        const hours = [...form.access_hours]; hours[i] = { ...hours[i], closed: !v }; update("access_hours", hours);
+                      }} />
+                      {!h.closed ? (
+                        <>
+                          <Input className="w-32" value={h.open} onChange={(e) => {
+                            const hours = [...form.access_hours]; hours[i] = { ...hours[i], open: e.target.value }; update("access_hours", hours);
+                          }} />
+                          <span className="text-gray-400">to</span>
+                          <Input className="w-32" value={h.close} onChange={(e) => {
+                            const hours = [...form.access_hours]; hours[i] = { ...hours[i], close: e.target.value }; update("access_hours", hours);
+                          }} />
+                        </>
+                      ) : <span className="text-sm text-gray-500">Closed</span>}
+                    </div>
+                  ))}
+                </CardContent>
+              )}
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="features">
