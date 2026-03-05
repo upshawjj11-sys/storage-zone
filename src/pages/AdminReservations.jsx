@@ -64,7 +64,7 @@ export default function AdminReservations() {
             className="pl-10"
           />
         </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <Select value={statusFilter} onValueChange={setStatusFilter} className="w-40">
           <SelectTrigger className="w-40">
             <SelectValue />
           </SelectTrigger>
