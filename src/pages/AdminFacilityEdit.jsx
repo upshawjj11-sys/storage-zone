@@ -291,44 +291,23 @@ export default function AdminFacilityEdit() {
         <TabsContent value="media">
           <Card>
             <CardContent className="p-6 space-y-6">
-              <div>
-                <Label className="text-base font-semibold mb-3 block">Photos</Label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-                  {form.photos.map((url, i) => (
-                    <div key={i} className="relative group">
-                      <img src={url} alt="" className="w-full h-32 object-cover rounded-xl" />
-                      <button onClick={() => update("photos", form.photos.filter((_, j) => j !== i))} className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition">
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-                <label className="flex items-center gap-2 px-4 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit">
-                  <Upload className="w-4 h-4" /> Upload Photo
-                  <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
-                </label>
-              </div>
+              <p className="text-sm text-gray-500">Photos managed in the Banner tab serve as the image slider. Additional photos added here also appear in the gallery section.</p>
               <div>
                 <Label className="text-base font-semibold mb-3 block">Videos</Label>
+                <p className="text-xs text-gray-500 mb-3">Paste a YouTube or Vimeo embed URL (e.g. https://www.youtube.com/embed/VIDEO_ID)</p>
                 <div className="space-y-2 mb-3">
                   {form.videos.map((url, i) => (
                     <div key={i} className="flex items-center gap-2">
-                      <Input value={url} readOnly className="flex-1" />
+                      <Input value={url} onChange={(e) => { const v=[...form.videos]; v[i]=e.target.value; update("videos",v); }} className="flex-1" placeholder="https://www.youtube.com/embed/..." />
                       <Button variant="ghost" size="icon" className="text-red-500" onClick={() => update("videos", form.videos.filter((_, j) => j !== i))}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                   ))}
                 </div>
-                <div className="flex gap-2">
-                  <Input id="new-video" placeholder="YouTube or Vimeo embed URL" />
-                  <Button variant="outline" onClick={() => {
-                    const input = document.getElementById("new-video");
-                    if (input.value.trim()) { update("videos", [...form.videos, input.value.trim()]); input.value = ""; }
-                  }}>
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
+                <Button variant="outline" className="gap-2" onClick={() => update("videos", [...form.videos, ""])}>
+                  <Plus className="w-4 h-4" /> Add Video URL
+                </Button>
               </div>
             </CardContent>
           </Card>
