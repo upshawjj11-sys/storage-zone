@@ -86,11 +86,14 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
 
             {/* Pillars row */}
             {pillars.length > 0 && (
-              <div className={`grid grid-cols-${Math.min(pillars.length, 5)} divide-x divide-white/10 border-b border-white/10`}>
+              <div
+                className="divide-x divide-white/10 border-b border-white/10"
+                style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(pillars.length, 5)}, 1fr)` }}
+              >
                 {pillars.slice(0, 5).map((item, i) => (
                   <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-3 py-4 text-center">
-                    <DynamicIcon name={item.icon} className="w-6 h-6" style={{ color: secondaryColor }} />
-                    <span className="text-white text-xs font-semibold leading-tight">{item.text}</span>
+                    <DynamicIcon name={item.icon} className="w-6 h-6" style={{ color: item.icon_color || secondaryColor }} />
+                    <span className="text-xs font-semibold leading-tight" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
                     {item.label && <span className="text-white/50 text-xs">{item.label}</span>}
                   </div>
                 ))}
