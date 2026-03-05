@@ -94,8 +94,9 @@ export default function AdminReservations() {
                 <tr>
                   <th className="text-left px-4 py-3 font-semibold text-gray-700">Customer</th>
                   <th className="text-left px-4 py-3 font-semibold text-gray-700">Facility</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Unit</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Unit / Type</th>
                   <th className="text-left px-4 py-3 font-semibold text-gray-700">Date</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Type</th>
                   <th className="text-left px-4 py-3 font-semibold text-gray-700">Status</th>
                   <th className="text-left px-4 py-3 font-semibold text-gray-700">Actions</th>
                 </tr>
