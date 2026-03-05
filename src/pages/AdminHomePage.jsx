@@ -41,6 +41,53 @@ function SectionEditor({ section, onChange, onRemove, index }) {
 
   const renderDataEditor = () => {
     switch (section.type) {
+      case "pillars":
+        return (
+          <div className="space-y-3">
+            <p className="text-xs text-gray-500">Shown as a horizontal bar on the hero or below it. Great for value propositions like "Rest of Month Free".</p>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Layout Style</Label>
+                <Select value={data.style || "banner"} onValueChange={(v) => updateData("style", v)}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="banner">Dark Banner Bar</SelectItem>
+                    <SelectItem value="cards">Cards on Light Background</SelectItem>
+                    <SelectItem value="minimal">Minimal / Inline</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-xs">Columns</Label>
+                <Select value={String(data.columns || "4")} onValueChange={(v) => updateData("columns", parseInt(v))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2">2 columns</SelectItem>
+                    <SelectItem value="3">3 columns</SelectItem>
+                    <SelectItem value="4">4 columns</SelectItem>
+                    <SelectItem value="5">5 columns</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <Button size="sm" variant="outline" className="gap-1" onClick={() => addItem({ icon: "Check", text: "" })}>
+              <Plus className="w-3 h-3" /> Add Pillar
+            </Button>
+            {(data.items || []).map((item, i) => (
+              <div key={i} className="p-3 border rounded-lg bg-gray-50 flex items-center gap-3">
+                <div className="w-36 flex-shrink-0">
+                  <Label className="text-xs mb-1 block">Icon</Label>
+                  <IconPicker value={item.icon || ""} onChange={(v) => updateItem(data.items, i, "icon", v)} />
+                </div>
+                <div className="flex-1">
+                  <Label className="text-xs mb-1 block">Text</Label>
+                  <Input placeholder="Rest of Month Free" value={item.text || ""} onChange={(e) => updateItem(data.items, i, "text", e.target.value)} />
+                </div>
+                <Button size="sm" variant="ghost" className="text-red-500 flex-shrink-0 mt-4" onClick={() => removeItem(i)}><Trash2 className="w-3 h-3" /></Button>
+              </div>
+            ))}
+          </div>
+        );
       case "features":
         return (
           <div className="space-y-3">
@@ -49,9 +96,12 @@ function SectionEditor({ section, onChange, onRemove, index }) {
             </Button>
             {(data.items || []).map((item, i) => (
               <div key={i} className="p-3 border rounded-lg space-y-2 bg-gray-50">
-                <div className="flex gap-2">
-                  <Input placeholder="Icon name (Shield, Clock, MapPin...)" value={item.icon || ""} onChange={(e) => updateItem(data.items, i, "icon", e.target.value)} className="flex-1" />
-                  <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem(i)}><Trash2 className="w-3 h-3" /></Button>
+                <div className="flex items-end gap-2">
+                  <div className="flex-1">
+                    <Label className="text-xs mb-1 block">Icon</Label>
+                    <IconPicker value={item.icon || ""} onChange={(v) => updateItem(data.items, i, "icon", v)} />
+                  </div>
+                  <Button size="sm" variant="ghost" className="text-red-500 mb-0.5" onClick={() => removeItem(i)}><Trash2 className="w-3 h-3" /></Button>
                 </div>
                 <Input placeholder="Title" value={item.title || ""} onChange={(e) => updateItem(data.items, i, "title", e.target.value)} />
                 <Textarea placeholder="Description" value={item.desc || ""} onChange={(e) => updateItem(data.items, i, "desc", e.target.value)} rows={2} />
