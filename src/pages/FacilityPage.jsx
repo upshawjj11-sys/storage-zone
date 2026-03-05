@@ -1,0 +1,405 @@
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { base44 } from "@/api/base44Client";
+import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+export default function FacilityPage() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const facilityId = urlParams.get("id");
+  const [openFaq, setOpenFaq] = useState(null);
+  const [showReserve, setShowReserve] = useState(false);
+  const [selectedUnit, setSelectedUnit] = useState(null);
+  const [reserveForm, setReserveForm] = useState({
+    customer_name: "",
+    customer_email: "",
+    customer_phone: "",
+    move_in_date: "",
+    notes: "",
+    reservation_type: "reservation",
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const { data: facility, isLoading } = useQuery({
+    queryKey: ["facility", facilityId],
+    queryFn: async () => {
+      const items = await base44.entities.Facility.filter({ id: facilityId });
+      return items[0];
+    },
+    enabled: !!facilityId,
+  });
+
+  const handleReserve = async () => {
+    setSubmitting(true);
+    await base44.entities.Reservation.create({
+      ...reserveForm,
+      facility_id: facilityId,
+      facility_name: facility.name,
+      unit_name: selectedUnit?.name || "",
+      unit_size: selectedUnit?.size || "",
+      unit_price: selectedUnit?.price || 0,
+    });
+    setSubmitting(false);
+    setSubmitted(true);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-[#1B365D] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!facility) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500">Facility not found.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white">
+      {/* Banner */}
+      <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
+        <img
+          src={
+            facility.banner_image ||
+            facility.photos?.[0] ||
+            "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1920&q=80"
+          }
+          alt={facility.name}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-3xl md:text-5xl font-black text-white mb-2">{facility.banner_title || facility.name}</h1>
+            <p className="text-white/80 text-lg">{facility.banner_subtitle || `${facility.city}, ${facility.state}`}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div className="grid lg:grid-cols-3 gap-12">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-12">
+            {/* Contact Info */}
+            <div className="grid sm:grid-cols-3 gap-4">
+              {facility.address && (
+                <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+                  <MapPin className="w-5 h-5 text-[#E8792F] mt-0.5" />
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Address</p>
+                    <p className="text-sm font-medium text-gray-900 mt-1">
+                      {facility.address}, {facility.city}, {facility.state} {facility.zip}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {facility.phone && (
+                <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+                  <Phone className="w-5 h-5 text-[#E8792F] mt-0.5" />
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Phone</p>
+                    <a href={`tel:${facility.phone}`} className="text-sm font-medium text-gray-900 mt-1 block">
+                      {facility.phone}
+                    </a>
+                  </div>
+                </div>
+              )}
+              {facility.email && (
+                <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+                  <Mail className="w-5 h-5 text-[#E8792F] mt-0.5" />
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Email</p>
+                    <a href={`mailto:${facility.email}`} className="text-sm font-medium text-gray-900 mt-1 block">
+                      {facility.email}
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* About */}
+            {facility.about && (
+              <div>
+                <h2 className="text-2xl font-bold text-[#1B365D] mb-4">About This Location</h2>
+                <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">{facility.about}</p>
+              </div>
+            )}
+
+            {/* Features */}
+            {facility.features?.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Features & Amenities</h2>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {facility.features.map((f, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
+                      <Check className="w-5 h-5 text-[#2A9D8F]" />
+                      <span className="text-sm font-medium text-gray-700">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Units / Widget */}
+            {facility.unit_grid_widget_code ? (
+              <div>
+                <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Available Units</h2>
+                <div dangerouslySetInnerHTML={{ __html: facility.unit_grid_widget_code }} />
+              </div>
+            ) : facility.units?.length > 0 ? (
+              <div>
+                <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Available Units</h2>
+                <div className="space-y-3">
+                  {facility.units.map((unit, i) => (
+                    <div
+                      key={i}
+                      className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
+                        unit.available
+                          ? "bg-white border-gray-200 hover:border-[#E8792F] hover:shadow-md cursor-pointer"
+                          : "bg-gray-50 border-gray-100 opacity-60"
+                      }`}
+                      onClick={() => {
+                        if (unit.available) {
+                          setSelectedUnit(unit);
+                          setShowReserve(true);
+                        }
+                      }}
+                    >
+                      <div>
+                        <p className="font-semibold text-gray-900">{unit.name}</p>
+                        <p className="text-sm text-gray-500">{unit.size} • {unit.type}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-xl text-[#1B365D]">${unit.price}/mo</p>
+                        {unit.available ? (
+                          <Badge className="bg-green-100 text-green-700 border-0 mt-1">Available</Badge>
+                        ) : (
+                          <Badge variant="secondary" className="mt-1">Occupied</Badge>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {/* Photos */}
+            {facility.photos?.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Photos</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {facility.photos.map((url, i) => (
+                    <img key={i} src={url} alt="" className="w-full h-48 object-cover rounded-xl" />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Videos */}
+            {facility.videos?.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Videos</h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {facility.videos.map((url, i) => (
+                    <div key={i} className="rounded-xl overflow-hidden aspect-video">
+                      <iframe src={url} className="w-full h-full" allowFullScreen />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Reviews */}
+            {facility.reviews?.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Customer Reviews</h2>
+                <div className="space-y-4">
+                  {facility.reviews.map((r, i) => (
+                    <div key={i} className="p-5 bg-gray-50 rounded-xl">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="flex">
+                          {Array.from({ length: 5 }).map((_, j) => (
+                            <Star
+                              key={j}
+                              className={`w-4 h-4 ${j < r.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-sm font-medium text-gray-700">{r.name}</span>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed">{r.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* FAQ */}
+            {facility.faqs?.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Frequently Asked Questions</h2>
+                <div className="space-y-2">
+                  {facility.faqs.map((faq, i) => (
+                    <div key={i} className="border rounded-xl overflow-hidden">
+                      <button
+                        onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                        className="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 hover:bg-gray-50 transition"
+                      >
+                        {faq.question}
+                        {openFaq === i ? (
+                          <ChevronUp className="w-5 h-5 text-gray-400" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-gray-400" />
+                        )}
+                      </button>
+                      {openFaq === i && (
+                        <div className="px-4 pb-4 text-sm text-gray-600 leading-relaxed">{faq.answer}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-24 space-y-6">
+              {/* Hours */}
+              {facility.hours?.length > 0 && (
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="font-bold text-[#1B365D] mb-3 flex items-center gap-2">
+                    <Clock className="w-5 h-5" /> Hours
+                  </h3>
+                  <div className="space-y-2">
+                    {facility.hours.map((h, i) => (
+                      <div key={i} className="flex justify-between text-sm">
+                        <span className="text-gray-600 font-medium">{h.day}</span>
+                        <span className="text-gray-900">{h.closed ? "Closed" : `${h.open} - ${h.close}`}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Reserve CTA */}
+              <div className="bg-[#1B365D] rounded-2xl p-6 text-center">
+                <h3 className="text-xl font-bold text-white mb-2">Reserve Your Unit</h3>
+                <p className="text-white/70 text-sm mb-4">No commitment. Cancel anytime.</p>
+                <Button
+                  className="w-full rounded-full font-semibold py-5"
+                  style={{ background: "#E8792F" }}
+                  onClick={() => setShowReserve(true)}
+                >
+                  Reserve Now
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Reserve Dialog */}
+      <Dialog open={showReserve} onOpenChange={(open) => { setShowReserve(open); if (!open) setSubmitted(false); }}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>{submitted ? "Reservation Submitted!" : "Reserve a Unit"}</DialogTitle>
+            <DialogDescription>
+              {submitted
+                ? "We'll be in touch shortly to confirm your reservation."
+                : `${facility.name} ${selectedUnit ? `• ${selectedUnit.name} (${selectedUnit.size})` : ""}`}
+            </DialogDescription>
+          </DialogHeader>
+          {submitted ? (
+            <div className="text-center py-6">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Check className="w-8 h-8 text-green-600" />
+              </div>
+              <Button onClick={() => { setShowReserve(false); setSubmitted(false); }} className="rounded-full">
+                Close
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Full Name *</Label>
+                  <Input
+                    value={reserveForm.customer_name}
+                    onChange={(e) => setReserveForm({ ...reserveForm, customer_name: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <Label>Email *</Label>
+                  <Input
+                    type="email"
+                    value={reserveForm.customer_email}
+                    onChange={(e) => setReserveForm({ ...reserveForm, customer_email: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Phone</Label>
+                  <Input
+                    value={reserveForm.customer_phone}
+                    onChange={(e) => setReserveForm({ ...reserveForm, customer_phone: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <Label>Move-in Date</Label>
+                  <Input
+                    type="date"
+                    value={reserveForm.move_in_date}
+                    onChange={(e) => setReserveForm({ ...reserveForm, move_in_date: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div>
+                <Label>Type</Label>
+                <Select
+                  value={reserveForm.reservation_type}
+                  onValueChange={(v) => setReserveForm({ ...reserveForm, reservation_type: v })}
+                >
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="reservation">Reservation (Hold a Unit)</SelectItem>
+                    <SelectItem value="rental">Rental (Move In)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Notes</Label>
+                <Textarea
+                  value={reserveForm.notes}
+                  onChange={(e) => setReserveForm({ ...reserveForm, notes: e.target.value })}
+                  placeholder="Anything we should know?"
+                />
+              </div>
+              <Button
+                className="w-full rounded-full font-semibold py-5"
+                style={{ background: "#E8792F" }}
+                onClick={handleReserve}
+                disabled={submitting || !reserveForm.customer_name || !reserveForm.customer_email}
+              >
+                {submitting ? "Submitting..." : "Submit Reservation"}
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
