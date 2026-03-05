@@ -261,11 +261,20 @@ export default function AdminSiteSettings() {
                 <Label>Enable announcement bar</Label>
               </div>
               <div><Label>Message</Label><Input value={form.header_announcement} onChange={(e) => update("header_announcement", e.target.value)} placeholder="🎉 Summer special: First month free!" /></div>
-              <div>
-                <Label>Background Color</Label>
-                <div className="flex items-center gap-2 mt-1">
-                  <input type="color" value={form.header_announcement_color || "#E8792F"} onChange={(e) => update("header_announcement_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
-                  <Input value={form.header_announcement_color || ""} onChange={(e) => update("header_announcement_color", e.target.value)} />
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Background Color</Label>
+                  <div className="flex items-center gap-2 mt-1">
+                    <input type="color" value={form.header_announcement_color || "#E8792F"} onChange={(e) => update("header_announcement_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
+                    <Input value={form.header_announcement_color || ""} onChange={(e) => update("header_announcement_color", e.target.value)} />
+                  </div>
+                </div>
+                <div>
+                  <Label>Text Color</Label>
+                  <div className="flex items-center gap-2 mt-1">
+                    <input type="color" value={form.header_announcement_text_color || "#ffffff"} onChange={(e) => update("header_announcement_text_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
+                    <Input value={form.header_announcement_text_color || ""} onChange={(e) => update("header_announcement_text_color", e.target.value)} />
+                  </div>
                 </div>
               </div>
             </CardContent>
