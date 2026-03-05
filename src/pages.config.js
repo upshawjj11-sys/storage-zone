@@ -62,6 +62,7 @@ import AdminPopupEdit from './pages/AdminPopupEdit';
 import AdminBranding from './pages/AdminBranding';
 import AdminHomePage from './pages/AdminHomePage';
 import AdminTeam from './pages/AdminTeam';
+import AdminSiteSettings from './pages/AdminSiteSettings';
 import __Layout from './Layout.jsx';
 
 
@@ -81,6 +82,7 @@ export const PAGES = {
     "AdminBranding": AdminBranding,
     "AdminHomePage": AdminHomePage,
     "AdminTeam": AdminTeam,
+    "AdminSiteSettings": AdminSiteSettings,
 }
 
 export const pagesConfig = {
