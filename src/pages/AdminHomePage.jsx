@@ -250,7 +250,15 @@ export default function AdminHomePage() {
     const file = e.target.files[0];
     if (!file) return;
     const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    update("hero_image", file_url);
+    // Add to carousel images list
+    update("hero_images", [...(form.hero_images || []), file_url]);
+    // Also set hero_image to first image for backward compat
+    if (!(form.hero_images?.length)) update("hero_image", file_url);
+  };
+  const removeHeroImage = (idx) => {
+    const imgs = (form.hero_images || []).filter((_, i) => i !== idx);
+    update("hero_images", imgs);
+    update("hero_image", imgs[0] || "");
   };
 
   const addSection = () => {
