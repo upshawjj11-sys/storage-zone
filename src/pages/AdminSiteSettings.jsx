@@ -14,11 +14,14 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 export default function AdminSiteSettings() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
-    nav_logo_url: "", nav_cta_text: "Get Started", nav_cta_url: "", nav_bg_color: "#ffffff", nav_text_color: "#1B365D",
-    header_announcement: "", header_announcement_color: "#E8792F", header_announcement_enabled: false,
+    nav_logo_url: "", nav_style: "default",
+    nav_cta_text: "Get Started", nav_cta_url: "", nav_cta_style: "filled",
+    nav_cta_bg_color: "#E8792F", nav_cta_text_color: "#ffffff",
+    nav_bg_color: "#ffffff", nav_text_color: "#1B365D", nav_border_bottom: true,
+    header_announcement: "", header_announcement_color: "#E8792F", header_announcement_text_color: "#ffffff", header_announcement_enabled: false,
     nav_links: [],
     footer_tagline: "", footer_copyright: "", footer_bg_color: "#0F172A", footer_text_color: "#ffffff",
-    footer_show_social: true, footer_links: [], footer_columns: [],
+    footer_accent_color: "#E8792F", footer_show_social: true, footer_links: [], footer_columns: [],
   });
 
   const { data: existing, refetch } = useQuery({
