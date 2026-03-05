@@ -1,31 +1,16 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Search, Shield, Lock, ShieldCheck, Key, Eye, Clock, Calendar, CalendarCheck, Timer, MapPin, Map, Navigation, Compass, Home, Building, Building2, Warehouse, Star, Heart, ThumbsUp, Award, Trophy, BadgeCheck, Check, CheckCircle, CheckCircle2, Truck, Car, Package, Package2, PackageCheck, Box, Boxes, Tag, Tags, DollarSign, CreditCard, Banknote, Coins, Percent, BadgeDollarSign, Phone, Mail, MessageCircle, MessageSquare, Bell, BellRing, Leaf, Sun, Moon, Wind, Snowflake, Flame, Zap, Wifi, Plug, Battery, Users, User, UserCheck, UserPlus, Wrench, Settings, Settings2, Hammer, ArrowRight, ArrowUp, ArrowDown, ChevronRight, Plus, X, Minus, RefreshCw, Camera, Image, FileText, Clipboard, ClipboardCheck, BookOpen, Globe, Info, HelpCircle, AlertCircle } from "lucide-react";
-
-const ICONS = {
-  Shield, Lock, ShieldCheck, Key, Eye, Clock, Calendar, CalendarCheck, Timer,
-  MapPin, Map, Navigation, Compass, Home, Building, Building2, Warehouse,
-  Star, Heart, ThumbsUp, Award, Trophy, BadgeCheck,
-  Check, CheckCircle, CheckCircle2,
-  Truck, Car, Package, Package2, PackageCheck, Box, Boxes,
-  Tag, Tags, DollarSign, CreditCard, Banknote, Coins, Percent, BadgeDollarSign,
-  Phone, Mail, MessageCircle, MessageSquare, Bell, BellRing,
-  Leaf, Sun, Moon, Wind, Snowflake, Flame, Zap, Wifi, Plug, Battery,
-  Users, User, UserCheck, UserPlus,
-  Wrench, Settings, Settings2, Hammer,
-  ArrowRight, ArrowUp, ArrowDown, ChevronRight,
-  Plus, X, Minus, RefreshCw,
-  Camera, Image, FileText, Clipboard, ClipboardCheck, BookOpen,
-  Globe, Info, HelpCircle, AlertCircle,
-};
+import { Search } from "lucide-react";
+import { ICONS } from "@/components/home/DynamicIcon";
 
 export default function IconPicker({ value, onChange }) {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
 
-  const filtered = Object.keys(ICONS).filter((name) =>
-    name.toLowerCase().includes(search.toLowerCase())
-  );
+  const allNames = Object.keys(ICONS);
+  const filtered = search
+    ? allNames.filter((name) => name.toLowerCase().includes(search.toLowerCase()))
+    : allNames;
 
   const SelectedIcon = value && ICONS[value] ? ICONS[value] : null;
 
@@ -53,13 +38,13 @@ export default function IconPicker({ value, onChange }) {
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
             <Input
               className="pl-7 h-8 text-sm"
-              placeholder="Search icons..."
+              placeholder={`Search ${allNames.length} icons...`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               autoFocus
             />
           </div>
-          <div className="grid grid-cols-6 gap-1 max-h-52 overflow-y-auto">
+          <div className="grid grid-cols-6 gap-1 max-h-64 overflow-y-auto">
             {filtered.map((name) => {
               const Icon = ICONS[name];
               return (
