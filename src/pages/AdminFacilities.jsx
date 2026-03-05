@@ -127,24 +127,27 @@ export default function AdminFacilities() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Link to={createPageUrl("FacilityPage") + `?id=${f.id}`}>
-                            <Button variant="ghost" size="icon" className="text-gray-400 hover:text-blue-600">
-                              <Eye className="w-4 h-4" />
-                            </Button>
-                          </Link>
-                          <Link to={createPageUrl("AdminFacilityEdit") + `?id=${f.id}`}>
-                            <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-600">
-                              <Pencil className="w-4 h-4" />
-                            </Button>
-                          </Link>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-gray-400 hover:text-red-600"
-                            onClick={() => { if (confirm("Delete this facility?")) deleteMutation.mutate(f.id); }}
-                          >
-                            <Trash2 className="w-4 h-4" />
+                        <Link to={createPageUrl("FacilityPage") + `?id=${f.id}`}>
+                          <Button variant="ghost" size="icon" className="text-gray-400 hover:text-blue-600">
+                            <Eye className="w-4 h-4" />
                           </Button>
+                        </Link>
+                        <Link to={createPageUrl("AdminFacilityEdit") + `?id=${f.id}`}>
+                          <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-600">
+                            <Pencil className="w-4 h-4" />
+                          </Button>
+                        </Link>
+                        <Button variant="ghost" size="icon" className="text-gray-400 hover:text-[#1B365D]" title="Duplicate" onClick={() => duplicateFacility(f)}>
+                          <Copy className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-gray-400 hover:text-red-600"
+                          onClick={() => { if (confirm("Delete this facility?")) deleteMutation.mutate(f.id); }}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                         </div>
                       </div>
                     )}
