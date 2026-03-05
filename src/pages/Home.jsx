@@ -103,12 +103,12 @@ export default function Home() {
           <section key={section.id} style={{ background: section.bg_color || "#fff" }} className="py-10 border-y border-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
               <div className={`grid ${colClass} gap-4 divide-x divide-gray-100`}>
-                {items.map((item, i) => (
-                  <div key={i} className="flex flex-col items-center text-center px-4 gap-2">
-                    <DynamicIcon name={item.icon} className="w-6 h-6" style={{ color: secondaryColor }} />
-                    <span className="text-sm font-semibold text-gray-700">{item.text}</span>
-                  </div>
-                ))}
+               {items.map((item, i) => (
+                 <div key={i} className="flex flex-col items-center text-center px-4 gap-2">
+                   <DynamicIcon name={item.icon} className="w-6 h-6" style={{ color: item.icon_color || secondaryColor }} />
+                   <span className="text-sm font-semibold" style={{ color: item.text_color || "#374151" }}>{item.text}</span>
+                 </div>
+               ))}
               </div>
             </div>
           </section>
