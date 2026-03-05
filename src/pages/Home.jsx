@@ -7,6 +7,7 @@ import { MapPin, Shield, Clock, ArrowRight, Star, ChevronRight } from "lucide-re
 import { Button } from "@/components/ui/button";
 import DynamicIcon from "../components/home/DynamicIcon";
 import ReactMarkdown from "react-markdown";
+import HeroCarousel from "../components/home/HeroCarousel";
 
 export default function Home() {
   const { data: config } = useQuery({
