@@ -203,26 +203,51 @@ export default function AdminSiteSettings() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>Navigation Links</CardTitle>
-                  <Button size="sm" variant="outline" onClick={addNavLink} className="gap-1"><Plus className="w-3 h-3" /> Add Link</Button>
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" onClick={() => addNavLink("link")} className="gap-1"><Plus className="w-3 h-3" /> Add Link</Button>
+                    <Button size="sm" variant="outline" onClick={() => addNavLink("dropdown")} className="gap-1"><Plus className="w-3 h-3" /> Add Dropdown</Button>
+                  </div>
                 </div>
+                <p className="text-xs text-gray-400 mt-1">Use "Add Dropdown" to create a menu item with sub-links (like "Locations → Florida, Georgia...").</p>
               </CardHeader>
               <CardContent>
                 <DragDropContext onDragEnd={onNavDragEnd}>
                   <Droppable droppableId="nav-links">
                     {(provided) => (
-                      <div className="space-y-2" {...provided.droppableProps} ref={provided.innerRef}>
+                      <div className="space-y-3" {...provided.droppableProps} ref={provided.innerRef}>
                         {form.nav_links.map((link, i) => (
                           <Draggable key={i} draggableId={`nav-${i}`} index={i}>
                             {(provided) => (
-                              <div ref={provided.innerRef} {...provided.draggableProps} className="flex items-center gap-2 p-2 border rounded-lg bg-gray-50">
-                                <div {...provided.dragHandleProps} className="text-gray-300 cursor-grab"><GripVertical className="w-4 h-4" /></div>
-                                <Input placeholder="Label" value={link.label} onChange={(e) => updateNavLink(i, "label", e.target.value)} className="flex-1" />
-                                <Input placeholder="URL (/Locations or https://...)" value={link.url} onChange={(e) => updateNavLink(i, "url", e.target.value)} className="flex-1" />
-                                <div className="flex items-center gap-1 flex-shrink-0">
-                                  <Switch checked={!!link.open_new_tab} onCheckedChange={(v) => updateNavLink(i, "open_new_tab", v)} />
-                                  <span className="text-xs text-gray-500">New tab</span>
+                              <div ref={provided.innerRef} {...provided.draggableProps} className="border rounded-xl bg-gray-50 overflow-hidden">
+                                <div className="flex items-center gap-2 p-2">
+                                  <div {...provided.dragHandleProps} className="text-gray-300 cursor-grab"><GripVertical className="w-4 h-4" /></div>
+                                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${link.type === "dropdown" ? "bg-blue-100 text-blue-700" : "bg-gray-200 text-gray-600"}`}>
+                                    {link.type === "dropdown" ? "Dropdown" : "Link"}
+                                  </span>
+                                  <Input placeholder="Label (e.g. Locations)" value={link.label} onChange={(e) => updateNavLink(i, "label", e.target.value)} className="flex-1" />
+                                  {link.type !== "dropdown" && (
+                                    <Input placeholder="/Locations or https://..." value={link.url} onChange={(e) => updateNavLink(i, "url", e.target.value)} className="flex-1" />
+                                  )}
+                                  <div className="flex items-center gap-1 flex-shrink-0">
+                                    <Switch checked={!!link.open_new_tab} onCheckedChange={(v) => updateNavLink(i, "open_new_tab", v)} />
+                                    <span className="text-xs text-gray-500">New tab</span>
+                                  </div>
+                                  <Button size="icon" variant="ghost" className="text-red-400 flex-shrink-0" onClick={() => removeNavLink(i)}><Trash2 className="w-4 h-4" /></Button>
                                 </div>
-                                <Button size="icon" variant="ghost" className="text-red-400 flex-shrink-0" onClick={() => removeNavLink(i)}><Trash2 className="w-4 h-4" /></Button>
+                                {/* Dropdown children */}
+                                {link.type === "dropdown" && (
+                                  <div className="px-4 pb-3 space-y-2 border-t border-gray-200 pt-2 bg-white">
+                                    <p className="text-xs font-medium text-gray-500 mb-1">Sub-links:</p>
+                                    {(link.children || []).map((child, ci) => (
+                                      <div key={ci} className="flex items-center gap-2">
+                                        <Input placeholder="Label" value={child.label} onChange={(e) => updateDropdownChild(i, ci, "label", e.target.value)} className="flex-1" />
+                                        <Input placeholder="URL" value={child.url} onChange={(e) => updateDropdownChild(i, ci, "url", e.target.value)} className="flex-1" />
+                                        <Button size="icon" variant="ghost" className="text-red-400 h-8 w-8 flex-shrink-0" onClick={() => removeDropdownChild(i, ci)}><Trash2 className="w-3.5 h-3.5" /></Button>
+                                      </div>
+                                    ))}
+                                    <Button size="sm" variant="ghost" className="gap-1 text-xs text-gray-500" onClick={() => addDropdownChild(i)}><Plus className="w-3 h-3" /> Add sub-link</Button>
+                                  </div>
+                                )}
                               </div>
                             )}
                           </Draggable>
