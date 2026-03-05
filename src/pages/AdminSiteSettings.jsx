@@ -289,7 +289,7 @@ export default function AdminSiteSettings() {
               <CardContent className="space-y-4">
                 <div><Label>Tagline / About blurb</Label><Textarea value={form.footer_tagline} onChange={(e) => update("footer_tagline", e.target.value)} rows={2} placeholder="Your trusted storage partner since 2010." /></div>
                 <div><Label>Copyright Text</Label><Input value={form.footer_copyright} onChange={(e) => update("footer_copyright", e.target.value)} placeholder="© 2025 Storage Zone. All rights reserved." /></div>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-3 gap-4">
                   <div>
                     <Label>Background Color</Label>
                     <div className="flex items-center gap-2 mt-1">
@@ -302,6 +302,13 @@ export default function AdminSiteSettings() {
                     <div className="flex items-center gap-2 mt-1">
                       <input type="color" value={form.footer_text_color || "#ffffff"} onChange={(e) => update("footer_text_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
                       <Input value={form.footer_text_color || ""} onChange={(e) => update("footer_text_color", e.target.value)} />
+                    </div>
+                  </div>
+                  <div>
+                    <Label>Column Heading Color</Label>
+                    <div className="flex items-center gap-2 mt-1">
+                      <input type="color" value={form.footer_accent_color || "#E8792F"} onChange={(e) => update("footer_accent_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
+                      <Input value={form.footer_accent_color || ""} onChange={(e) => update("footer_accent_color", e.target.value)} />
                     </div>
                   </div>
                 </div>
