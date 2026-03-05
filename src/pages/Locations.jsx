@@ -73,6 +73,7 @@ export default function Locations() {
     setSelectedFeatures((prev) =>
       prev.includes(feat) ? prev.filter((f) => f !== feat) : [...prev, feat]
     );
+    setShowFilters(true);
   };
 
   // Haversine distance
