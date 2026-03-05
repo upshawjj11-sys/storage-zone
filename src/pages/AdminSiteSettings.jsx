@@ -57,7 +57,7 @@ export default function AdminSiteSettings() {
   };
 
   // Nav links
-  const addNavLink = () => update("nav_links", [...form.nav_links, { label: "", url: "", open_new_tab: false }]);
+  const addNavLink = (type = "link") => update("nav_links", [...form.nav_links, { label: "", url: "", open_new_tab: false, type, children: type === "dropdown" ? [{ label: "", url: "" }] : [] }]);
   const updateNavLink = (i, key, val) => {
     const links = form.nav_links.map((l, idx) => idx === i ? { ...l, [key]: val } : l);
     update("nav_links", links);
@@ -69,6 +69,22 @@ export default function AdminSiteSettings() {
     const [moved] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, moved);
     update("nav_links", items);
+  };
+
+  // Dropdown children
+  const addDropdownChild = (i) => {
+    const links = form.nav_links.map((l, idx) => idx === i ? { ...l, children: [...(l.children || []), { label: "", url: "" }] } : l);
+    update("nav_links", links);
+  };
+  const updateDropdownChild = (i, ci, key, val) => {
+    const links = form.nav_links.map((l, idx) => idx !== i ? l : {
+      ...l, children: (l.children || []).map((c, cidx) => cidx === ci ? { ...c, [key]: val } : c),
+    });
+    update("nav_links", links);
+  };
+  const removeDropdownChild = (i, ci) => {
+    const links = form.nav_links.map((l, idx) => idx !== i ? l : { ...l, children: (l.children || []).filter((_, cidx) => cidx !== ci) });
+    update("nav_links", links);
   };
 
   // Footer quick links
