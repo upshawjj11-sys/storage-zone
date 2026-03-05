@@ -246,11 +246,24 @@ export default function FacilityPage() {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-              {facility.hours?.length > 0 && (
+              {(facility.hours?.length > 0 || facility.access_hours?.length > 0) && (
                 <div className="bg-gray-50 rounded-2xl p-6">
                   <h3 className="font-bold text-[#1B365D] mb-3 flex items-center gap-2"><Clock className="w-5 h-5" /> Hours</h3>
+                  {/* Toggle tabs if both hour types exist */}
+                  {facility.hours?.length > 0 && facility.access_hours?.length > 0 && (
+                    <div className="flex bg-white border rounded-lg p-0.5 mb-4 text-xs font-semibold">
+                      <button
+                        onClick={() => setHoursTab("office")}
+                        className={`flex-1 rounded-md py-1.5 transition ${hoursTab === "office" ? "bg-[#1B365D] text-white" : "text-gray-500 hover:text-gray-700"}`}
+                      >Office Hours</button>
+                      <button
+                        onClick={() => setHoursTab("access")}
+                        className={`flex-1 rounded-md py-1.5 transition ${hoursTab === "access" ? "bg-[#1B365D] text-white" : "text-gray-500 hover:text-gray-700"}`}
+                      >Access Hours</button>
+                    </div>
+                  )}
                   <div className="space-y-2">
-                    {facility.hours.map((h, i) => (
+                    {(hoursTab === "access" && facility.access_hours?.length > 0 ? facility.access_hours : facility.hours || []).map((h, i) => (
                       <div key={i} className="flex justify-between text-sm">
                         <span className="text-gray-600 font-medium">{h.day}</span>
                         <span className="text-gray-900">{h.closed ? "Closed" : `${h.open} - ${h.close}`}</span>
