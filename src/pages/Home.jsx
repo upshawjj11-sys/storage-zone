@@ -40,6 +40,10 @@ export default function Home() {
     .filter((s) => s.visible)
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
+  // The first pillars section is embedded inside the hero carousel
+  const heroPillarsSection = visibleSections.find((s) => s.type === "pillars");
+  const sectionsWithoutHeroPillars = visibleSections.filter((s) => s !== heroPillarsSection);
+
   const renderSection = (section) => {
     const data = section.data || {};
     const cols = data.columns || 4;
