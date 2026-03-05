@@ -183,11 +183,44 @@ export default function AdminFacilityEdit() {
 
         <TabsContent value="banner">
           <Card>
-            <CardContent className="p-6 space-y-4">
+            <CardContent className="p-6 space-y-6">
               <div><Label>Banner Title</Label><Input value={form.banner_title} onChange={(e) => update("banner_title", e.target.value)} /></div>
               <div><Label>Banner Subtitle</Label><Input value={form.banner_subtitle} onChange={(e) => update("banner_subtitle", e.target.value)} /></div>
+
+              {/* Dedicated Banner Image */}
               <div>
-                <Label className="text-base font-semibold mb-3 block">Banner / Slider Images</Label>
+                <Label className="text-base font-semibold mb-1 block">Banner Background Image</Label>
+                <p className="text-xs text-gray-500 mb-3">This is the main hero/banner image shown at the top of the facility page. If left empty, the first slider photo is used.</p>
+                <div className="flex items-start gap-4">
+                  {form.banner_image ? (
+                    <div className="relative group flex-shrink-0">
+                      <img src={form.banner_image} alt="Banner" className="h-36 w-64 object-cover rounded-xl border" />
+                      <button
+                        onClick={() => update("banner_image", "")}
+                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="h-36 w-64 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition text-gray-400 flex-shrink-0">
+                      <Upload className="w-6 h-6 mb-2" />
+                      <span className="text-sm">Upload Banner Image</span>
+                      <input type="file" accept="image/*" className="hidden" onChange={handleBannerUpload} />
+                    </label>
+                  )}
+                  {form.banner_image && (
+                    <label className="flex items-center gap-2 text-sm text-[#1B365D] cursor-pointer hover:underline mt-2">
+                      <Upload className="w-4 h-4" />
+                      Replace image
+                      <input type="file" accept="image/*" className="hidden" onChange={handleBannerUpload} />
+                    </label>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <Label className="text-base font-semibold mb-3 block">Slider / Gallery Images</Label>
                 <p className="text-xs text-gray-500 mb-3">These images rotate as a slider on the facility page. First image is used as the main banner.</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                   {(form.photos || []).map((url, i) => (
