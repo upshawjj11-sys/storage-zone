@@ -253,26 +253,8 @@ export default function AdminFacilityEdit() {
             {/* Office Hours */}
             <Card>
               <CardHeader><CardTitle className="text-base">Office / Front Desk Hours</CardTitle></CardHeader>
-              <CardContent className="p-6 pt-0 space-y-3">
-                {form.hours.map((h, i) => (
-                  <div key={i} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
-                    <span className="w-24 font-medium text-sm text-gray-700">{h.day}</span>
-                    <Switch checked={!h.closed} onCheckedChange={(v) => {
-                      const hours = [...form.hours]; hours[i] = { ...hours[i], closed: !v }; update("hours", hours);
-                    }} />
-                    {!h.closed ? (
-                      <>
-                        <Input className="w-32" value={h.open} onChange={(e) => {
-                          const hours = [...form.hours]; hours[i] = { ...hours[i], open: e.target.value }; update("hours", hours);
-                        }} />
-                        <span className="text-gray-400">to</span>
-                        <Input className="w-32" value={h.close} onChange={(e) => {
-                          const hours = [...form.hours]; hours[i] = { ...hours[i], close: e.target.value }; update("hours", hours);
-                        }} />
-                      </>
-                    ) : <span className="text-sm text-gray-500">Closed</span>}
-                  </div>
-                ))}
+              <CardContent className="p-6 pt-0">
+                <HoursEditor hours={form.hours} onChange={(v) => update("hours", v)} />
               </CardContent>
             </Card>
 
@@ -281,12 +263,11 @@ export default function AdminFacilityEdit() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-base">Access Hours <span className="text-xs font-normal text-gray-400">(gate / storage access)</span></CardTitle>
-                  {form.access_hours.length === 0 && (
+                  {form.access_hours.length === 0 ? (
                     <Button variant="outline" size="sm" className="gap-1 text-xs" onClick={() => update("access_hours", defaultHours.map(h => ({ ...h })))}>
                       <Plus className="w-3 h-3" /> Add Access Hours
                     </Button>
-                  )}
-                  {form.access_hours.length > 0 && (
+                  ) : (
                     <Button variant="ghost" size="sm" className="text-red-500 text-xs" onClick={() => update("access_hours", [])}>
                       Remove Access Hours
                     </Button>
@@ -294,24 +275,75 @@ export default function AdminFacilityEdit() {
                 </div>
               </CardHeader>
               {form.access_hours.length > 0 && (
+                <CardContent className="p-6 pt-0">
+                  <HoursEditor hours={form.access_hours} onChange={(v) => update("access_hours", v)} />
+                </CardContent>
+              )}
+            </Card>
+
+            {/* Holiday Hours */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-base">Holiday / Special Hours</CardTitle>
+                    <p className="text-xs text-gray-400 mt-0.5">Override hours for specific dates (holidays, closures, etc.)</p>
+                  </div>
+                  <Button variant="outline" size="sm" className="gap-1 text-xs" onClick={() => update("holiday_hours", [...(form.holiday_hours || []), { date: "", label: "", closed: true, open: "", close: "", is_24_hours: false, applies_to: "both" }])}>
+                    <Plus className="w-3 h-3" /> Add Holiday
+                  </Button>
+                </div>
+              </CardHeader>
+              {(form.holiday_hours || []).length > 0 && (
                 <CardContent className="p-6 pt-0 space-y-3">
-                  {form.access_hours.map((h, i) => (
-                    <div key={i} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
-                      <span className="w-24 font-medium text-sm text-gray-700">{h.day}</span>
-                      <Switch checked={!h.closed} onCheckedChange={(v) => {
-                        const hours = [...form.access_hours]; hours[i] = { ...hours[i], closed: !v }; update("access_hours", hours);
-                      }} />
-                      {!h.closed ? (
-                        <>
-                          <Input className="w-32" value={h.open} onChange={(e) => {
-                            const hours = [...form.access_hours]; hours[i] = { ...hours[i], open: e.target.value }; update("access_hours", hours);
-                          }} />
-                          <span className="text-gray-400">to</span>
-                          <Input className="w-32" value={h.close} onChange={(e) => {
-                            const hours = [...form.access_hours]; hours[i] = { ...hours[i], close: e.target.value }; update("access_hours", hours);
-                          }} />
-                        </>
-                      ) : <span className="text-sm text-gray-500">Closed</span>}
+                  {(form.holiday_hours || []).map((h, i) => (
+                    <div key={i} className="p-3 bg-gray-50 rounded-xl space-y-3 border">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-gray-700">{h.label || `Holiday #${i + 1}`}</span>
+                        <Button variant="ghost" size="icon" className="text-red-500 w-7 h-7" onClick={() => update("holiday_hours", (form.holiday_hours || []).filter((_, j) => j !== i))}>
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      <div className="grid sm:grid-cols-3 gap-3">
+                        <div>
+                          <Label className="text-xs">Holiday Name</Label>
+                          <Input className="mt-1 h-8 text-sm" value={h.label} placeholder="e.g. Christmas" onChange={(e) => { const hs = [...(form.holiday_hours || [])]; hs[i] = { ...hs[i], label: e.target.value }; update("holiday_hours", hs); }} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Date</Label>
+                          <Input type="date" className="mt-1 h-8 text-sm" value={h.date} onChange={(e) => { const hs = [...(form.holiday_hours || [])]; hs[i] = { ...hs[i], date: e.target.value }; update("holiday_hours", hs); }} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Applies To</Label>
+                          <Select value={h.applies_to || "both"} onValueChange={(v) => { const hs = [...(form.holiday_hours || [])]; hs[i] = { ...hs[i], applies_to: v }; update("holiday_hours", hs); }}>
+                            <SelectTrigger className="mt-1 h-8 text-sm"><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="both">Both</SelectItem>
+                              <SelectItem value="office">Office Hours</SelectItem>
+                              <SelectItem value="access">Access Hours</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <Switch checked={!h.closed} onCheckedChange={(v) => { const hs = [...(form.holiday_hours || [])]; hs[i] = { ...hs[i], closed: !v }; update("holiday_hours", hs); }} />
+                          <span className="text-sm text-gray-600">{h.closed ? "Closed" : "Open"}</span>
+                        </div>
+                        {!h.closed && (
+                          <div className="flex items-center gap-2">
+                            <Switch checked={!!h.is_24_hours} onCheckedChange={(v) => { const hs = [...(form.holiday_hours || [])]; hs[i] = { ...hs[i], is_24_hours: v }; update("holiday_hours", hs); }} />
+                            <span className="text-sm text-gray-600">24 Hours</span>
+                          </div>
+                        )}
+                        {!h.closed && !h.is_24_hours && (
+                          <div className="flex items-center gap-2">
+                            <Input className="w-28 h-8 text-sm" value={h.open} placeholder="9:00 AM" onChange={(e) => { const hs = [...(form.holiday_hours || [])]; hs[i] = { ...hs[i], open: e.target.value }; update("holiday_hours", hs); }} />
+                            <span className="text-gray-400 text-sm">to</span>
+                            <Input className="w-28 h-8 text-sm" value={h.close} placeholder="2:00 PM" onChange={(e) => { const hs = [...(form.holiday_hours || [])]; hs[i] = { ...hs[i], close: e.target.value }; update("holiday_hours", hs); }} />
+                          </div>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </CardContent>
