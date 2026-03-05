@@ -36,7 +36,7 @@ export default function AdminFacilityEdit() {
     phone: "", email: "", about: "", status: "active",
     facility_type: "self_storage",
     banner_image: "", banner_title: "", banner_subtitle: "",
-    features: [], photos: [], videos: [], hours: defaultHours, access_hours: [],
+    features: [], photos: [], videos: [], hours: defaultHours, access_hours: [], holiday_hours: [],
     faqs: [], reviews: [], units: [],
     unit_grid_api_key: "", unit_grid_widget_code: "",
     latitude: null, longitude: null, meta_title: "", meta_description: "",
