@@ -130,7 +130,7 @@ export default function AdminSiteSettings() {
         <TabsContent value="nav">
           <div className="space-y-6">
             <Card>
-              <CardHeader><CardTitle>Logo & Branding</CardTitle></CardHeader>
+              <CardHeader><CardTitle>Logo & Layout</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Logo Image</Label>
@@ -141,21 +141,36 @@ export default function AdminSiteSettings() {
                   </label>
                   {form.nav_logo_url && <button className="text-xs text-red-500 mt-1 block" onClick={() => update("nav_logo_url", "")}>Remove</button>}
                 </div>
+                <div>
+                  <Label>Nav Layout Style</Label>
+                  <Select value={form.nav_style || "default"} onValueChange={(v) => update("nav_style", v)}>
+                    <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="default">Default (logo left, links center, CTA right)</SelectItem>
+                      <SelectItem value="centered">Centered (logo top, links below)</SelectItem>
+                      <SelectItem value="minimal">Minimal (logo + CTA only)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label>Nav Background Color</Label>
+                    <Label>Background Color</Label>
                     <div className="flex items-center gap-2 mt-1">
                       <input type="color" value={form.nav_bg_color || "#ffffff"} onChange={(e) => update("nav_bg_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
                       <Input value={form.nav_bg_color || ""} onChange={(e) => update("nav_bg_color", e.target.value)} placeholder="#ffffff" />
                     </div>
                   </div>
                   <div>
-                    <Label>Nav Text/Link Color</Label>
+                    <Label>Link / Text Color</Label>
                     <div className="flex items-center gap-2 mt-1">
                       <input type="color" value={form.nav_text_color || "#1B365D"} onChange={(e) => update("nav_text_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
                       <Input value={form.nav_text_color || ""} onChange={(e) => update("nav_text_color", e.target.value)} placeholder="#1B365D" />
                     </div>
                   </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Switch checked={form.nav_border_bottom !== false} onCheckedChange={(v) => update("nav_border_bottom", v)} />
+                  <Label>Show bottom border on nav</Label>
                 </div>
               </CardContent>
             </Card>
