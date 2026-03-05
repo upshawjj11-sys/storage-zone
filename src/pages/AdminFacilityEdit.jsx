@@ -6,6 +6,7 @@ import { base44 } from "@/api/base44Client";
 import {
   ArrowLeft, Save, Plus, Trash2, Upload, X, GripVertical
 } from "lucide-react";
+import HoursEditor from "../components/admin/HoursEditor";
 import FacilitySectionOrderEditor from "../components/admin/FacilitySectionOrderEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,6 +67,7 @@ export default function AdminFacilityEdit() {
         reviews: existing.reviews || [],
         units: existing.units || [],
         access_hours: existing.access_hours || [],
+        holiday_hours: existing.holiday_hours || [],
         sections_order: existing.sections_order || [],
       });
     }
