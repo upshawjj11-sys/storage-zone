@@ -64,14 +64,14 @@ export default function Home() {
                 </div>
               )}
               <div className={`grid ${colClass} gap-4`}>
-                {items.map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 text-white">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: `${secondaryColor}30` }}>
-                      <DynamicIcon name={item.icon} className="w-5 h-5" style={{ color: secondaryColor }} />
-                    </div>
-                    <span className="font-semibold text-sm leading-tight">{item.text}</span>
-                  </div>
-                ))}
+               {items.map((item, i) => (
+                 <div key={i} className="flex items-center gap-3 text-white">
+                   <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: `${item.icon_color || secondaryColor}30` }}>
+                     <DynamicIcon name={item.icon} className="w-5 h-5" style={{ color: item.icon_color || secondaryColor }} />
+                   </div>
+                   <span className="font-semibold text-sm leading-tight" style={{ color: item.text_color || undefined }}>{item.text}</span>
+                 </div>
+               ))}
               </div>
             </div>
           </section>
