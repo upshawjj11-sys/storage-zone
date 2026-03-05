@@ -272,46 +272,17 @@ export default function Home() {
 
   return (
     <div className="bg-white">
-      {/* Hero */}
-      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${config?.hero_image || "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1920&q=80"})` }} />
-        <div className="absolute inset-0" style={{ background: `rgba(0,0,0,${config?.hero_overlay_opacity ?? 0.6})` }} />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20">
-          <div className="max-w-2xl">
-            {config?.hero_badge_text && (
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white/90 text-sm mb-6">
-                <Shield className="w-4 h-4" />
-                {config.hero_badge_text}
-              </div>
-            )}
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-6">
-              {config?.hero_title || (<>Your Space,<br /><span style={{ color: secondaryColor }}>Your Storage</span></>)}
-            </h1>
-            <p className="text-lg sm:text-xl text-white/80 mb-10 leading-relaxed max-w-lg">
-              {config?.hero_subtitle || "Find the perfect storage unit near you. Clean, safe, and accessible 24/7."}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link to={config?.hero_cta_link || createPageUrl("Locations")}>
-                <Button size="lg" className="rounded-full text-base px-8 py-6 font-semibold shadow-xl" style={{ background: secondaryColor }}>
-                  {config?.hero_cta_text || "Find Your Unit"} <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </Link>
-              {(config?.hero_cta2_text) && (
-                <Link to={config?.hero_cta2_link || createPageUrl("Locations")}>
-                  <Button size="lg" variant="outline" className="rounded-full text-base px-8 py-6 font-semibold border-white/30 text-white hover:bg-white/10 hover:text-white">
-                    {config.hero_cta2_text}
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero with carousel + pillars */}
+      <HeroCarousel
+        config={config}
+        primaryColor={primaryColor}
+        secondaryColor={secondaryColor}
+        pillarsSection={heroPillarsSection}
+      />
 
-      {/* Dynamic sections */}
+      {/* Dynamic sections (pillars already rendered in hero, skip it) */}
       {hasSections ? (
-        visibleSections.map(renderSection)
+        sectionsWithoutHeroPillars.map(renderSection)
       ) : (
         <>
           <section className="py-20 bg-gray-50">
