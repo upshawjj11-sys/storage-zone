@@ -16,6 +16,7 @@ const adminPages = [
   "AdminReservations",
   "AdminBranding",
   "AdminTeam",
+  "AdminSiteSettings",
 ];
 
 export default function Layout({ children, currentPageName }) {
