@@ -33,10 +33,19 @@ export default function AdminSiteSettings() {
     if (existing) setForm({
       ...form, ...existing,
       nav_links: existing.nav_links || [],
+      nav_cta_buttons: existing.nav_cta_buttons || [],
       footer_links: existing.footer_links || [],
       footer_columns: existing.footer_columns || [],
     });
   }, [existing]);
+
+  // CTA buttons
+  const addCtaButton = () => update("nav_cta_buttons", [...(form.nav_cta_buttons || []), { text: "", url: "", style: "filled", bg_color: "#E8792F", text_color: "#ffffff" }]);
+  const updateCtaButton = (i, key, val) => {
+    const btns = (form.nav_cta_buttons || []).map((b, idx) => idx === i ? { ...b, [key]: val } : b);
+    update("nav_cta_buttons", btns);
+  };
+  const removeCtaButton = (i) => update("nav_cta_buttons", (form.nav_cta_buttons || []).filter((_, idx) => idx !== i));
 
   const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
 
