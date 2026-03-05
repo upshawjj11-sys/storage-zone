@@ -47,42 +47,42 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Home from './pages/Home';
-import Locations from './pages/Locations';
-import FacilityPage from './pages/FacilityPage';
-import PublicPage from './pages/PublicPage';
+import AdminBranding from './pages/AdminBranding';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminFacilities from './pages/AdminFacilities';
-import AdminReservations from './pages/AdminReservations';
-import AdminPages from './pages/AdminPages';
-import AdminPopups from './pages/AdminPopups';
 import AdminFacilityEdit from './pages/AdminFacilityEdit';
-import AdminPageEdit from './pages/AdminPageEdit';
-import AdminPopupEdit from './pages/AdminPopupEdit';
-import AdminBranding from './pages/AdminBranding';
 import AdminHomePage from './pages/AdminHomePage';
-import AdminTeam from './pages/AdminTeam';
+import AdminPageEdit from './pages/AdminPageEdit';
+import AdminPages from './pages/AdminPages';
+import AdminPopupEdit from './pages/AdminPopupEdit';
+import AdminPopups from './pages/AdminPopups';
+import AdminReservations from './pages/AdminReservations';
 import AdminSiteSettings from './pages/AdminSiteSettings';
+import AdminTeam from './pages/AdminTeam';
+import FacilityPage from './pages/FacilityPage';
+import Home from './pages/Home';
+import Locations from './pages/Locations';
+import PublicPage from './pages/PublicPage';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Home": Home,
-    "Locations": Locations,
-    "FacilityPage": FacilityPage,
-    "PublicPage": PublicPage,
+    "AdminBranding": AdminBranding,
     "AdminDashboard": AdminDashboard,
     "AdminFacilities": AdminFacilities,
-    "AdminReservations": AdminReservations,
-    "AdminPages": AdminPages,
-    "AdminPopups": AdminPopups,
     "AdminFacilityEdit": AdminFacilityEdit,
-    "AdminPageEdit": AdminPageEdit,
-    "AdminPopupEdit": AdminPopupEdit,
-    "AdminBranding": AdminBranding,
     "AdminHomePage": AdminHomePage,
-    "AdminTeam": AdminTeam,
+    "AdminPageEdit": AdminPageEdit,
+    "AdminPages": AdminPages,
+    "AdminPopupEdit": AdminPopupEdit,
+    "AdminPopups": AdminPopups,
+    "AdminReservations": AdminReservations,
     "AdminSiteSettings": AdminSiteSettings,
+    "AdminTeam": AdminTeam,
+    "FacilityPage": FacilityPage,
+    "Home": Home,
+    "Locations": Locations,
+    "PublicPage": PublicPage,
 }
 
 export const pagesConfig = {

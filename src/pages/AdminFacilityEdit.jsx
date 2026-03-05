@@ -6,6 +6,7 @@ import { base44 } from "@/api/base44Client";
 import {
   ArrowLeft, Save, Plus, Trash2, Upload, X, GripVertical
 } from "lucide-react";
+import FacilitySectionOrderEditor from "../components/admin/FacilitySectionOrderEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,6 +39,7 @@ export default function AdminFacilityEdit() {
     faqs: [], reviews: [], units: [],
     unit_grid_api_key: "", unit_grid_widget_code: "",
     latitude: null, longitude: null, meta_title: "", meta_description: "",
+    sections_order: [],
   });
   const [newFeature, setNewFeature] = useState("");
 
@@ -62,6 +64,7 @@ export default function AdminFacilityEdit() {
         faqs: existing.faqs || [],
         reviews: existing.reviews || [],
         units: existing.units || [],
+        sections_order: existing.sections_order || [],
       });
     }
   }, [existing]);
@@ -127,6 +130,7 @@ export default function AdminFacilityEdit() {
           <TabsTrigger value="faq">FAQ</TabsTrigger>
           <TabsTrigger value="reviews">Reviews</TabsTrigger>
           <TabsTrigger value="widget">Widget/API</TabsTrigger>
+          <TabsTrigger value="layout">Layout</TabsTrigger>
           <TabsTrigger value="seo">SEO</TabsTrigger>
         </TabsList>
 
@@ -379,6 +383,18 @@ export default function AdminFacilityEdit() {
               <p className="text-sm text-gray-500">Connect to your storage management software for live unit availability.</p>
               <div><Label>API Key</Label><Input value={form.unit_grid_api_key} onChange={(e) => update("unit_grid_api_key", e.target.value)} placeholder="Your storage management API key" /></div>
               <div><Label>Widget Embed Code</Label><Textarea rows={6} value={form.unit_grid_widget_code} onChange={(e) => update("unit_grid_widget_code", e.target.value)} placeholder="Paste your widget HTML/JS embed code here" /></div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="layout">
+          <Card>
+            <CardHeader><CardTitle>Page Section Order</CardTitle></CardHeader>
+            <CardContent className="p-6">
+              <FacilitySectionOrderEditor
+                order={form.sections_order || []}
+                onChange={(order) => update("sections_order", order)}
+              />
             </CardContent>
           </Card>
         </TabsContent>
