@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
@@ -17,12 +17,34 @@ function getAllFeatures(facilities) {
 }
 
 export default function Locations() {
-  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Read initial state from URL
+  const getParams = () => {
+    const p = new URLSearchParams(location.search);
+    return {
+      search: p.get("q") || "",
+      features: p.get("features") ? p.get("features").split(",").filter(Boolean) : [],
+    };
+  };
+
+  const [search, setSearch] = useState(() => getParams().search);
   const [showMap, setShowMap] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [locationLoading, setLocationLoading] = useState(false);
-  const [selectedFeatures, setSelectedFeatures] = useState([]);
-  const [showFilters, setShowFilters] = useState(false);
+  const [selectedFeatures, setSelectedFeatures] = useState(() => getParams().features);
+  const [showFilters, setShowFilters] = useState(() => getParams().features.length > 0);
+
+  // Sync state → URL whenever search or features change
+  useEffect(() => {
+    const p = new URLSearchParams();
+    if (search) p.set("q", search);
+    if (selectedFeatures.length) p.set("features", selectedFeatures.join(","));
+    const qs = p.toString();
+    const newUrl = qs ? `?${qs}` : location.pathname;
+    navigate(newUrl, { replace: true });
+  }, [search, selectedFeatures]);
 
   const { data: facilities, isLoading } = useQuery({
     queryKey: ["locations"],
