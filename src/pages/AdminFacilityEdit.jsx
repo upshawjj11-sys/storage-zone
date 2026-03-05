@@ -65,6 +65,7 @@ export default function AdminFacilityEdit() {
         faqs: existing.faqs || [],
         reviews: existing.reviews || [],
         units: existing.units || [],
+        access_hours: existing.access_hours || [],
         sections_order: existing.sections_order || [],
       });
     }
