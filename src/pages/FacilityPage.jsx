@@ -237,7 +237,7 @@ export default function FacilityPage() {
     : (facility.photos?.length > 0 ? facility.photos : ["https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1920&q=80"]);
 
   return (
-    <div className="bg-white">
+    <div style={{ background: S.page_bg }}>
       {/* Banner Slider */}
       <div className="relative h-[40vh] md:h-[55vh]">
         <ImageSlider images={bannerImages} className="absolute inset-0" />
@@ -284,22 +284,24 @@ export default function FacilityPage() {
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
               {(facility.hours?.length > 0 || facility.access_hours?.length > 0) && (
-                <div className="bg-gray-50 rounded-2xl p-6">
-                  <h3 className="font-bold text-[#1B365D] mb-3 flex items-center gap-2"><Clock className="w-5 h-5" /> Hours</h3>
-                  {/* Toggle tabs if both hour types exist */}
+                <div className="rounded-2xl p-6" style={{ background: S.sidebar_bg }}>
+                  <h3 className="font-bold mb-3 flex items-center gap-2" style={{ color: S.sidebar_heading_color }}>
+                    <Clock className="w-5 h-5" style={{ color: S.sidebar_heading_color }} /> Hours
+                  </h3>
                   {facility.hours?.length > 0 && facility.access_hours?.length > 0 && (
                     <div className="flex bg-white border rounded-lg p-0.5 mb-4 text-xs font-semibold">
                       <button
                         onClick={() => setHoursTab("office")}
-                        className={`flex-1 rounded-md py-1.5 transition ${hoursTab === "office" ? "bg-[#1B365D] text-white" : "text-gray-500 hover:text-gray-700"}`}
+                        className="flex-1 rounded-md py-1.5 transition"
+                        style={hoursTab === "office" ? { background: S.hours_active_tab_bg, color: S.hours_active_tab_text } : { color: "#6B7280" }}
                       >Office Hours</button>
                       <button
                         onClick={() => setHoursTab("access")}
-                        className={`flex-1 rounded-md py-1.5 transition ${hoursTab === "access" ? "bg-[#1B365D] text-white" : "text-gray-500 hover:text-gray-700"}`}
+                        className="flex-1 rounded-md py-1.5 transition"
+                        style={hoursTab === "access" ? { background: S.hours_active_tab_bg, color: S.hours_active_tab_text } : { color: "#6B7280" }}
                       >Access Hours</button>
                     </div>
                   )}
-                  {/* Holiday hours notice */}
                   {(() => {
                     const today = new Date().toISOString().split("T")[0];
                     const todayHoliday = (facility.holiday_hours || []).find((h) => h.date === today && (h.applies_to === "both" || h.applies_to === hoursTab));
@@ -312,14 +314,13 @@ export default function FacilityPage() {
                   <div className="space-y-2">
                     {(hoursTab === "access" && facility.access_hours?.length > 0 ? facility.access_hours : facility.hours || []).map((h, i) => (
                       <div key={i} className="flex justify-between text-sm">
-                        <span className="text-gray-600 font-medium">{h.day}</span>
-                        <span className="text-gray-900 font-medium">
+                        <span className="font-medium" style={{ color: S.sidebar_text_color }}>{h.day}</span>
+                        <span className="font-medium" style={{ color: S.sidebar_text_color }}>
                           {h.closed ? "Closed" : h.is_24_hours ? "24 Hours" : `${h.open} – ${h.close}`}
                         </span>
                       </div>
                     ))}
                   </div>
-                  {/* Upcoming holiday hours */}
                   {(facility.holiday_hours || []).filter((h) => h.date >= new Date().toISOString().split("T")[0] && (h.applies_to === "both" || h.applies_to === hoursTab)).slice(0, 3).map((h, i) => (
                     <div key={i} className="mt-2 flex justify-between text-xs text-amber-700 bg-amber-50 px-2 py-1.5 rounded-lg border border-amber-100">
                       <span>📅 {h.label} ({h.date})</span>
@@ -328,16 +329,16 @@ export default function FacilityPage() {
                   ))}
                 </div>
               )}
-              <div className="bg-[#1B365D] rounded-2xl p-6 text-center">
-                <h3 className="text-xl font-bold text-white mb-2">
+              <div className="rounded-2xl p-6 text-center" style={{ background: S.cta_bg }}>
+                <h3 className="text-xl font-bold mb-2" style={{ color: S.cta_text_color }}>
                   {isBC ? "Interested in a Space?" : "Reserve Your Unit"}
                 </h3>
-                <p className="text-white/70 text-sm mb-4">
+                <p className="text-sm mb-4" style={{ color: S.cta_text_color, opacity: 0.75 }}>
                   {isBC ? "Contact us to schedule a tour or get more info." : "No commitment. Cancel anytime."}
                 </p>
                 <button
-                  className="w-full rounded-full font-semibold py-3 text-white transition hover:opacity-90"
-                  style={{ background: "#E8792F" }}
+                  className="w-full rounded-full font-semibold py-3 transition hover:opacity-90"
+                  style={{ background: S.cta_button_bg, color: S.cta_button_text }}
                   onClick={() => handleAction(null)}
                 >
                   {isBC ? "Inquire Now" : "Reserve Now"}
