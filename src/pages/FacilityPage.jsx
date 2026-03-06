@@ -95,29 +95,29 @@ export default function FacilityPage() {
     contact: (facility.address || facility.phone || facility.email) ? (
       <div key="contact" className="grid sm:grid-cols-3 gap-4">
         {facility.address && (
-          <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-            <MapPin className="w-5 h-5 text-[#E8792F] mt-0.5" />
+          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: S.section_card_bg }}>
+            <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: S.accent_color }} />
             <div>
-              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Address</p>
-              <p className="text-sm font-medium text-gray-900 mt-1">{facility.address}, {facility.city}, {facility.state} {facility.zip}</p>
+              <p className="text-xs font-medium uppercase tracking-wider" style={{ color: S.body_text_color, opacity: 0.7 }}>Address</p>
+              <p className="text-sm font-medium mt-1" style={{ color: S.section_card_text }}>{facility.address}, {facility.city}, {facility.state} {facility.zip}</p>
             </div>
           </div>
         )}
         {facility.phone && (
-          <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-            <Phone className="w-5 h-5 text-[#E8792F] mt-0.5" />
+          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: S.section_card_bg }}>
+            <Phone className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: S.accent_color }} />
             <div>
-              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Phone</p>
-              <a href={`tel:${facility.phone}`} className="text-sm font-medium text-gray-900 mt-1 block">{facility.phone}</a>
+              <p className="text-xs font-medium uppercase tracking-wider" style={{ color: S.body_text_color, opacity: 0.7 }}>Phone</p>
+              <a href={`tel:${facility.phone}`} className="text-sm font-medium mt-1 block" style={{ color: S.section_card_text }}>{facility.phone}</a>
             </div>
           </div>
         )}
         {facility.email && (
-          <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-            <Mail className="w-5 h-5 text-[#E8792F] mt-0.5" />
+          <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: S.section_card_bg }}>
+            <Mail className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: S.accent_color }} />
             <div>
-              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Email</p>
-              <a href={`mailto:${facility.email}`} className="text-sm font-medium text-gray-900 mt-1 block">{facility.email}</a>
+              <p className="text-xs font-medium uppercase tracking-wider" style={{ color: S.body_text_color, opacity: 0.7 }}>Email</p>
+              <a href={`mailto:${facility.email}`} className="text-sm font-medium mt-1 block" style={{ color: S.section_card_text }}>{facility.email}</a>
             </div>
           </div>
         )}
@@ -126,19 +126,19 @@ export default function FacilityPage() {
 
     about: facility.about ? (
       <div key="about">
-        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">About This Location</h2>
-        <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">{facility.about}</p>
+        <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>About This Location</h2>
+        <p className="leading-relaxed whitespace-pre-wrap" style={{ color: S.body_text_color }}>{facility.about}</p>
       </div>
     ) : null,
 
     features: facility.features?.length > 0 ? (
       <div key="features">
-        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Features & Amenities</h2>
+        <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Features & Amenities</h2>
         <div className="grid sm:grid-cols-2 gap-3">
           {facility.features.map((f, i) => (
-            <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
-              <Check className="w-5 h-5 text-[#2A9D8F]" />
-              <span className="text-sm font-medium text-gray-700">{f}</span>
+            <div key={i} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: S.section_card_bg }}>
+              <Check className="w-5 h-5 flex-shrink-0" style={{ color: S.accent_color }} />
+              <span className="text-sm font-medium" style={{ color: S.section_card_text }}>{f}</span>
             </div>
           ))}
         </div>
@@ -147,25 +147,20 @@ export default function FacilityPage() {
 
     units: facility.unit_grid_widget_code ? (
       <div key="units">
-        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Available Units</h2>
+        <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Available Units</h2>
         <div dangerouslySetInnerHTML={{ __html: facility.unit_grid_widget_code }} />
       </div>
     ) : facility.units?.length > 0 ? (
       <div key="units">
-        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">
+        <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>
           {isBC ? "Available Spaces" : "Available Units"}
         </h2>
         {isBC && (
-          <p className="text-gray-500 text-sm mb-4">Select a space below to inquire for more information.</p>
+          <p className="text-sm mb-4" style={{ color: S.body_text_color }}>Select a space below to inquire for more information.</p>
         )}
         <div className="space-y-3">
           {facility.units.map((unit, i) => (
-            <UnitCard
-              key={i}
-              unit={unit}
-              facilityType={facility.facility_type}
-              onAction={handleAction}
-            />
+            <UnitCard key={i} unit={unit} facilityType={facility.facility_type} onAction={handleAction} />
           ))}
         </div>
       </div>
@@ -173,7 +168,7 @@ export default function FacilityPage() {
 
     photos: facility.photos?.length > 0 ? (
       <div key="photos">
-        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Photos</h2>
+        <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Photos</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {facility.photos.map((url, i) => (
             <button key={i} onClick={() => setLightboxIdx(i)} className="overflow-hidden rounded-xl group">
@@ -186,7 +181,7 @@ export default function FacilityPage() {
 
     videos: facility.videos?.length > 0 ? (
       <div key="videos">
-        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Videos</h2>
+        <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Videos</h2>
         <div className="grid md:grid-cols-2 gap-4">
           {facility.videos.map((url, i) => (
             <div key={i} className="rounded-xl overflow-hidden aspect-video">
@@ -199,19 +194,19 @@ export default function FacilityPage() {
 
     reviews: facility.reviews?.length > 0 ? (
       <div key="reviews">
-        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Customer Reviews</h2>
+        <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Customer Reviews</h2>
         <div className="space-y-4">
           {facility.reviews.map((r, i) => (
-            <div key={i} className="p-5 bg-gray-50 rounded-xl">
+            <div key={i} className="p-5 rounded-xl" style={{ background: S.review_card_bg }}>
               <div className="flex items-center gap-2 mb-2">
                 <div className="flex">
                   {Array.from({ length: 5 }).map((_, j) => (
                     <Star key={j} className={`w-4 h-4 ${j < r.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`} />
                   ))}
                 </div>
-                <span className="text-sm font-medium text-gray-700">{r.name}</span>
+                <span className="text-sm font-medium" style={{ color: S.section_card_text }}>{r.name}</span>
               </div>
-              <p className="text-gray-600 text-sm leading-relaxed">{r.text}</p>
+              <p className="text-sm leading-relaxed" style={{ color: S.body_text_color }}>{r.text}</p>
             </div>
           ))}
         </div>
@@ -220,15 +215,15 @@ export default function FacilityPage() {
 
     faq: facility.faqs?.length > 0 ? (
       <div key="faq">
-        <h2 className="text-2xl font-bold text-[#1B365D] mb-4">Frequently Asked Questions</h2>
+        <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Frequently Asked Questions</h2>
         <div className="space-y-2">
           {facility.faqs.map((faq, i) => (
-            <div key={i} className="border rounded-xl overflow-hidden">
-              <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-4 text-left font-medium text-gray-900 hover:bg-gray-50 transition">
+            <div key={i} className="border rounded-xl overflow-hidden" style={{ borderColor: S.faq_border_color }}>
+              <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-4 text-left font-medium hover:opacity-80 transition" style={{ color: S.faq_text_color }}>
                 {faq.question}
-                {openFaq === i ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+                {openFaq === i ? <ChevronUp className="w-5 h-5 opacity-50" /> : <ChevronDown className="w-5 h-5 opacity-50" />}
               </button>
-              {openFaq === i && <div className="px-4 pb-4 text-sm text-gray-600 leading-relaxed">{faq.answer}</div>}
+              {openFaq === i && <div className="px-4 pb-4 text-sm leading-relaxed" style={{ color: S.body_text_color }}>{faq.answer}</div>}
             </div>
           ))}
         </div>
