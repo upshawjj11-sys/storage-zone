@@ -72,6 +72,7 @@ export default function AdminFacilityEdit() {
         units: existing.units || [],
         access_hours: existing.access_hours || [],
         holiday_hours: existing.holiday_hours || [],
+        about_collapsible: existing.about_collapsible || false,
         show_pillars: existing.show_pillars || false,
         pillars: existing.pillars || [],
         pillars_bg_color: existing.pillars_bg_color || "#1B365D",
