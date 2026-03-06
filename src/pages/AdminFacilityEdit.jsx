@@ -9,6 +9,7 @@ import {
 import HoursEditor from "../components/admin/HoursEditor";
 import IconPicker from "../components/admin/IconPicker";
 import FacilitySectionOrderEditor from "../components/admin/FacilitySectionOrderEditor";
+import FacilityStyleEditor from "../components/admin/FacilityStyleEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -43,7 +44,7 @@ export default function AdminFacilityEdit() {
     faqs: [], reviews: [], units: [],
     unit_grid_api_key: "", unit_grid_widget_code: "",
     latitude: null, longitude: null, meta_title: "", meta_description: "",
-    sections_order: [],
+    sections_order: [], page_styles: {},
   });
   const [newFeature, setNewFeature] = useState("");
 
@@ -74,6 +75,7 @@ export default function AdminFacilityEdit() {
         pillars: existing.pillars || [],
         pillars_bg_color: existing.pillars_bg_color || "#1B365D",
         sections_order: existing.sections_order || [],
+        page_styles: existing.page_styles || {},
       });
     }
   }, [existing]);
