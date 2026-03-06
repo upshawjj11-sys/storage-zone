@@ -361,6 +361,7 @@ export default function AdminFacilityEdit() {
         <TabsContent value="pillars">
           <Card>
             <CardContent className="p-6 space-y-5">
+              {/* Toggle */}
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
                 <div>
                   <p className="font-medium text-sm text-gray-800">Show Pillars Bar</p>
@@ -371,39 +372,89 @@ export default function AdminFacilityEdit() {
 
               {form.show_pillars && (
                 <>
+                  {/* Bar background color */}
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <div>
+                      <p className="text-sm font-medium text-gray-700">Bar Background Color</p>
+                      <p className="text-xs text-gray-400">Color of the entire pillars bar</p>
+                    </div>
+                    <div className="ml-auto flex items-center gap-2">
+                      <input
+                        type="color"
+                        value={form.pillars_bg_color || "#1B365D"}
+                        onChange={(e) => update("pillars_bg_color", e.target.value)}
+                        className="w-8 h-8 rounded cursor-pointer border border-gray-200"
+                      />
+                      <Input
+                        className="w-24 h-8 text-xs font-mono"
+                        value={form.pillars_bg_color || "#1B365D"}
+                        onChange={(e) => update("pillars_bg_color", e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Pillar items */}
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium text-gray-700">Pillar Items <span className="text-gray-400 font-normal">(up to 5)</span></p>
-                    <Button variant="outline" size="sm" className="gap-1 text-xs" disabled={form.pillars.length >= 5} onClick={() => update("pillars", [...form.pillars, { icon: "Check", text: "", label: "" }])}>
+                    <Button variant="outline" size="sm" className="gap-1 text-xs" disabled={form.pillars.length >= 5}
+                      onClick={() => update("pillars", [...form.pillars, { icon: "Check", text: "", label: "", icon_color: "#E8792F", text_color: "#ffffff" }])}>
                       <Plus className="w-3 h-3" /> Add Pillar
                     </Button>
                   </div>
-                  <div className="space-y-3">
-                    {form.pillars.map((p, i) => (
-                      <div key={i} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border">
-                        <div className="flex-1 grid grid-cols-3 gap-3">
-                          <div>
-                            <Label className="text-xs">Icon Name</Label>
-                            <Input className="mt-1 h-8 text-sm" value={p.icon} placeholder="e.g. Shield, Clock, Truck" onChange={(e) => { const ps = [...form.pillars]; ps[i] = { ...ps[i], icon: e.target.value }; update("pillars", ps); }} />
-                          </div>
-                          <div>
-                            <Label className="text-xs">Main Text</Label>
-                            <Input className="mt-1 h-8 text-sm" value={p.text} placeholder="e.g. 24/7 Access" onChange={(e) => { const ps = [...form.pillars]; ps[i] = { ...ps[i], text: e.target.value }; update("pillars", ps); }} />
-                          </div>
-                          <div>
-                            <Label className="text-xs">Sub-label <span className="font-normal text-gray-400">(optional)</span></Label>
-                            <Input className="mt-1 h-8 text-sm" value={p.label || ""} placeholder="e.g. Gate Code Required" onChange={(e) => { const ps = [...form.pillars]; ps[i] = { ...ps[i], label: e.target.value }; update("pillars", ps); }} />
-                          </div>
-                        </div>
-                        <Button variant="ghost" size="icon" className="text-red-400 flex-shrink-0" onClick={() => update("pillars", form.pillars.filter((_, j) => j !== i))}>
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
+
                   {form.pillars.length === 0 && (
                     <p className="text-sm text-gray-400 text-center py-4">No pillars yet. Click "Add Pillar" to get started.</p>
                   )}
-                  <p className="text-xs text-gray-400">Use any Lucide icon name for the icon field (e.g. Shield, Clock, Truck, Package, Star, Zap, MapPin, Lock, Wifi)</p>
+
+                  <div className="space-y-3">
+                    {form.pillars.map((p, i) => {
+                      const updatePillar = (patch) => {
+                        const ps = [...form.pillars]; ps[i] = { ...ps[i], ...patch }; update("pillars", ps);
+                      };
+                      return (
+                        <div key={i} className="p-4 bg-gray-50 rounded-xl border space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Pillar {i + 1}</span>
+                            <Button variant="ghost" size="icon" className="text-red-400 w-7 h-7" onClick={() => update("pillars", form.pillars.filter((_, j) => j !== i))}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <Label className="text-xs">Icon</Label>
+                              <div className="mt-1">
+                                <IconPicker value={p.icon} onChange={(v) => updatePillar({ icon: v })} />
+                              </div>
+                            </div>
+                            <div>
+                              <Label className="text-xs">Main Text</Label>
+                              <Input className="mt-1 h-8 text-sm" value={p.text} placeholder="e.g. 24/7 Access" onChange={(e) => updatePillar({ text: e.target.value })} />
+                            </div>
+                            <div>
+                              <Label className="text-xs">Sub-label <span className="font-normal text-gray-400">(optional)</span></Label>
+                              <Input className="mt-1 h-8 text-sm" value={p.label || ""} placeholder="e.g. Gate Code Required" onChange={(e) => updatePillar({ label: e.target.value })} />
+                            </div>
+                            <div className="flex gap-4 items-end">
+                              <div>
+                                <Label className="text-xs">Icon Color</Label>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                  <input type="color" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                                  <Input className="w-20 h-8 text-xs font-mono" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} />
+                                </div>
+                              </div>
+                              <div>
+                                <Label className="text-xs">Text Color</Label>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                  <input type="color" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                                  <Input className="w-20 h-8 text-xs font-mono" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </>
               )}
             </CardContent>
