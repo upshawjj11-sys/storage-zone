@@ -142,6 +142,7 @@ export default function AdminFacilityEdit() {
           <TabsTrigger value="faq">FAQ</TabsTrigger>
           <TabsTrigger value="reviews">Reviews</TabsTrigger>
           <TabsTrigger value="widget">Widget/API</TabsTrigger>
+          <TabsTrigger value="style">Style</TabsTrigger>
           <TabsTrigger value="layout">Layout</TabsTrigger>
           <TabsTrigger value="seo">SEO</TabsTrigger>
         </TabsList>
