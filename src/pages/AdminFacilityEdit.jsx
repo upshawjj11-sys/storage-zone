@@ -356,6 +356,58 @@ export default function AdminFacilityEdit() {
           </div>
         </TabsContent>
 
+        <TabsContent value="pillars">
+          <Card>
+            <CardContent className="p-6 space-y-5">
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                <div>
+                  <p className="font-medium text-sm text-gray-800">Show Pillars Bar</p>
+                  <p className="text-xs text-gray-400 mt-0.5">Display an icon + text highlight bar just below the facility banner</p>
+                </div>
+                <Switch checked={!!form.show_pillars} onCheckedChange={(v) => update("show_pillars", v)} />
+              </div>
+
+              {form.show_pillars && (
+                <>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium text-gray-700">Pillar Items <span className="text-gray-400 font-normal">(up to 5)</span></p>
+                    <Button variant="outline" size="sm" className="gap-1 text-xs" disabled={form.pillars.length >= 5} onClick={() => update("pillars", [...form.pillars, { icon: "Check", text: "", label: "" }])}>
+                      <Plus className="w-3 h-3" /> Add Pillar
+                    </Button>
+                  </div>
+                  <div className="space-y-3">
+                    {form.pillars.map((p, i) => (
+                      <div key={i} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border">
+                        <div className="flex-1 grid grid-cols-3 gap-3">
+                          <div>
+                            <Label className="text-xs">Icon Name</Label>
+                            <Input className="mt-1 h-8 text-sm" value={p.icon} placeholder="e.g. Shield, Clock, Truck" onChange={(e) => { const ps = [...form.pillars]; ps[i] = { ...ps[i], icon: e.target.value }; update("pillars", ps); }} />
+                          </div>
+                          <div>
+                            <Label className="text-xs">Main Text</Label>
+                            <Input className="mt-1 h-8 text-sm" value={p.text} placeholder="e.g. 24/7 Access" onChange={(e) => { const ps = [...form.pillars]; ps[i] = { ...ps[i], text: e.target.value }; update("pillars", ps); }} />
+                          </div>
+                          <div>
+                            <Label className="text-xs">Sub-label <span className="font-normal text-gray-400">(optional)</span></Label>
+                            <Input className="mt-1 h-8 text-sm" value={p.label || ""} placeholder="e.g. Gate Code Required" onChange={(e) => { const ps = [...form.pillars]; ps[i] = { ...ps[i], label: e.target.value }; update("pillars", ps); }} />
+                          </div>
+                        </div>
+                        <Button variant="ghost" size="icon" className="text-red-400 flex-shrink-0" onClick={() => update("pillars", form.pillars.filter((_, j) => j !== i))}>
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                  {form.pillars.length === 0 && (
+                    <p className="text-sm text-gray-400 text-center py-4">No pillars yet. Click "Add Pillar" to get started.</p>
+                  )}
+                  <p className="text-xs text-gray-400">Use any Lucide icon name for the icon field (e.g. Shield, Clock, Truck, Package, Star, Zap, MapPin, Lock, Wifi)</p>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="features">
           <Card>
             <CardContent className="p-6 space-y-4">
