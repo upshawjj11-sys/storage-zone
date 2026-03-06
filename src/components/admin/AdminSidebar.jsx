@@ -16,6 +16,7 @@ import {
   ExternalLink,
   LogOut,
   SlidersHorizontal,
+  Layers,
 } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
@@ -28,6 +29,7 @@ const navItems = [
   { icon: CalendarCheck, label: "Reservations", page: "AdminReservations" },
   { icon: Palette, label: "Branding Kit", page: "AdminBranding" },
   { icon: SlidersHorizontal, label: "Site Settings", page: "AdminSiteSettings" },
+  { icon: Layers, label: "Bulk Update", page: "AdminBulkUpdate" },
   { icon: Users, label: "Team Members", page: "AdminTeam" },
 ];
 
