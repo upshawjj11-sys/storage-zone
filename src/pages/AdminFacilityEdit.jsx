@@ -39,6 +39,7 @@ export default function AdminFacilityEdit() {
     phone: "", email: "", about: "", status: "active",
     facility_type: "self_storage",
     banner_image: "", banner_title: "", banner_subtitle: "",
+    about_collapsible: false,
     show_pillars: false, pillars: [], pillars_bg_color: "#1B365D",
     features: [], photos: [], videos: [], hours: defaultHours, access_hours: [], holiday_hours: [],
     faqs: [], reviews: [], units: [],

@@ -128,7 +128,20 @@ export default function FacilityPage() {
     about: facility.about ? (
       <div key="about">
         <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>About This Location</h2>
-        <p className="leading-relaxed whitespace-pre-wrap" style={{ color: S.body_text_color }}>{facility.about}</p>
+        {facility.about_collapsible ? (
+          <div>
+            <p className={`leading-relaxed whitespace-pre-wrap ${!aboutExpanded ? "line-clamp-4" : ""}`} style={{ color: S.body_text_color }}>{facility.about}</p>
+            <button
+              onClick={() => setAboutExpanded(!aboutExpanded)}
+              className="mt-2 text-sm font-semibold flex items-center gap-1 hover:opacity-80 transition"
+              style={{ color: S.accent_color }}
+            >
+              {aboutExpanded ? <><ChevronUp className="w-4 h-4" /> Show Less</> : <><ChevronDown className="w-4 h-4" /> Read More</>}
+            </button>
+          </div>
+        ) : (
+          <p className="leading-relaxed whitespace-pre-wrap" style={{ color: S.body_text_color }}>{facility.about}</p>
+        )}
       </div>
     ) : null,
 
