@@ -37,6 +37,7 @@ export default function AdminFacilityEdit() {
     phone: "", email: "", about: "", status: "active",
     facility_type: "self_storage",
     banner_image: "", banner_title: "", banner_subtitle: "",
+    show_pillars: false, pillars: [],
     features: [], photos: [], videos: [], hours: defaultHours, access_hours: [], holiday_hours: [],
     faqs: [], reviews: [], units: [],
     unit_grid_api_key: "", unit_grid_widget_code: "",
@@ -68,6 +69,8 @@ export default function AdminFacilityEdit() {
         units: existing.units || [],
         access_hours: existing.access_hours || [],
         holiday_hours: existing.holiday_hours || [],
+        show_pillars: existing.show_pillars || false,
+        pillars: existing.pillars || [],
         sections_order: existing.sections_order || [],
       });
     }
@@ -128,6 +131,7 @@ export default function AdminFacilityEdit() {
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="banner">Banner</TabsTrigger>
           <TabsTrigger value="hours">Hours</TabsTrigger>
+          <TabsTrigger value="pillars">Pillars</TabsTrigger>
           <TabsTrigger value="features">Features</TabsTrigger>
           <TabsTrigger value="units">Units</TabsTrigger>
           <TabsTrigger value="media">Media</TabsTrigger>
