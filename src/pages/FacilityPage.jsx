@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, ChevronLeft, ChevronRight, Building2, Warehouse } from "lucide-react";
+import DynamicIcon from "../components/home/DynamicIcon";
 import { Badge } from "@/components/ui/badge";
 import ImageSlider from "../components/shared/ImageSlider";
 import UnitCard from "../components/facility/UnitCard";
@@ -235,6 +236,24 @@ export default function FacilityPage() {
           </div>
         </div>
       </div>
+
+      {/* Pillars bar */}
+      {facility.show_pillars && facility.pillars?.length > 0 && (
+        <div className="bg-[#1B365D]">
+          <div
+            className="max-w-7xl mx-auto px-4 sm:px-6 divide-x divide-white/10"
+            style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(facility.pillars.length, 5)}, 1fr)` }}
+          >
+            {facility.pillars.slice(0, 5).map((item, i) => (
+              <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-4 py-4 text-center">
+                <DynamicIcon name={item.icon} className="w-5 h-5 text-[#E8792F]" />
+                <span className="text-xs font-semibold text-white leading-tight">{item.text}</span>
+                {item.label && <span className="text-white/50 text-xs">{item.label}</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid lg:grid-cols-3 gap-12">
