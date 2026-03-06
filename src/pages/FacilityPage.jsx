@@ -259,14 +259,14 @@ export default function FacilityPage() {
       {facility.show_pillars && facility.pillars?.length > 0 && (
         <div style={{ background: facility.pillars_bg_color || "#1B365D" }}>
           <div
-            className="max-w-7xl mx-auto px-4 sm:px-6 divide-x divide-white/10"
+            className="max-w-7xl mx-auto px-4 sm:px-6 divide-x divide-white/10 overflow-x-auto"
             style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(facility.pillars.length, 5)}, 1fr)` }}
           >
             {facility.pillars.slice(0, 5).map((item, i) => (
-              <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-4 py-4 text-center">
-                <DynamicIcon name={item.icon} className="w-5 h-5" style={{ color: item.icon_color || "#E8792F" }} />
-                <span className="text-xs font-semibold leading-tight" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
-                {item.label && <span className="text-xs opacity-60" style={{ color: item.text_color || "#ffffff" }}>{item.label}</span>}
+              <div key={i} className="flex flex-col items-center justify-center gap-1 px-2 py-3 text-center min-w-0">
+                <DynamicIcon name={item.icon} className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" style={{ color: item.icon_color || "#E8792F" }} />
+                <span className="text-[10px] sm:text-xs font-semibold leading-tight break-words w-full" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
+                {item.label && <span className="text-[9px] sm:text-xs opacity-60 leading-tight break-words w-full" style={{ color: item.text_color || "#ffffff" }}>{item.label}</span>}
               </div>
             ))}
           </div>
