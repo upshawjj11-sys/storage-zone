@@ -61,6 +61,29 @@ export default function FacilityPage() {
   if (isLoading) return <div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-[#1B365D] border-t-transparent rounded-full animate-spin" /></div>;
   if (!facility) return <div className="min-h-screen flex items-center justify-center"><p className="text-gray-500">Facility not found.</p></div>;
 
+  // Resolve page styles with defaults
+  const ps = facility.page_styles || {};
+  const S = {
+    page_bg: ps.page_bg || "#ffffff",
+    heading_color: ps.heading_color || "#1B365D",
+    body_text_color: ps.body_text_color || "#4B5563",
+    accent_color: ps.accent_color || "#2A9D8F",
+    section_card_bg: ps.section_card_bg || "#F9FAFB",
+    section_card_text: ps.section_card_text || "#374151",
+    sidebar_bg: ps.sidebar_bg || "#F9FAFB",
+    sidebar_heading_color: ps.sidebar_heading_color || "#1B365D",
+    sidebar_text_color: ps.sidebar_text_color || "#374151",
+    cta_bg: ps.cta_bg || "#1B365D",
+    cta_text_color: ps.cta_text_color || "#ffffff",
+    cta_button_bg: ps.cta_button_bg || "#E8792F",
+    cta_button_text: ps.cta_button_text || "#ffffff",
+    hours_active_tab_bg: ps.hours_active_tab_bg || "#1B365D",
+    hours_active_tab_text: ps.hours_active_tab_text || "#ffffff",
+    faq_border_color: ps.faq_border_color || "#E5E7EB",
+    faq_text_color: ps.faq_text_color || "#111827",
+    review_card_bg: ps.review_card_bg || "#F9FAFB",
+  };
+
   const DEFAULT_ORDER = ["contact", "about", "features", "units", "photos", "videos", "reviews", "faq"];
   const rawOrder = facility.sections_order?.length > 0 ? facility.sections_order : DEFAULT_ORDER;
   const sectionsOrder = [
