@@ -262,14 +262,33 @@ export default function FacilityPage() {
                       >Access Hours</button>
                     </div>
                   )}
+                  {/* Holiday hours notice */}
+                  {(() => {
+                    const today = new Date().toISOString().split("T")[0];
+                    const todayHoliday = (facility.holiday_hours || []).find((h) => h.date === today && (h.applies_to === "both" || h.applies_to === hoursTab));
+                    return todayHoliday ? (
+                      <div className="mb-3 p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 font-medium">
+                        📅 {todayHoliday.label}: {todayHoliday.closed ? "Closed today" : todayHoliday.is_24_hours ? "Open 24 Hours" : `${todayHoliday.open} – ${todayHoliday.close}`}
+                      </div>
+                    ) : null;
+                  })()}
                   <div className="space-y-2">
                     {(hoursTab === "access" && facility.access_hours?.length > 0 ? facility.access_hours : facility.hours || []).map((h, i) => (
                       <div key={i} className="flex justify-between text-sm">
                         <span className="text-gray-600 font-medium">{h.day}</span>
-                        <span className="text-gray-900">{h.closed ? "Closed" : `${h.open} - ${h.close}`}</span>
+                        <span className="text-gray-900 font-medium">
+                          {h.closed ? "Closed" : h.is_24_hours ? "24 Hours" : `${h.open} – ${h.close}`}
+                        </span>
                       </div>
                     ))}
                   </div>
+                  {/* Upcoming holiday hours */}
+                  {(facility.holiday_hours || []).filter((h) => h.date >= new Date().toISOString().split("T")[0] && (h.applies_to === "both" || h.applies_to === hoursTab)).slice(0, 3).map((h, i) => (
+                    <div key={i} className="mt-2 flex justify-between text-xs text-amber-700 bg-amber-50 px-2 py-1.5 rounded-lg border border-amber-100">
+                      <span>📅 {h.label} ({h.date})</span>
+                      <span>{h.closed ? "Closed" : h.is_24_hours ? "24 Hrs" : `${h.open}–${h.close}`}</span>
+                    </div>
+                  ))}
                 </div>
               )}
               <div className="bg-[#1B365D] rounded-2xl p-6 text-center">
