@@ -725,6 +725,18 @@ export default function AdminFacilityEdit() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="style">
+          <Card>
+            <CardHeader><CardTitle>Page Style & Colors</CardTitle></CardHeader>
+            <CardContent className="p-6">
+              <FacilityStyleEditor
+                styles={form.page_styles || {}}
+                onChange={(styles) => update("page_styles", styles)}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="layout">
           <Card>
             <CardHeader><CardTitle>Page Section Order</CardTitle></CardHeader>
