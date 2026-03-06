@@ -239,8 +239,8 @@ export default function FacilityPage() {
   return (
     <div style={{ background: S.page_bg }}>
       {/* Banner Slider */}
-      <div className="relative h-[40vh] md:h-[55vh]">
-        <ImageSlider images={bannerImages} className="absolute inset-0" />
+      <div className="relative h-[40vh] md:h-[55vh]" style={facility.banner_image ? { backgroundImage: `url(${facility.banner_image})`, backgroundSize: "cover", backgroundPosition: "center" } : {}}>
+        {!facility.banner_image && <ImageSlider images={bannerImages} className="absolute inset-0" />}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 pointer-events-none">
           <div className="max-w-7xl mx-auto">
