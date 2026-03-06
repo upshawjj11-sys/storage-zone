@@ -189,6 +189,13 @@ export default function AdminFacilityEdit() {
                 </div>
               </div>
               <div><Label>About</Label><Textarea rows={5} value={form.about} onChange={(e) => update("about", e.target.value)} /></div>
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                <div>
+                  <p className="font-medium text-sm text-gray-800">Collapse "About" with Read More</p>
+                  <p className="text-xs text-gray-400 mt-0.5">Show a truncated preview with a "Read More" button on the facility page</p>
+                </div>
+                <Switch checked={!!form.about_collapsible} onCheckedChange={(v) => update("about_collapsible", v)} />
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
