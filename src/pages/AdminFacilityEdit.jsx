@@ -7,6 +7,7 @@ import {
   ArrowLeft, Save, Plus, Trash2, Upload, X, GripVertical
 } from "lucide-react";
 import HoursEditor from "../components/admin/HoursEditor";
+import IconPicker from "../components/admin/IconPicker";
 import FacilitySectionOrderEditor from "../components/admin/FacilitySectionOrderEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,7 +38,7 @@ export default function AdminFacilityEdit() {
     phone: "", email: "", about: "", status: "active",
     facility_type: "self_storage",
     banner_image: "", banner_title: "", banner_subtitle: "",
-    show_pillars: false, pillars: [],
+    show_pillars: false, pillars: [], pillars_bg_color: "#1B365D",
     features: [], photos: [], videos: [], hours: defaultHours, access_hours: [], holiday_hours: [],
     faqs: [], reviews: [], units: [],
     unit_grid_api_key: "", unit_grid_widget_code: "",
@@ -71,6 +72,7 @@ export default function AdminFacilityEdit() {
         holiday_hours: existing.holiday_hours || [],
         show_pillars: existing.show_pillars || false,
         pillars: existing.pillars || [],
+        pillars_bg_color: existing.pillars_bg_color || "#1B365D",
         sections_order: existing.sections_order || [],
       });
     }
