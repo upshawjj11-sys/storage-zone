@@ -23,6 +23,14 @@ const SECTION_TYPES = [
   { value: "gallery", label: "Gallery" },
   { value: "faq", label: "FAQ" },
   { value: "stats", label: "Stats Bar" },
+  { value: "two_column", label: "Two Column Layout (half + half)" },
+];
+
+const COLUMN_BLOCK_TYPES = [
+  { value: "text_block", label: "Text Block" },
+  { value: "image", label: "Single Image" },
+  { value: "features", label: "Features List" },
+  { value: "image_slider", label: "Image Slider" },
 ];
 
 function SectionEditor({ section, onChange, onRemove, index }) {
