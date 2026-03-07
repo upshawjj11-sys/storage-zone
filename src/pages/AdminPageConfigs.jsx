@@ -399,6 +399,32 @@ export default function AdminPageConfigs() {
               </div>
             </SectionCard>
 
+            <SectionCard title="Map Settings">
+              <div>
+                <Label>Map Tile Style</Label>
+                <p className="text-xs text-gray-400 mb-1">Visual theme for the map — all free, no API key needed</p>
+                <Select value={loc.map_tile_style || "dark_all"} onValueChange={(v) => updateLoc("map_tile_style", v)}>
+                  <SelectTrigger className="mt-1 w-full"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="dark_all">Dark (matches navy brand)</SelectItem>
+                    <SelectItem value="light_all">Light / Minimal</SelectItem>
+                    <SelectItem value="rastertiles/voyager">Voyager (colorful, detailed)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <ColorRow label="Facility Pin Color" hint="Color of the location pins on the map" field="map_marker_color" form={loc} update={updateLoc} />
+                <ColorRow label="'You Are Here' Dot Color" field="map_user_dot_color" form={loc} update={updateLoc} />
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <div>
+                  <p className="text-sm font-medium text-gray-800">Allow Map Dragging</p>
+                  <p className="text-xs text-gray-400">Let visitors pan the map by clicking and dragging</p>
+                </div>
+                <Switch checked={!!loc.map_draggable} onCheckedChange={(v) => updateLoc("map_draggable", v)} />
+              </div>
+            </SectionCard>
+
             <SectionCard title="Visibility Toggles">
               {[
                 { field: "show_facility_image", label: "Show Facility Image on Cards" },
