@@ -53,6 +53,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminFacilities from './pages/AdminFacilities';
 import AdminFacilityEdit from './pages/AdminFacilityEdit';
 import AdminHomePage from './pages/AdminHomePage';
+import AdminPageConfigs from './pages/AdminPageConfigs';
 import AdminPageEdit from './pages/AdminPageEdit';
 import AdminPages from './pages/AdminPages';
 import AdminPopupEdit from './pages/AdminPopupEdit';
@@ -63,9 +64,8 @@ import AdminTeam from './pages/AdminTeam';
 import FacilityPage from './pages/FacilityPage';
 import Home from './pages/Home';
 import Locations from './pages/Locations';
-import PublicPage from './pages/PublicPage';
 import PayMyBill from './pages/PayMyBill';
-import AdminPageConfigs from './pages/AdminPageConfigs';
+import PublicPage from './pages/PublicPage';
 import __Layout from './Layout.jsx';
 
 
@@ -76,6 +76,7 @@ export const PAGES = {
     "AdminFacilities": AdminFacilities,
     "AdminFacilityEdit": AdminFacilityEdit,
     "AdminHomePage": AdminHomePage,
+    "AdminPageConfigs": AdminPageConfigs,
     "AdminPageEdit": AdminPageEdit,
     "AdminPages": AdminPages,
     "AdminPopupEdit": AdminPopupEdit,
@@ -86,9 +87,8 @@ export const PAGES = {
     "FacilityPage": FacilityPage,
     "Home": Home,
     "Locations": Locations,
-    "PublicPage": PublicPage,
     "PayMyBill": PayMyBill,
-    "AdminPageConfigs": AdminPageConfigs,
+    "PublicPage": PublicPage,
 }
 
 export const pagesConfig = {

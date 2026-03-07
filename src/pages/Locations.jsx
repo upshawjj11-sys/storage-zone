@@ -141,7 +141,10 @@ export default function Locations() {
   const activeCoords = userLocation || searchCoords;
   const RADIUS_MI = 30;
 
-  let filtered = facilities
+  // While geocoding is in progress for a typed search, don't filter yet
+  const isWaitingForGeocode = search.trim() && !userLocation && geocoding;
+
+  let filtered = isWaitingForGeocode ? [] : facilities
     .map((f) => ({
       ...f,
       distance: activeCoords && f.latitude && f.longitude
@@ -153,14 +156,14 @@ export default function Locations() {
       if (!matchFeatures) return false;
 
       if (activeCoords) {
-        // Distance mode: show anything within 30 miles (or no lat/lng as fallback text match)
+        // Distance mode: show anything within 30 miles
         if (f.distance != null) return f.distance <= RADIUS_MI;
-        // Facility has no coords — fall back to text match so it doesn't silently disappear
+        // Facility has no coords — fall back to text match
         const q = search.toLowerCase();
         return !search || f.name?.toLowerCase().includes(q) || f.city?.toLowerCase().includes(q) || f.state?.toLowerCase().includes(q) || f.zip?.toLowerCase().includes(q);
       }
 
-      // No coords available yet — plain text match
+      // searchCoords failed to resolve — plain text match fallback
       const q = search.toLowerCase();
       return !search || f.name?.toLowerCase().includes(q) || f.city?.toLowerCase().includes(q) || f.state?.toLowerCase().includes(q) || f.zip?.toLowerCase().includes(q);
     })
