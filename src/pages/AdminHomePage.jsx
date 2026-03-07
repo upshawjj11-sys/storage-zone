@@ -213,6 +213,109 @@ function SectionEditor({ section, onChange, onRemove, index }) {
         return <p className="text-sm text-gray-500 italic">This section automatically pulls in your active facilities.</p>;
       case "gallery":
         return <p className="text-sm text-gray-500 italic">Gallery images are pulled from your facility photos.</p>;
+      case "two_column":
+        return (
+          <div className="space-y-4">
+            <p className="text-xs text-gray-500">Configure the left and right half-column blocks independently.</p>
+            {["left", "right"].map((side) => {
+              const col = data[side] || {};
+              const updateCol = (key, val) => updateData(side, { ...col, [key]: val });
+              const updateColItem = (arr, i, key, val) => {
+                const next = arr.map((item, idx) => idx === i ? { ...item, [key]: val } : item);
+                updateCol("items", next);
+              };
+              const addColItem = (defaults) => updateCol("items", [...(col.items || []), defaults]);
+              const removeColItem = (i) => updateCol("items", (col.items || []).filter((_, idx) => idx !== i));
+
+              return (
+                <div key={side} className="border rounded-xl p-4 space-y-3 bg-white">
+                  <h4 className="font-semibold text-sm capitalize text-gray-700">{side} Column</h4>
+                  <div>
+                    <Label className="text-xs">Block Type</Label>
+                    <Select value={col.type || "text_block"} onValueChange={(v) => updateCol("type", v)}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {COLUMN_BLOCK_TYPES.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {(col.type === "text_block" || !col.type) && (
+                    <div className="space-y-2">
+                      <div><Label className="text-xs">Heading</Label><Input value={col.heading || ""} onChange={(e) => updateCol("heading", e.target.value)} placeholder="Section heading" /></div>
+                      <div><Label className="text-xs">Body Text (supports markdown)</Label><Textarea rows={4} value={col.content || ""} onChange={(e) => updateCol("content", e.target.value)} /></div>
+                      <div>
+                        <Label className="text-xs">Text Alignment</Label>
+                        <Select value={col.align || "left"} onValueChange={(v) => updateCol("align", v)}>
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="left">Left</SelectItem>
+                            <SelectItem value="center">Center</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  )}
+
+                  {col.type === "image" && (
+                    <div className="space-y-2">
+                      <div><Label className="text-xs">Image URL</Label><Input value={col.image_url || ""} onChange={(e) => updateCol("image_url", e.target.value)} placeholder="https://..." /></div>
+                      <label className="flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit text-sm">
+                        <Upload className="w-3 h-3" /> Upload Image
+                        <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                          const file = e.target.files[0]; if (!file) return;
+                          const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                          updateCol("image_url", file_url);
+                        }} />
+                      </label>
+                      <div><Label className="text-xs">Alt Text</Label><Input value={col.alt || ""} onChange={(e) => updateCol("alt", e.target.value)} /></div>
+                    </div>
+                  )}
+
+                  {col.type === "image_slider" && (
+                    <div className="space-y-2">
+                      <Label className="text-xs">Images</Label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(col.images || []).map((img, idx) => (
+                          <div key={idx} className="relative group">
+                            <img src={img} alt="" className="w-full h-16 object-cover rounded border" />
+                            <button onClick={() => updateCol("images", (col.images || []).filter((_, i) => i !== idx))} className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100">×</button>
+                          </div>
+                        ))}
+                      </div>
+                      <label className="flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit text-sm">
+                        <Upload className="w-3 h-3" /> Add Image
+                        <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                          const file = e.target.files[0]; if (!file) return;
+                          const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                          updateCol("images", [...(col.images || []), file_url]);
+                        }} />
+                      </label>
+                    </div>
+                  )}
+
+                  {col.type === "features" && (
+                    <div className="space-y-2">
+                      <Button size="sm" variant="outline" className="gap-1" onClick={() => addColItem({ icon: "Check", title: "", desc: "" })}>
+                        <Plus className="w-3 h-3" /> Add Feature
+                      </Button>
+                      {(col.items || []).map((item, i) => (
+                        <div key={i} className="p-2 border rounded-lg space-y-1.5 bg-gray-50">
+                          <div className="flex items-end gap-2">
+                            <div className="flex-1"><Label className="text-xs mb-1 block">Icon</Label><IconPicker value={item.icon || ""} onChange={(v) => updateColItem(col.items, i, "icon", v)} /></div>
+                            <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeColItem(i)}><Trash2 className="w-3 h-3" /></Button>
+                          </div>
+                          <Input placeholder="Title" value={item.title || ""} onChange={(e) => updateColItem(col.items, i, "title", e.target.value)} />
+                          <Textarea placeholder="Description" value={item.desc || ""} onChange={(e) => updateColItem(col.items, i, "desc", e.target.value)} rows={2} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        );
       default:
         return null;
     }
