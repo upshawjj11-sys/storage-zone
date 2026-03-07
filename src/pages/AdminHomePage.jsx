@@ -316,6 +316,16 @@ function SectionEditor({ section, onChange, onRemove, index }) {
 
                   {col.type === "image_slider" && (
                     <div className="space-y-2">
+                      <div>
+                        <Label className="text-xs">Images Per Slide</Label>
+                        <Select value={String(col.per_slide || "1")} onValueChange={(v) => updateCol("per_slide", parseInt(v))}>
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1">1 at a time</SelectItem>
+                            <SelectItem value="2">2 at a time</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                       <Label className="text-xs">Images</Label>
                       <div className="grid grid-cols-3 gap-2">
                         {(col.images || []).map((img, idx) => (
@@ -333,6 +343,32 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                           updateCol("images", [...(col.images || []), file_url]);
                         }} />
                       </label>
+                    </div>
+                  )}
+
+                  {col.type === "testimonials" && (
+                    <div className="space-y-2">
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className="flex items-center gap-1"><Label className="text-xs">Card BG</Label><input type="color" value={col.card_bg || "#ffffff"} onChange={(e) => updateCol("card_bg", e.target.value)} className="h-6 w-8 p-0.5 rounded border" /></div>
+                        <div className="flex items-center gap-1"><Label className="text-xs">Text</Label><input type="color" value={col.text_color || "#374151"} onChange={(e) => updateCol("text_color", e.target.value)} className="h-6 w-8 p-0.5 rounded border" /></div>
+                        <div className="flex items-center gap-1"><Label className="text-xs">Stars</Label><input type="color" value={col.star_color || "#facc15"} onChange={(e) => updateCol("star_color", e.target.value)} className="h-6 w-8 p-0.5 rounded border" /></div>
+                      </div>
+                      <Button size="sm" variant="outline" className="gap-1" onClick={() => addColItem({ name: "", text: "", rating: 5, location: "" })}>
+                        <Plus className="w-3 h-3" /> Add Review
+                      </Button>
+                      {(col.items || []).map((item, i) => (
+                        <div key={i} className="p-2 border rounded-lg space-y-1.5 bg-gray-50">
+                          <div className="grid grid-cols-2 gap-1.5">
+                            <Input placeholder="Name" value={item.name || ""} onChange={(e) => updateColItem(col.items, i, "name", e.target.value)} />
+                            <Input placeholder="Location" value={item.location || ""} onChange={(e) => updateColItem(col.items, i, "location", e.target.value)} />
+                          </div>
+                          <Textarea placeholder="Review text" value={item.text || ""} onChange={(e) => updateColItem(col.items, i, "text", e.target.value)} rows={2} />
+                          <div className="flex items-center justify-between">
+                            <div><Label className="text-xs">Rating</Label><Input type="number" min={1} max={5} value={item.rating || 5} onChange={(e) => updateColItem(col.items, i, "rating", parseInt(e.target.value))} className="w-14" /></div>
+                            <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeColItem(i)}><Trash2 className="w-3 h-3" /></Button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   )}
 
