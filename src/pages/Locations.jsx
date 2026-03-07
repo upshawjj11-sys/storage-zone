@@ -315,7 +315,11 @@ export default function Locations() {
           <div className="text-center py-20">
             <MapPin className="w-12 h-12 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No Locations Found</h3>
-            <p className="text-gray-500">Try a different search or adjust your filters.</p>
+            <p className="text-gray-500">
+              {activeCoords && search
+                ? `No locations found within ${RADIUS_MI} miles of "${search}". Try a broader search or check back later.`
+                : "Try a different search or adjust your filters."}
+            </p>
           </div>
         ) : (
           <div className={gridClass}>
