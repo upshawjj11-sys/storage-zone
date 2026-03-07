@@ -174,12 +174,17 @@ export default function Locations() {
       const matchFeatures = selectedFeatures.length === 0 || selectedFeatures.every((feat) => (f.features || []).includes(feat));
       if (!matchFeatures) return false;
 
+      // Near Me mode (no search text): show only facilities within range
+      if (userLocation && !q) {
+        return f.distance != null && f.distance <= RADIUS_MI;
+      }
+
       if (!q) return true;
 
       // Always try text match first — handles state names, abbreviations, city names, etc.
       if (textMatch(f)) return true;
 
-      // Also include if within range of geocoded coords (for things like "33101" zip searches)
+      // Also include if within range when Near Me is active alongside a search
       if (userLocation && f.distance != null) return f.distance <= RADIUS_MI;
 
       return false;
