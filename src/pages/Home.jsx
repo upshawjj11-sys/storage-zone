@@ -182,19 +182,59 @@ export default function Home() {
       case "testimonials": {
         const items = data.items || [];
         if (!items.length) return null;
+        const tStyle = data.style || "cards";
+        const tCols = data.columns || 3;
+        const tColClass = { 1: "", 2: "md:grid-cols-2", 3: "md:grid-cols-3" }[tCols] || "md:grid-cols-3";
+        const starColor = data.star_color || "#facc15";
+        const cardBg = data.card_bg || (tStyle === "dark" ? "#1e293b" : "#ffffff");
+        const textColor = data.text_color || (tStyle === "dark" ? "#e2e8f0" : "#374151");
+        const sectionBg = section.bg_color || (tStyle === "dark" ? primaryColor : "#f8fafc");
+
+        const renderTestimonialCard = (t, i) => {
+          if (tStyle === "quote") return (
+            <div key={i} className="p-8 rounded-2xl" style={{ background: cardBg }}>
+              <div className="text-5xl font-serif mb-4" style={{ color: starColor }}>"</div>
+              <p className="text-lg leading-relaxed mb-6 italic" style={{ color: textColor }}>"{t.text}"</p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: t.avatar_color || primaryColor }}>{(t.name||"?")[0]}</div>
+                <div>
+                  <p className="font-semibold text-sm" style={{ color: textColor }}>{t.name}</p>
+                  {t.location && <p className="text-xs opacity-60" style={{ color: textColor }}>{t.location}</p>}
+                </div>
+              </div>
+            </div>
+          );
+          if (tStyle === "minimal") return (
+            <div key={i} className="p-6 border-l-4 rounded-r-xl" style={{ borderColor: starColor, background: cardBg }}>
+              <div className="flex mb-2">{[...Array(Math.max(1, Math.min(5, t.rating||5)))].map((_, j) => <Star key={j} className="w-3.5 h-3.5 fill-current" style={{ color: starColor }} />)}</div>
+              <p className="text-sm leading-relaxed mb-3" style={{ color: textColor }}>"{t.text}"</p>
+              <p className="font-semibold text-sm" style={{ color: textColor }}>{t.name}</p>
+              {t.location && <p className="text-xs opacity-60" style={{ color: textColor }}>{t.location}</p>}
+            </div>
+          );
+          // cards (default) and dark
+          return (
+            <div key={i} className="p-6 rounded-2xl shadow-sm" style={{ background: cardBg }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: t.avatar_color || primaryColor }}>{(t.name||"?")[0]}</div>
+                <div>
+                  <p className="font-semibold text-sm" style={{ color: textColor }}>{t.name}</p>
+                  {t.location && <p className="text-xs opacity-60" style={{ color: textColor }}>{t.location}</p>}
+                </div>
+              </div>
+              <div className="flex mb-3">{[...Array(Math.max(1, Math.min(5, t.rating||5)))].map((_, j) => <Star key={j} className="w-4 h-4 fill-current" style={{ color: starColor }} />)}</div>
+              <p className="text-sm leading-relaxed" style={{ color: textColor }}>"{t.text}"</p>
+            </div>
+          );
+        };
+
         return (
-          <section key={section.id} style={{ background: section.bg_color || "#f8fafc" }} className="py-20">
+          <section key={section.id} style={{ background: sectionBg }} className="py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              {section.title && <h2 className="text-3xl font-bold text-center mb-12" style={{ color: primaryColor }}>{section.title}</h2>}
-              <div className="grid md:grid-cols-3 gap-6">
-                {items.map((t, i) => (
-                  <div key={i} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                    <div className="flex mb-3">{[...Array(t.rating||5)].map((_, j) => <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />)}</div>
-                    <p className="text-gray-600 text-sm leading-relaxed mb-4">"{t.text}"</p>
-                    <p className="font-semibold text-sm" style={{ color: primaryColor }}>{t.name}</p>
-                    {t.location && <p className="text-xs text-gray-400">{t.location}</p>}
-                  </div>
-                ))}
+              {section.title && <h2 className="text-3xl font-bold text-center mb-12" style={{ color: tStyle === "dark" ? "#fff" : primaryColor }}>{section.title}</h2>}
+              {section.subtitle && <p className="text-center mb-10 opacity-70" style={{ color: tStyle === "dark" ? "#fff" : "#6b7280" }}>{section.subtitle}</p>}
+              <div className={`grid ${tColClass} gap-6`}>
+                {items.map(renderTestimonialCard)}
               </div>
             </div>
           </section>
