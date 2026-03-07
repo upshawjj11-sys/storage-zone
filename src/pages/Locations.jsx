@@ -342,8 +342,8 @@ export default function Locations() {
             )}
           </div>
 
-          {/* Feature filters */}
-          {showFilters && allFeatures.length > 0 && (
+          {/* Feature filters + optional radius filter */}
+          {showFilters && (allFeatures.length > 0 || cfg.allow_customer_radius_filter) && (
             <div className="mt-4 flex flex-wrap gap-2 justify-center max-w-3xl mx-auto">
               {allFeatures.map((feat) => (
                 <button
@@ -355,6 +355,21 @@ export default function Locations() {
                   {feat}
                 </button>
               ))}
+              {cfg.allow_customer_radius_filter && (
+                <div className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium" style={{ backgroundColor: cfg.filter_inactive_bg, color: cfg.filter_inactive_text }}>
+                  <span className="whitespace-nowrap">Radius:</span>
+                  <select
+                    value={customRadius ?? (cfg.search_radius_miles || 50)}
+                    onChange={(e) => setCustomRadius(Number(e.target.value))}
+                    className="bg-transparent border-0 outline-none text-sm font-medium cursor-pointer"
+                    style={{ color: cfg.filter_inactive_text }}
+                  >
+                    {[10, 25, 50, 100, 250].map((r) => (
+                      <option key={r} value={r} style={{ color: "#111" }}>{r} mi</option>
+                    ))}
+                  </select>
+                </div>
+              )}
               {selectedFeatures.length > 0 && (
                 <button onClick={() => setSelectedFeatures([])} className="px-3 py-1.5 rounded-full text-sm" style={{ color: cfg.filter_inactive_text, opacity: 0.7 }}>
                   Clear all
