@@ -4,7 +4,7 @@ import { createPageUrl } from "@/utils";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import {
-  ArrowLeft, Save, Plus, Trash2, Upload, X, GripVertical
+  ArrowLeft, Save, Plus, Trash2, Upload, X, GripVertical, Eye
 } from "lucide-react";
 import HoursEditor from "../components/admin/HoursEditor";
 import IconPicker from "../components/admin/IconPicker";
