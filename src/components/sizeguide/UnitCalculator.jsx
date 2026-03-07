@@ -274,17 +274,12 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
                 {recommendation?.tooLarge ? (
                   <p className="text-xl font-bold">10' × 30' or larger</p>
                 ) : (
-                  <p className="text-3xl font-bold">
-                    {recommendation?.min?.label}
-                    {recommendation?.max && (
-                      <span className="text-xl font-semibold opacity-70"> – {recommendation.max.label}</span>
-                    )}
-                  </p>
+                  <p className="text-3xl font-bold">{recommendation?.recommended?.label}</p>
                 )}
-                <p className="text-sm mt-2 opacity-70">{recommendation?.min?.desc}</p>
-                {recommendation?.max && (
-                  <p className="text-xs mt-1 opacity-60">
-                    Consider the {recommendation.max.label} for extra room and easier access.
+                <p className="text-sm mt-2 opacity-80">{recommendation?.recommended?.desc}</p>
+                {recommendation?.recommended?.label !== recommendation?.min?.label && (
+                  <p className="text-xs mt-2 opacity-60">
+                    Minimum fit: {recommendation?.min?.label} — but we recommend sizing up so furniture can lay flat and you have room to access your items.
                   </p>
                 )}
                 <a
