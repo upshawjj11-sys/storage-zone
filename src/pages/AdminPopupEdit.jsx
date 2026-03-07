@@ -308,6 +308,82 @@ export default function AdminPopupEdit() {
             </CardContent>
           </Card>
 
+          {/* Assign to Pages & Facilities */}
+          <Card>
+            <CardHeader><CardTitle className="text-base">Assign to Pages & Facilities</CardTitle></CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-xs text-gray-500">Leave all unchecked to show on every page. Check specific pages or facilities to limit where it appears.</p>
+
+              {/* Static pages */}
+              <div>
+                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Site Pages</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {["Home", "Locations", "FacilityPage", "PayMyBill", "PublicPage"].map((page) => (
+                    <label key={page} className={`flex items-center gap-2.5 p-2.5 rounded-lg border cursor-pointer text-sm transition ${(form.show_on_pages || []).includes(page) ? "border-orange-400 bg-orange-50" : "border-gray-100 hover:border-gray-200"}`}>
+                      <Checkbox
+                        checked={(form.show_on_pages || []).includes(page)}
+                        onCheckedChange={(checked) => {
+                          const cur = form.show_on_pages || [];
+                          update("show_on_pages", checked ? [...cur, page] : cur.filter((x) => x !== page));
+                        }}
+                      />
+                      <span className="font-medium text-gray-700">{page.replace(/([A-Z])/g, " $1").trim()}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Facilities */}
+              {facilities.length > 0 && (
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Facility Pages</p>
+                    <div className="flex gap-2">
+                      <button
+                        className="text-xs text-orange-500 hover:underline"
+                        onClick={() => {
+                          const cur = form.show_on_pages || [];
+                          const facIds = facilities.map((f) => f.id);
+                          const withoutFacs = cur.filter((x) => !facIds.includes(x));
+                          update("show_on_pages", [...withoutFacs, ...facIds]);
+                        }}
+                      >Select All</button>
+                      <span className="text-gray-300">|</span>
+                      <button
+                        className="text-xs text-gray-400 hover:underline"
+                        onClick={() => {
+                          const facIds = facilities.map((f) => f.id);
+                          update("show_on_pages", (form.show_on_pages || []).filter((x) => !facIds.includes(x)));
+                        }}
+                      >Clear</button>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
+                    {facilities.map((f) => (
+                      <label key={f.id} className={`flex items-center gap-2.5 p-2.5 rounded-lg border cursor-pointer text-sm transition ${(form.show_on_pages || []).includes(f.id) ? "border-orange-400 bg-orange-50" : "border-gray-100 hover:border-gray-200"}`}>
+                        <Checkbox
+                          checked={(form.show_on_pages || []).includes(f.id)}
+                          onCheckedChange={(checked) => {
+                            const cur = form.show_on_pages || [];
+                            update("show_on_pages", checked ? [...cur, f.id] : cur.filter((x) => x !== f.id));
+                          }}
+                        />
+                        <div className="min-w-0">
+                          <p className="font-medium text-gray-700 truncate">{f.name}</p>
+                          <p className="text-xs text-gray-400 truncate">{f.city}, {f.state}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {(form.show_on_pages || []).length > 0 && (
+                <p className="text-xs text-orange-600 font-medium">{(form.show_on_pages || []).length} target{(form.show_on_pages || []).length > 1 ? "s" : ""} selected</p>
+              )}
+            </CardContent>
+          </Card>
+
           {/* Trigger & Scheduling */}
           <Card>
             <CardHeader><CardTitle className="text-base">Trigger & Scheduling</CardTitle></CardHeader>
