@@ -72,6 +72,7 @@ export default function AdminSizeGuideConfig({ onSaveStatus }) {
   const [saving, setSaving] = useState(false);
   const [expandedCat, setExpandedCat] = useState(null);
   const [movingItem, setMovingItem] = useState(null); // { item, fromCatId }
+  const [expandedUnit, setExpandedUnit] = useState(null);
 
   const { data: configs, refetch } = useQuery({
     queryKey: ["size-guide-config"],
