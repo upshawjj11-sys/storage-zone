@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Save, Upload, Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
