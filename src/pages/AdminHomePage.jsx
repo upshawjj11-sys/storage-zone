@@ -523,6 +523,82 @@ export default function AdminHomePage() {
               <Label>Background Overlay Opacity ({Math.round((form.hero_overlay_opacity || 0.6) * 100)}%)</Label>
               <input type="range" min={0} max={1} step={0.05} value={form.hero_overlay_opacity || 0.6} onChange={(e) => update("hero_overlay_opacity", parseFloat(e.target.value))} className="w-full mt-1" />
             </div>
+
+            {/* Arrow controls */}
+            <div className="border rounded-xl p-4 space-y-3 bg-gray-50">
+              <div className="flex items-center justify-between">
+                <Label className="font-semibold">Side Arrow Buttons</Label>
+                <Switch checked={(form.hero_arrows?.show ?? true)} onCheckedChange={(v) => update("hero_arrows", { ...(form.hero_arrows||{}), show: v })} />
+              </div>
+              {(form.hero_arrows?.show ?? true) && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label className="text-xs">Arrow Style</Label>
+                    <Select value={form.hero_arrows?.style || "circle"} onValueChange={(v) => update("hero_arrows", { ...(form.hero_arrows||{}), style: v })}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="circle">Circle</SelectItem>
+                        <SelectItem value="square">Square</SelectItem>
+                        <SelectItem value="pill">Pill</SelectItem>
+                        <SelectItem value="arrow">Arrow Only (no bg)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label className="text-xs">Icon Type</Label>
+                    <Select value={form.hero_arrows?.icon_type || "chevron"} onValueChange={(v) => update("hero_arrows", { ...(form.hero_arrows||{}), icon_type: v })}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="chevron">Chevron ‹ ›</SelectItem>
+                        <SelectItem value="arrow">Arrow ← →</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs whitespace-nowrap">Button BG</Label>
+                    <input type="color" value={form.hero_arrows?.color || "#000000"} onChange={(e) => update("hero_arrows", { ...(form.hero_arrows||{}), color: e.target.value })} className="h-7 w-10 p-0.5 rounded border" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs whitespace-nowrap">Icon Color</Label>
+                    <input type="color" value={form.hero_arrows?.icon_color || "#ffffff"} onChange={(e) => update("hero_arrows", { ...(form.hero_arrows||{}), icon_color: e.target.value })} className="h-7 w-10 p-0.5 rounded border" />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Dot controls */}
+            <div className="border rounded-xl p-4 space-y-3 bg-gray-50">
+              <div className="flex items-center justify-between">
+                <Label className="font-semibold">Slide Indicator Dots</Label>
+                <Switch checked={(form.hero_dots?.show ?? true)} onCheckedChange={(v) => update("hero_dots", { ...(form.hero_dots||{}), show: v })} />
+              </div>
+              {(form.hero_dots?.show ?? true) && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label className="text-xs">Dot Style</Label>
+                    <Select value={form.hero_dots?.style || "circle"} onValueChange={(v) => update("hero_dots", { ...(form.hero_dots||{}), style: v })}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="circle">Circle</SelectItem>
+                        <SelectItem value="square">Square</SelectItem>
+                        <SelectItem value="line">Line (expands when active)</SelectItem>
+                        <SelectItem value="dash">Dash</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div />
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs whitespace-nowrap">Active Color</Label>
+                    <input type="color" value={form.hero_dots?.active_color || "#E8792F"} onChange={(e) => update("hero_dots", { ...(form.hero_dots||{}), active_color: e.target.value })} className="h-7 w-10 p-0.5 rounded border" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs whitespace-nowrap">Inactive Color</Label>
+                    <input type="color" value={form.hero_dots?.inactive_color || "#aaaaaa"} onChange={(e) => update("hero_dots", { ...(form.hero_dots||{}), inactive_color: e.target.value })} className="h-7 w-10 p-0.5 rounded border" />
+                  </div>
+                </div>
+              )}
+            </div>
+
             <div>
               <Label>Hero Carousel Images</Label>
               <p className="text-xs text-gray-500 mb-2">Add multiple images — they will auto-rotate in the carousel.</p>
