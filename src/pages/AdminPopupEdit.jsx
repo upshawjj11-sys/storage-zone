@@ -51,6 +51,11 @@ export default function AdminPopupEdit() {
     end_date: "",
   });
 
+  const { data: facilities = [] } = useQuery({
+    queryKey: ["facilities-popup-edit"],
+    queryFn: () => base44.entities.Facility.list(),
+  });
+
   const { data: existing } = useQuery({
     queryKey: ["popup-edit", popupId],
     queryFn: async () => {
