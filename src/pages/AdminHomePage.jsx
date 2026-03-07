@@ -175,20 +175,61 @@ function SectionEditor({ section, onChange, onRemove, index }) {
         );
       case "testimonials":
         return (
-          <div className="space-y-3">
-            <Button size="sm" variant="outline" className="gap-1" onClick={() => addItem({ name: "", text: "", rating: 5, location: "" })}>
+          <div className="space-y-4">
+            {/* Style options */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Style Template</Label>
+                <Select value={data.style || "cards"} onValueChange={(v) => updateData("style", v)}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="cards">White Cards</SelectItem>
+                    <SelectItem value="dark">Dark Background</SelectItem>
+                    <SelectItem value="minimal">Minimal / Bordered</SelectItem>
+                    <SelectItem value="quote">Large Quote Style</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-xs">Columns</Label>
+                <Select value={String(data.columns || "3")} onValueChange={(v) => updateData("columns", parseInt(v))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">1 column</SelectItem>
+                    <SelectItem value="2">2 columns</SelectItem>
+                    <SelectItem value="3">3 columns</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="flex items-center gap-2">
+                <Label className="text-xs whitespace-nowrap">Card BG</Label>
+                <input type="color" value={data.card_bg || "#ffffff"} onChange={(e) => updateData("card_bg", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
+              </div>
+              <div className="flex items-center gap-2">
+                <Label className="text-xs whitespace-nowrap">Text Color</Label>
+                <input type="color" value={data.text_color || "#374151"} onChange={(e) => updateData("text_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
+              </div>
+              <div className="flex items-center gap-2">
+                <Label className="text-xs whitespace-nowrap">Star Color</Label>
+                <input type="color" value={data.star_color || "#facc15"} onChange={(e) => updateData("star_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
+              </div>
+            </div>
+            <Button size="sm" variant="outline" className="gap-1" onClick={() => addItem({ name: "", text: "", rating: 5, location: "", avatar_color: "#1B365D" })}>
               <Plus className="w-3 h-3" /> Add Testimonial
             </Button>
             {(data.items || []).map((item, i) => (
               <div key={i} className="p-3 border rounded-lg space-y-2 bg-gray-50">
                 <div className="grid grid-cols-2 gap-2">
                   <Input placeholder="Name" value={item.name || ""} onChange={(e) => updateItem(data.items, i, "name", e.target.value)} />
-                  <Input placeholder="Location" value={item.location || ""} onChange={(e) => updateItem(data.items, i, "location", e.target.value)} />
+                  <Input placeholder="Location / Title" value={item.location || ""} onChange={(e) => updateItem(data.items, i, "location", e.target.value)} />
                 </div>
                 <Textarea placeholder="Review text" value={item.text || ""} onChange={(e) => updateItem(data.items, i, "text", e.target.value)} rows={2} />
-                <div className="flex items-center justify-between">
-                  <div><Label className="text-xs">Rating</Label><Input type="number" min={1} max={5} value={item.rating || 5} onChange={(e) => updateItem(data.items, i, "rating", parseInt(e.target.value))} className="w-16" /></div>
-                  <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem(i)}><Trash2 className="w-3 h-3" /></Button>
+                <div className="flex items-center gap-4">
+                  <div><Label className="text-xs">Rating (1–5)</Label><Input type="number" min={1} max={5} value={item.rating || 5} onChange={(e) => updateItem(data.items, i, "rating", parseInt(e.target.value))} className="w-16" /></div>
+                  <div className="flex items-center gap-2 mt-4"><Label className="text-xs">Avatar Color</Label><input type="color" value={item.avatar_color || "#1B365D"} onChange={(e) => updateItem(data.items, i, "avatar_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" /></div>
+                  <div className="ml-auto mt-4"><Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem(i)}><Trash2 className="w-3 h-3" /></Button></div>
                 </div>
               </div>
             ))}
