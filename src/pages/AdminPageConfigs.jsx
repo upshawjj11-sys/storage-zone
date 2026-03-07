@@ -177,6 +177,9 @@ export default function AdminPageConfigs() {
           <TabsTrigger value="locations" className="gap-2">
             <MapPin className="w-4 h-4" /> Location Search
           </TabsTrigger>
+          <TabsTrigger value="size_guide" className="gap-2">
+            <Ruler className="w-4 h-4" /> Size Guide
+          </TabsTrigger>
         </TabsList>
 
         {/* ─── PAY MY BILL ─── */}
