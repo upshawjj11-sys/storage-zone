@@ -17,12 +17,41 @@ export default function UnitCalculator() {
 
   const recommendation = useMemo(() => {
     if (totalCuft === 0) return null;
-    const fits = UNIT_SIZES.filter((u) => u.cuft >= bufferedCuft);
-    if (fits.length === 0) return { min: UNIT_SIZES[UNIT_SIZES.length - 1], max: null, tooLarge: true };
-    const min = fits[0];
-    const max = fits.length > 1 ? fits[1] : null;
+
+    // For each item, find the minimum unit whose floor can fit it
+    // (item can be rotated, so we check both orientations)
+    const itemFitsInUnit = (item, unit) => {
+      const { w, d } = item; // item dimensions in inches
+      const { widthIn, depthIn } = unit;
+      return (
+        (w <= widthIn && d <= depthIn) ||
+        (d <= widthIn && w <= depthIn)
+      );
+    };
+
+    // Find the smallest unit index that can fit EVERY selected item AND has enough volume
+    const minIndexByFootprint = selectedItems.reduce((maxIdx, si) => {
+      const idx = UNIT_SIZES.findIndex((u) => itemFitsInUnit(si, u));
+      return idx === -1 ? UNIT_SIZES.length - 1 : Math.max(maxIdx, idx);
+    }, 0);
+
+    // Find smallest unit index by volume
+    const minIndexByVolume = UNIT_SIZES.findIndex((u) => u.cuft >= bufferedCuft);
+
+    // Take the larger of the two constraints
+    const minIndex = Math.max(
+      minIndexByFootprint,
+      minIndexByVolume === -1 ? UNIT_SIZES.length - 1 : minIndexByVolume
+    );
+
+    if (minIndex >= UNIT_SIZES.length) {
+      return { min: UNIT_SIZES[UNIT_SIZES.length - 1], max: null, tooLarge: true };
+    }
+
+    const min = UNIT_SIZES[minIndex];
+    const max = minIndex + 1 < UNIT_SIZES.length ? UNIT_SIZES[minIndex + 1] : null;
     return { min, max, tooLarge: false };
-  }, [bufferedCuft, totalCuft]);
+  }, [bufferedCuft, totalCuft, selectedItems]);
 
   const addItem = (item) => {
     setSelectedItems((prev) => {
