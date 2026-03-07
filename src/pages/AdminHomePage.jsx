@@ -12,6 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import SortableImageGrid from "../components/admin/SortableImageGrid";
 
 const SECTION_TYPES = [
   { value: "pillars", label: "Pillars / Value Props (with icons)" },
