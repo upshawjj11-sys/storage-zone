@@ -62,14 +62,13 @@ export default function AdminPopups() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-gray-900">{p.title}</h3>
-                    <Badge
-                      className={`border-0 text-xs ${
-                        p.status === "active" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
-                      }`}
-                    >
+                    <h3 className="font-semibold text-gray-900">{p.title || <span className="italic text-gray-400">Untitled</span>}</h3>
+                    <Badge className={`border-0 text-xs ${p.status === "active" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}>
                       {p.status}
                     </Badge>
+                    {p.template && p.template !== "centered" && (
+                      <Badge className="border-0 text-xs bg-blue-50 text-blue-600 capitalize">{p.template.replace(/_/g, " ")}</Badge>
+                    )}
                   </div>
                   <p className="text-sm text-gray-500 mt-0.5">
                     Trigger: {p.trigger?.replace(/_/g, " ")} • Pages: {p.show_on_pages?.join(", ") || "All"}
