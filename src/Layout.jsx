@@ -80,11 +80,15 @@ export default function Layout({ children, currentPageName }) {
     );
   }
 
+  // Extract facilityId from URL for facility-specific popup matching
+  const facilityId = new URLSearchParams(window.location.search).get("id");
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <PopupRenderer currentPageName={currentPageName} facilityId={facilityId} />
     </div>
   );
 }
