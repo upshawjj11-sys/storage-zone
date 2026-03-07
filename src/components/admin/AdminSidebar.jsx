@@ -29,6 +29,7 @@ const navItems = [
   { icon: MessageSquare, label: "Popups", page: "AdminPopups" },
   { icon: CalendarCheck, label: "Reservations", page: "AdminReservations" },
   { icon: Palette, label: "Branding Kit", page: "AdminBranding" },
+  { icon: PanelTop, label: "Page Configs", page: "AdminPageConfigs" },
   { icon: SlidersHorizontal, label: "Site Settings", page: "AdminSiteSettings" },
   { icon: Layers, label: "Bulk Update", page: "AdminBulkUpdate" },
   { icon: Users, label: "Team Members", page: "AdminTeam" },

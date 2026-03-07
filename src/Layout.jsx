@@ -18,6 +18,7 @@ const adminPages = [
   "AdminTeam",
   "AdminSiteSettings",
   "AdminBulkUpdate",
+  "AdminPageConfigs",
 ];
 
 export default function Layout({ children, currentPageName }) {
