@@ -305,6 +305,49 @@ export default function AdminSizeGuideConfig({ onSaveStatus }) {
         </div>
       </SectionCard>
 
+      {/* ── Available Unit Sizes (Calculator) ── */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-base">Available Unit Sizes</CardTitle>
+              <p className="text-xs text-gray-400 mt-1">The actual sizes your facility offers. The calculator uses these to make recommendations. The largest size will show with a "+" when items exceed its capacity.</p>
+            </div>
+            <Button variant="outline" size="sm" className="gap-1 text-xs flex-shrink-0" onClick={addAvailableUnit}>
+              <Plus className="w-3 h-3" /> Add Size
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {/* Header row */}
+          <div className="grid grid-cols-[1fr_60px_70px_70px_70px_auto] gap-2 px-1">
+            {["Label", "Sq Ft", "Width (in)", "Depth (in)", "Cu Ft", ""].map((h) => (
+              <p key={h} className="text-[10px] font-semibold text-gray-400 uppercase">{h}</p>
+            ))}
+          </div>
+          {availableUnitSizes.map((unit, idx) => (
+            <div key={idx} className="grid grid-cols-[1fr_60px_70px_70px_70px_auto] gap-2 items-center bg-gray-50 rounded-xl px-3 py-2.5 border">
+              <Input
+                className="h-7 text-sm"
+                value={unit.label}
+                onChange={(e) => updateAvailableUnit(idx, { label: e.target.value })}
+                placeholder="10' × 10'"
+              />
+              <Input className="h-7 text-xs" type="number" value={unit.sqft} onChange={(e) => updateAvailableUnit(idx, { sqft: parseFloat(e.target.value) || 0 })} />
+              <Input className="h-7 text-xs" type="number" value={unit.widthIn} onChange={(e) => updateAvailableUnit(idx, { widthIn: parseFloat(e.target.value) || 0 })} />
+              <Input className="h-7 text-xs" type="number" value={unit.depthIn} onChange={(e) => updateAvailableUnit(idx, { depthIn: parseFloat(e.target.value) || 0 })} />
+              <Input className="h-7 text-xs" type="number" value={unit.cuft} onChange={(e) => updateAvailableUnit(idx, { cuft: parseFloat(e.target.value) || 0 })} />
+              <button onClick={() => removeAvailableUnit(idx)} className="text-red-300 hover:text-red-500 flex-shrink-0">
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+          {availableUnitSizes.length === 0 && (
+            <p className="text-sm text-gray-400 text-center py-4">No unit sizes added yet. Click "Add Size" to get started.</p>
+          )}
+        </CardContent>
+      </Card>
+
       {/* ── Buffer Notice ── */}
       <SectionCard title="Calculator Buffer Notice">
         <div>
