@@ -188,11 +188,14 @@ export default function Locations() {
     return null;
   }
 
+  const markerColor = cfg.map_marker_color || "#E8792F";
+  const userDotColor = cfg.map_user_dot_color || "#1B365D";
+
   const facilityIcon = L.divIcon({
     className: "",
     html: `<div style="
       width: 36px; height: 36px;
-      background: #E8792F;
+      background: ${markerColor};
       border: 3px solid #ffffff;
       border-radius: 50% 50% 50% 0;
       transform: rotate(-45deg);
@@ -207,7 +210,7 @@ export default function Locations() {
     className: "",
     html: `<div style="
       width: 20px; height: 20px;
-      background: #1B365D;
+      background: ${userDotColor};
       border: 3px solid #ffffff;
       border-radius: 50%;
       box-shadow: 0 0 0 5px rgba(27,54,93,0.25);
