@@ -438,6 +438,19 @@ export default function Home() {
     }
   };
 
+  const renderSectionWithDisclaimer = (section) => {
+    const inner = renderSection(section);
+    if (!inner) return null;
+    const disclaimer = renderDisclaimer(section);
+    if (!disclaimer) return inner;
+    return (
+      <div key={section.id} style={{ background: section.bg_color || undefined }}>
+        {React.cloneElement(inner, { style: { ...inner.props?.style, paddingBottom: "0.5rem" }, key: undefined })}
+        {disclaimer}
+      </div>
+    );
+  };
+
   return (
     <div className="bg-white">
       {/* Hero with carousel + pillars */}
