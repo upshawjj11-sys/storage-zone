@@ -275,6 +275,97 @@ export default function AdminSizeGuideConfig({ onSaveStatus }) {
         </div>
       </SectionCard>
 
+      {/* ── Buffer Notice ── */}
+      <SectionCard title="Calculator Buffer Notice">
+        <div>
+          <Label>Buffer Notice Text</Label>
+          <p className="text-xs text-gray-400 mb-1">Shown below the fill bar in the size calculator.</p>
+          <Input
+            className="mt-1"
+            value={form.buffer_notice || ""}
+            onChange={(e) => update("buffer_notice", e.target.value)}
+            placeholder="50% buffer added — furniture can't be easily stacked..."
+          />
+        </div>
+      </SectionCard>
+
+      {/* ── Unit Size Guide Content ── */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Unit Size Guide Content</CardTitle>
+          <p className="text-xs text-gray-400 mt-1">Edit the description, bullet points, and optional photo for each unit size shown in the Size Guide tab.</p>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {(form.unit_sizes || DEFAULT_UNIT_SIZES).map((unit) => {
+            const isOpen = expandedUnit === unit.label;
+            return (
+              <div key={unit.label} className="border rounded-xl overflow-hidden">
+                <button
+                  className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition text-left"
+                  onClick={() => setExpandedUnit(isOpen ? null : unit.label)}
+                >
+                  <span className="font-semibold text-gray-800 text-sm">{unit.label}</span>
+                  {isOpen ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                </button>
+                {isOpen && (
+                  <div className="p-4 space-y-4 bg-white">
+                    {/* Description */}
+                    <div>
+                      <Label>Description</Label>
+                      <Input
+                        className="mt-1"
+                        value={unit.desc || ""}
+                        onChange={(e) => updateUnitSize(unit.label, { desc: e.target.value })}
+                        placeholder="Short description of this unit size..."
+                      />
+                    </div>
+                    {/* Photo */}
+                    <div>
+                      <Label>Photo <span className="text-xs text-gray-400 font-normal">(optional)</span></Label>
+                      <div className="flex items-center gap-3 mt-1">
+                        {unit.image_url && (
+                          <div className="relative">
+                            <img src={unit.image_url} alt={unit.label} className="h-16 w-28 object-cover rounded-lg border" />
+                            <button onClick={() => updateUnitSize(unit.label, { image_url: "" })} className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">×</button>
+                          </div>
+                        )}
+                        <label className="flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 text-sm text-gray-600">
+                          <Upload className="w-4 h-4" /> Upload Photo
+                          <input type="file" accept="image/*" className="hidden" onChange={(e) => handleUnitImageUpload(e, unit.label)} />
+                        </label>
+                      </div>
+                    </div>
+                    {/* Ideal items */}
+                    <div>
+                      <Label>Ideal for storing</Label>
+                      <div className="mt-2 space-y-2">
+                        {(unit.ideal || []).map((line, idx) => (
+                          <div key={idx} className="flex items-center gap-2">
+                            <span className="text-[#E8792F] text-sm">•</span>
+                            <Input
+                              className="flex-1 h-8 text-sm"
+                              value={line}
+                              onChange={(e) => updateUnitIdealItem(unit.label, idx, e.target.value)}
+                              placeholder="Bullet point..."
+                            />
+                            <button onClick={() => removeUnitIdealItem(unit.label, idx)} className="text-red-300 hover:text-red-500 flex-shrink-0">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                        <Button variant="outline" size="sm" className="gap-1 text-xs w-full mt-1" onClick={() => addUnitIdealItem(unit.label)}>
+                          <Plus className="w-3 h-3" /> Add Bullet Point
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+
       {/* ── Categories & Items ── */}
       <Card>
         <CardHeader>
