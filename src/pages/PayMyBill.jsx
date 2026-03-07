@@ -3,39 +3,83 @@ import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { MapPin, CreditCard, ChevronRight, ArrowLeft } from "lucide-react";
 
+const DEFAULTS = {
+  hero_bg_color: "#1B365D",
+  hero_bg_image: "",
+  hero_title: "Pay My Bill",
+  hero_subtitle: "Select your storage location below to securely access your account and make a payment.",
+  hero_title_color: "#ffffff",
+  hero_subtitle_color: "#bfdbfe",
+  hero_padding_y: "64px",
+  hero_show_icon: true,
+  hero_icon_bg_color: "rgba(255,255,255,0.1)",
+  page_bg_color: "#f9fafb",
+  card_bg_color: "#ffffff",
+  card_border_color: "#e5e7eb",
+  card_border_radius: "1rem",
+  card_shadow: "sm",
+  card_hover_border_color: "#1B365D",
+  card_title_color: "#111827",
+  card_subtitle_color: "#6b7280",
+  accent_color: "#E8792F",
+  portal_header_bg: "#ffffff",
+  portal_header_text_color: "#1f2937",
+  portal_back_btn_color: "#1B365D",
+};
+
+const shadowMap = { none: "none", sm: "0 1px 3px rgba(0,0,0,.1)", md: "0 4px 6px rgba(0,0,0,.1)", lg: "0 10px 15px rgba(0,0,0,.1)", xl: "0 20px 25px rgba(0,0,0,.15)" };
+
 export default function PayMyBill() {
   const [selected, setSelected] = useState(null);
 
-  const { data: facilities = [], isLoading } = useQuery({
+  const { data: facilities = [], isLoading: facLoading } = useQuery({
     queryKey: ["facilities-payment"],
     queryFn: () => base44.entities.Facility.filter({ status: "active" }),
   });
 
+  const { data: configs = [] } = useQuery({
+    queryKey: ["page-configs-pmb"],
+    queryFn: () => base44.entities.PageConfig.filter({ page_key: "pay_my_bill" }),
+  });
+
+  const cfg = { ...DEFAULTS, ...(configs[0] || {}) };
   const payableFacilities = facilities.filter((f) => f.payment_center_url);
+
+  const heroStyle = {
+    backgroundColor: cfg.hero_bg_color,
+    paddingTop: cfg.hero_padding_y,
+    paddingBottom: cfg.hero_padding_y,
+    ...(cfg.hero_bg_image ? {
+      backgroundImage: `url(${cfg.hero_bg_image})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    } : {}),
+  };
 
   if (selected) {
     return (
       <div className="flex flex-col" style={{ height: "calc(100vh - 80px)" }}>
-        {/* Header bar */}
-        <div className="flex items-center gap-3 px-4 py-3 bg-white border-b shadow-sm flex-shrink-0">
+        <div
+          className="flex items-center gap-3 px-4 py-3 border-b shadow-sm flex-shrink-0"
+          style={{ backgroundColor: cfg.portal_header_bg, color: cfg.portal_header_text_color }}
+        >
           <button
             onClick={() => setSelected(null)}
-            className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1B365D] transition font-medium"
+            className="flex items-center gap-1.5 text-sm font-medium transition hover:opacity-70"
+            style={{ color: cfg.portal_back_btn_color }}
           >
             <ArrowLeft className="w-4 h-4" />
             Change Location
           </button>
           <div className="h-4 w-px bg-gray-200" />
           <div className="flex items-center gap-2">
-            <CreditCard className="w-4 h-4 text-[#E8792F]" />
-            <span className="font-semibold text-gray-800 text-sm">{selected.name}</span>
+            <CreditCard className="w-4 h-4" style={{ color: cfg.accent_color }} />
+            <span className="font-semibold text-sm" style={{ color: cfg.portal_header_text_color }}>{selected.name}</span>
             {selected.city && (
               <span className="text-xs text-gray-400">— {selected.city}, {selected.state}</span>
             )}
           </div>
         </div>
-
-        {/* Payment portal iframe */}
         <iframe
           src={selected.payment_center_url}
           title={`Payment Portal – ${selected.name}`}
@@ -47,23 +91,33 @@ export default function PayMyBill() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ backgroundColor: cfg.page_bg_color }}>
       {/* Hero */}
-      <div className="bg-[#1B365D] text-white py-16 px-6 text-center">
-        <div className="max-w-2xl mx-auto">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/10 mb-5">
-            <CreditCard className="w-7 h-7 text-white" />
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">Pay My Bill</h1>
-          <p className="text-blue-200 text-lg">
-            Select your storage location below to securely access your account and make a payment.
+      <div style={heroStyle} className="px-6 text-center">
+        {cfg.hero_bg_image && (
+          <div className="absolute inset-0" style={{ backgroundColor: cfg.hero_bg_image_overlay || "rgba(0,0,0,0.4)" }} />
+        )}
+        <div className="max-w-2xl mx-auto relative">
+          {cfg.hero_show_icon && (
+            <div
+              className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-5"
+              style={{ backgroundColor: cfg.hero_icon_bg_color }}
+            >
+              <CreditCard className="w-7 h-7" style={{ color: cfg.hero_title_color }} />
+            </div>
+          )}
+          <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: cfg.hero_title_color }}>
+            {cfg.hero_title}
+          </h1>
+          <p className="text-lg" style={{ color: cfg.hero_subtitle_color }}>
+            {cfg.hero_subtitle}
           </p>
         </div>
       </div>
 
       {/* Facility list */}
       <div className="max-w-2xl mx-auto px-6 py-12">
-        {isLoading ? (
+        {facLoading ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
               <div key={i} className="h-20 bg-gray-200 rounded-2xl animate-pulse" />
@@ -77,35 +131,39 @@ export default function PayMyBill() {
           </div>
         ) : (
           <div className="space-y-3">
-            <p className="text-sm text-gray-500 font-medium mb-5 text-center">
+            <p className="text-sm font-medium mb-5 text-center" style={{ color: cfg.card_subtitle_color }}>
               {payableFacilities.length} location{payableFacilities.length !== 1 ? "s" : ""} available
             </p>
             {payableFacilities.map((facility) => (
               <button
                 key={facility.id}
                 onClick={() => setSelected(facility)}
-                className="w-full flex items-center gap-4 bg-white rounded-2xl px-5 py-4 shadow-sm border border-transparent hover:border-[#1B365D] hover:shadow-md transition-all text-left group"
+                style={{
+                  backgroundColor: cfg.card_bg_color,
+                  borderRadius: cfg.card_border_radius,
+                  border: `1px solid ${cfg.card_border_color}`,
+                  boxShadow: shadowMap[cfg.card_shadow] || shadowMap.sm,
+                }}
+                className="w-full flex items-center gap-4 px-5 py-4 text-left group transition-all hover:shadow-md"
+                onMouseEnter={(e) => e.currentTarget.style.borderColor = cfg.card_hover_border_color}
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = cfg.card_border_color}
               >
                 {facility.photos?.[0] ? (
-                  <img
-                    src={facility.photos[0]}
-                    alt={facility.name}
-                    className="w-14 h-14 rounded-xl object-cover flex-shrink-0"
-                  />
+                  <img src={facility.photos[0]} alt={facility.name} className="w-14 h-14 rounded-xl object-cover flex-shrink-0" />
                 ) : (
-                  <div className="w-14 h-14 rounded-xl bg-[#1B365D]/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-6 h-6 text-[#1B365D]" />
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${cfg.card_hover_border_color}15` }}>
+                    <MapPin className="w-6 h-6" style={{ color: cfg.card_hover_border_color }} />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-gray-900 group-hover:text-[#1B365D] transition">{facility.name}</p>
+                  <p className="font-semibold" style={{ color: cfg.card_title_color }}>{facility.name}</p>
                   {(facility.address || facility.city) && (
-                    <p className="text-sm text-gray-500 mt-0.5 truncate">
+                    <p className="text-sm mt-0.5 truncate" style={{ color: cfg.card_subtitle_color }}>
                       {[facility.address, facility.city, facility.state].filter(Boolean).join(", ")}
                     </p>
                   )}
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-[#1B365D] transition flex-shrink-0" />
+                <ChevronRight className="w-5 h-5 flex-shrink-0" style={{ color: cfg.card_subtitle_color }} />
               </button>
             ))}
           </div>

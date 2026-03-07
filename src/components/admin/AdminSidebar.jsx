@@ -17,6 +17,7 @@ import {
   LogOut,
   SlidersHorizontal,
   Layers,
+  PanelTop,
 } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
