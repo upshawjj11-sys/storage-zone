@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import DynamicIcon from "../components/home/DynamicIcon";
 import ReactMarkdown from "react-markdown";
 import HeroCarousel from "../components/home/HeroCarousel";
+import ImageSlider from "../components/shared/ImageSlider";
 
 export default function Home() {
   const { data: config } = useQuery({
