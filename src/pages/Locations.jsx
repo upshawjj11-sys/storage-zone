@@ -242,8 +242,8 @@ export default function Locations() {
                 {showMap ? "Hide Map" : "Show Map"}
               </button>
             )}
-            {userLocation && (
-              <button onClick={() => setUserLocation(null)} className="flex items-center gap-1 px-3 py-2 rounded-full text-sm" style={{ backgroundColor: cfg.filter_inactive_bg, color: cfg.filter_inactive_text }}>
+            {(userLocation || searchCoords) && (
+              <button onClick={() => { setUserLocation(null); setSearchCoords(null); setSearch(""); }} className="flex items-center gap-1 px-3 py-2 rounded-full text-sm" style={{ backgroundColor: cfg.filter_inactive_bg, color: cfg.filter_inactive_text }}>
                 <X className="w-3.5 h-3.5" /> Clear location
               </button>
             )}
