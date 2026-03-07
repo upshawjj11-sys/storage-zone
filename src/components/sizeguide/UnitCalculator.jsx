@@ -266,31 +266,30 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
               </div>
 
               {/* Recommendation Card */}
-              <div className="bg-[#1B365D] text-white rounded-2xl p-6 shadow-lg">
-                <p className="text-blue-200 text-sm font-medium mb-1">Recommended Unit Size</p>
+              <div className="rounded-2xl p-6 shadow-lg" style={{ background: cfg.recommendation_bg || "#1B365D", color: cfg.recommendation_text || "#ffffff" }}>
+                <p className="text-sm font-medium mb-1 opacity-70">Recommended Unit Size</p>
                 {recommendation?.tooLarge ? (
                   <p className="text-xl font-bold">10' × 30' or larger</p>
                 ) : (
                   <p className="text-3xl font-bold">
                     {recommendation?.min?.label}
                     {recommendation?.max && (
-                      <span className="text-xl font-semibold text-blue-200"> – {recommendation.max.label}</span>
+                      <span className="text-xl font-semibold opacity-70"> – {recommendation.max.label}</span>
                     )}
                   </p>
                 )}
-                <p className="text-blue-200 text-sm mt-2">
-                  {recommendation?.min?.desc}
-                </p>
+                <p className="text-sm mt-2 opacity-70">{recommendation?.min?.desc}</p>
                 {recommendation?.max && (
-                  <p className="text-blue-300 text-xs mt-1">
+                  <p className="text-xs mt-1 opacity-60">
                     Consider the {recommendation.max.label} for extra room and easier access.
                   </p>
                 )}
                 <a
-                  href="/locations"
-                  className="mt-4 inline-block bg-[#E8792F] hover:bg-orange-500 transition text-white font-semibold px-5 py-2.5 rounded-xl text-sm"
+                  href={cfg.cta_link || "/locations"}
+                  className="mt-4 inline-block font-semibold px-5 py-2.5 rounded-xl text-sm transition hover:opacity-90"
+                  style={{ background: cfg.cta_bg || "#E8792F", color: cfg.cta_text_color || "#ffffff" }}
                 >
-                  Find a Location →
+                  {cfg.cta_text || "Find a Location →"}
                 </a>
               </div>
             </>
