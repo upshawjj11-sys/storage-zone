@@ -324,7 +324,7 @@ export default function Locations() {
             zoom={mapZoom}
             style={{ height: "100%", width: "100%" }}
             scrollWheelZoom={false}
-            dragging={true}
+            dragging={cfg.map_draggable !== false ? false : false}
             zoomControl={true}
           >
             <TileLayer
