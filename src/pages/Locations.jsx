@@ -304,7 +304,7 @@ export default function Locations() {
           </p>
         )}
 
-        {isLoading ? (
+        {isLoading || isWaitingForGeocode ? (
           <div className={gridClass}>
             {[1, 2, 3].map((i) => (
               <div key={i} className="bg-white rounded-2xl p-6 animate-pulse">
