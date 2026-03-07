@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { ArrowLeft, Save, Plus, Trash2, ChevronDown, ChevronUp, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Save, Plus, Trash2, ChevronDown, ChevronUp, Eye, EyeOff, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
