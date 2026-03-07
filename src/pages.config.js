@@ -66,6 +66,7 @@ import Home from './pages/Home';
 import Locations from './pages/Locations';
 import PayMyBill from './pages/PayMyBill';
 import PublicPage from './pages/PublicPage';
+import SizeGuide from './pages/SizeGuide';
 import __Layout from './Layout.jsx';
 
 
@@ -89,6 +90,7 @@ export const PAGES = {
     "Locations": Locations,
     "PayMyBill": PayMyBill,
     "PublicPage": PublicPage,
+    "SizeGuide": SizeGuide,
 }
 
 export const pagesConfig = {
