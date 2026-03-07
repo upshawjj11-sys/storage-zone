@@ -424,6 +424,77 @@ function SectionEditor({ section, onChange, onRemove, index }) {
           </div>
           <div><Label>Background Color</Label><Input type="color" value={section.bg_color || "#ffffff"} onChange={(e) => onChange({ ...section, bg_color: e.target.value })} className="h-10 w-24 p-1" /></div>
           <div className="border-t pt-4">{renderDataEditor()}</div>
+
+          {/* Disclaimer box */}
+          <div className="border-t pt-4">
+            <div className="border rounded-xl p-4 space-y-3 bg-white">
+              <div className="flex items-center justify-between">
+                <Label className="font-semibold text-sm">Section Disclaimer</Label>
+                <Switch checked={!!(data.disclaimer?.enabled)} onCheckedChange={(v) => updateData("disclaimer", { ...(data.disclaimer||{}), enabled: v })} />
+              </div>
+              {data.disclaimer?.enabled && (
+                <div className="space-y-3">
+                  <div>
+                    <Label className="text-xs">Disclaimer Text</Label>
+                    <Textarea rows={2} value={data.disclaimer?.text || ""} onChange={(e) => updateData("disclaimer", { ...(data.disclaimer||{}), text: e.target.value })} placeholder="* Offer subject to availability. Terms and conditions apply." />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label className="text-xs">Font Size</Label>
+                      <Select value={data.disclaimer?.size || "xs"} onValueChange={(v) => updateData("disclaimer", { ...(data.disclaimer||{}), size: v })}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="xs">Extra Small</SelectItem>
+                          <SelectItem value="sm">Small</SelectItem>
+                          <SelectItem value="base">Normal</SelectItem>
+                          <SelectItem value="lg">Large</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label className="text-xs">Font Style</Label>
+                      <Select value={data.disclaimer?.style || "normal"} onValueChange={(v) => updateData("disclaimer", { ...(data.disclaimer||{}), style: v })}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="normal">Normal</SelectItem>
+                          <SelectItem value="italic">Italic</SelectItem>
+                          <SelectItem value="bold">Bold</SelectItem>
+                          <SelectItem value="bold-italic">Bold Italic</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label className="text-xs">Alignment</Label>
+                      <Select value={data.disclaimer?.align || "center"} onValueChange={(v) => updateData("disclaimer", { ...(data.disclaimer||{}), align: v })}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="left">Left</SelectItem>
+                          <SelectItem value="center">Center</SelectItem>
+                          <SelectItem value="right">Right</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Label className="text-xs whitespace-nowrap">Text Color</Label>
+                      <input type="color" value={data.disclaimer?.color || "#6b7280"} onChange={(e) => updateData("disclaimer", { ...(data.disclaimer||{}), color: e.target.value })} className="h-7 w-10 p-0.5 rounded border" />
+                    </div>
+                  </div>
+                  <div>
+                    <Label className="text-xs">Font Family</Label>
+                    <Select value={data.disclaimer?.font || "inherit"} onValueChange={(v) => updateData("disclaimer", { ...(data.disclaimer||{}), font: v })}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="inherit">Default (inherit)</SelectItem>
+                        <SelectItem value="serif">Serif</SelectItem>
+                        <SelectItem value="monospace">Monospace</SelectItem>
+                        <SelectItem value="cursive">Cursive</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>
