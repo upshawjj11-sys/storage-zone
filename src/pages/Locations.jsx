@@ -103,10 +103,31 @@ export default function Locations() {
   const cfg = { ...DEFAULTS, ...(configs[0] || {}) };
   const allFeatures = getAllFeatures(facilities);
 
+  // Geocode search query with debounce
+  useEffect(() => {
+    if (!search.trim()) { setSearchCoords(null); return; }
+    clearTimeout(geocodeTimer.current);
+    geocodeTimer.current = setTimeout(async () => {
+      setGeocoding(true);
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(search)}&countrycodes=us&format=json&limit=1`);
+        const data = await res.json();
+        if (data[0]) {
+          setSearchCoords({ lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) });
+        } else {
+          setSearchCoords(null);
+        }
+      } catch {
+        setSearchCoords(null);
+      }
+      setGeocoding(false);
+    }, 600);
+  }, [search]);
+
   const handleUseMyLocation = () => {
     setLocationLoading(true);
     navigator.geolocation.getCurrentPosition(
-      (pos) => { setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }); setSearch(""); setLocationLoading(false); },
+      (pos) => { setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }); setSearch(""); setSearchCoords(null); setLocationLoading(false); },
       () => { alert("Could not get your location."); setLocationLoading(false); }
     );
   };
