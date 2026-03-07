@@ -151,8 +151,9 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
           none: "w-10 h-10 rounded-full bg-transparent",
         }[arrowStyle] || "w-10 h-10 rounded-full";
 
-        const ArrowIconLeft = arrowStyle === "arrow" ? ArrowLeft : ChevronLeft;
-        const ArrowIconRight = arrowStyle === "arrow" ? ArrowRightIcon : ChevronRight;
+        const useArrowIcon = ac.icon_type === "arrow" || arrowStyle === "arrow";
+        const ArrowIconLeft = useArrowIcon ? ArrowLeft : ChevronLeft;
+        const ArrowIconRight = useArrowIcon ? ArrowRightIcon : ChevronRight;
 
         const dotShape = (active) => {
           const base = { background: active ? dotActiveColor : dotInactiveColor };
