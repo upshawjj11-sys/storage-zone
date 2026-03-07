@@ -12,6 +12,11 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
     id: `cat-${ci}`, label: cat.label, icon: cat.icon, items: cat.items,
   }));
 
+  // Use admin-configured unit sizes if available, otherwise fall back to hardcoded
+  const UNIT_SIZES = (cfg.available_unit_sizes?.length ? cfg.available_unit_sizes : FALLBACK_UNIT_SIZES)
+    .slice()
+    .sort((a, b) => a.cuft - b.cuft);
+
   const totalCuft = useMemo(
     () => selectedItems.reduce((sum, si) => sum + si.cuft * si.qty, 0),
     [selectedItems]
