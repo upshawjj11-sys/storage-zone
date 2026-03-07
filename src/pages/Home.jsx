@@ -267,6 +267,61 @@ export default function Home() {
           </section>
         );
       }
+      case "two_column": {
+        const renderCol = (col) => {
+          if (!col) return null;
+          switch (col.type) {
+            case "image":
+              return col.image_url ? (
+                <img src={col.image_url} alt={col.alt || ""} className="w-full h-full object-cover rounded-2xl" />
+              ) : null;
+            case "image_slider":
+              return (col.images || []).length > 0 ? (
+                <div className="h-72 md:h-full min-h-[280px]"><ImageSlider images={col.images} /></div>
+              ) : null;
+            case "features":
+              return (
+                <div className="space-y-5">
+                  {(col.items || []).map((f, i) => (
+                    <div key={i} className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${secondaryColor}15`, color: secondaryColor }}>
+                        <DynamicIcon name={f.icon || "Check"} className="w-5 h-5" />
+                      </div>
+                      <div>
+                        {f.title && <p className="font-semibold text-gray-900">{f.title}</p>}
+                        {f.desc && <p className="text-sm text-gray-500 mt-0.5">{f.desc}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            case "text_block":
+            default:
+              return (
+                <div className={`text-${col.align || "left"}`}>
+                  {col.heading && <h2 className="text-3xl font-bold mb-4" style={{ color: primaryColor }}>{col.heading}</h2>}
+                  {col.content && <div className="prose prose-gray max-w-none text-gray-600"><ReactMarkdown>{col.content}</ReactMarkdown></div>}
+                </div>
+              );
+          }
+        };
+        return (
+          <section key={section.id} style={{ background: section.bg_color || "#fff" }} className="py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+              {(section.title || section.subtitle) && (
+                <div className="text-center mb-12">
+                  {section.title && <h2 className="text-3xl font-bold mb-2" style={{ color: primaryColor }}>{section.title}</h2>}
+                  {section.subtitle && <p className="text-gray-500">{section.subtitle}</p>}
+                </div>
+              )}
+              <div className="grid md:grid-cols-2 gap-10 items-center">
+                <div>{renderCol(data.left)}</div>
+                <div>{renderCol(data.right)}</div>
+              </div>
+            </div>
+          </section>
+        );
+      }
       default: return null;
     }
   };
