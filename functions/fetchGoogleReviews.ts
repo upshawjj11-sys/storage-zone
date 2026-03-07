@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
     }
 
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${encodeURIComponent(placeId)}&fields=reviews&key=${apiKey}`
+      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${encodeURIComponent(placeId)}&fields=reviews,name&key=${apiKey}`
     );
 
     const data = await response.json();
