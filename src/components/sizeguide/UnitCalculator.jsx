@@ -53,9 +53,12 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
       return { min: UNIT_SIZES[UNIT_SIZES.length - 1], max: null, tooLarge: true };
     }
 
+    // Bias toward the next size up — furniture is hard to stack and customers
+    // generally need more room than they think. Show min as the "at least" size
+    // and max (one step up) as the primary recommendation.
     const min = UNIT_SIZES[minIndex];
     const max = minIndex + 1 < UNIT_SIZES.length ? UNIT_SIZES[minIndex + 1] : null;
-    return { min, max, tooLarge: false };
+    return { min, recommended: max || min, max, tooLarge: false };
   }, [bufferedCuft, totalCuft, selectedItems]);
 
   const addItem = (item) => {
