@@ -9,6 +9,15 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ITEM_CATEGORIES } from "../sizeguide/itemData";
 
+const DEFAULT_AVAILABLE_UNIT_SIZES = [
+  { label: "5' × 5'",   sqft: 25,  widthIn: 60,  depthIn: 60,  cuft: 200,  desc: "Walk-in closet size." },
+  { label: "5' × 10'",  sqft: 50,  widthIn: 60,  depthIn: 120, cuft: 400,  desc: "Large shed size." },
+  { label: "10' × 10'", sqft: 100, widthIn: 120, depthIn: 120, cuft: 800,  desc: "Half a standard garage." },
+  { label: "10' × 15'", sqft: 150, widthIn: 120, depthIn: 180, cuft: 1200, desc: "Large bedroom size." },
+  { label: "10' × 20'", sqft: 200, widthIn: 120, depthIn: 240, cuft: 1600, desc: "Small garage size." },
+  { label: "10' × 30'", sqft: 300, widthIn: 120, depthIn: 360, cuft: 2400, desc: "Large garage size." },
+];
+
 const DEFAULT_UNIT_SIZES = [
   { label: "5' × 5'",   desc: "Walk-in closet size. Great for a few boxes, small furniture, seasonal items.", ideal: ["Boxes of offseason clothing and old toys", "Small furniture or appliances", "Seasonal decor or equipment such as garden tools and camping gear", "Office supplies and business records"], image_url: "" },
   { label: "5' × 10'",  desc: "Large shed size. Fits a bedroom's worth of furniture.", ideal: ["Mattress sets, dressers, and coffee tables", "Artwork, musical instruments, and mid-size electronics", "Seasonal decor or equipment such as garden tools, skis, and camping gear", "Business supplies, records, or inventory"], image_url: "" },
