@@ -473,6 +473,10 @@ export default function AdminPageConfigs() {
             </SectionCard>
           </div>
         </TabsContent>
+        {/* ─── SIZE GUIDE ─── */}
+        <TabsContent value="size_guide">
+          <AdminSizeGuideConfig />
+        </TabsContent>
       </Tabs>
     </div>
   );
