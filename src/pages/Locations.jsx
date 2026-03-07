@@ -188,6 +188,35 @@ export default function Locations() {
     return null;
   }
 
+  const facilityIcon = L.divIcon({
+    className: "",
+    html: `<div style="
+      width: 36px; height: 36px;
+      background: #E8792F;
+      border: 3px solid #ffffff;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    "></div>`,
+    iconSize: [36, 36],
+    iconAnchor: [18, 36],
+    popupAnchor: [0, -38],
+  });
+
+  const userIcon = L.divIcon({
+    className: "",
+    html: `<div style="
+      width: 20px; height: 20px;
+      background: #1B365D;
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px rgba(27,54,93,0.25);
+    "></div>`,
+    iconSize: [20, 20],
+    iconAnchor: [10, 10],
+    popupAnchor: [0, -14],
+  });
+
   const gridClass = cfg.card_layout === "grid-2" ? "grid md:grid-cols-2 gap-6" : cfg.card_layout === "list" ? "flex flex-col gap-4" : "grid md:grid-cols-2 lg:grid-cols-3 gap-6";
 
   const heroStyle = {
