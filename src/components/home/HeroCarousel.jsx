@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Search, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, MapPin, ChevronLeft, ChevronRight, ArrowLeft, ArrowRight as ArrowRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DynamicIcon from "./DynamicIcon";
 
