@@ -318,7 +318,7 @@ export default function Locations() {
 
       {/* Map — full-width inline expanded section */}
       {showMap && (
-        <div className="w-full border-t border-b border-gray-200" style={{ height: "420px" }}>
+        <div className="w-full" style={{ height: "460px", position: "relative" }}>
           <MapContainer
             center={mapCenter}
             zoom={mapZoom}
@@ -327,21 +327,26 @@ export default function Locations() {
             dragging={true}
             zoomControl={true}
           >
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' />
+            <TileLayer
+              url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+              attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            />
             <MapRecenter center={mapCenter} zoom={mapZoom} />
             {filtered.filter((f) => f.latitude && f.longitude).map((f) => (
-              <Marker key={f.id} position={[f.latitude, f.longitude]}>
-                <Popup>
-                  <strong>{f.name}</strong><br />
-                  {f.city}, {f.state}<br />
-                  {f.distance != null && <span className="text-gray-500 text-xs">{f.distance.toFixed(1)} mi away</span>}<br />
-                  <a href={createPageUrl("FacilityPage") + `?id=${f.id}`} className="text-blue-600 underline text-sm">View Details</a>
+              <Marker key={f.id} position={[f.latitude, f.longitude]} icon={facilityIcon}>
+                <Popup className="custom-map-popup">
+                  <div style={{ minWidth: "160px", fontFamily: "Inter, sans-serif" }}>
+                    <div style={{ fontWeight: 700, fontSize: "14px", color: "#1B365D", marginBottom: "4px" }}>{f.name}</div>
+                    <div style={{ fontSize: "12px", color: "#6b7280", marginBottom: "6px" }}>{f.city}, {f.state}</div>
+                    {f.distance != null && <div style={{ fontSize: "11px", color: "#E8792F", fontWeight: 600, marginBottom: "6px" }}>{f.distance.toFixed(1)} mi away</div>}
+                    <a href={createPageUrl("FacilityPage") + `?id=${f.id}`} style={{ fontSize: "12px", color: "#E8792F", fontWeight: 600, textDecoration: "none" }}>View Details →</a>
+                  </div>
                 </Popup>
               </Marker>
             ))}
             {userLocation && (
-              <Marker position={[userLocation.lat, userLocation.lng]}>
-                <Popup>📍 Your Location</Popup>
+              <Marker position={[userLocation.lat, userLocation.lng]} icon={userIcon}>
+                <Popup><div style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, color: "#1B365D", fontSize: "13px" }}>📍 Your Location</div></Popup>
               </Marker>
             )}
           </MapContainer>
