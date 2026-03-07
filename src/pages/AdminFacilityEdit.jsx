@@ -39,6 +39,7 @@ export default function AdminFacilityEdit() {
     name: "", slug: "", address: "", city: "", state: "", zip: "",
     phone: "", email: "", about: "", status: "active",
     facility_type: "self_storage",
+    google_place_id: "", google_my_business_url: "", facebook_url: "", instagram_url: "", x_url: "", tiktok_url: "", youtube_url: "",
     banner_image: "", banner_title: "", banner_subtitle: "",
     about_collapsible: false,
     show_pillars: false, pillars: [], pillars_bg_color: "#1B365D",
@@ -171,8 +172,20 @@ export default function AdminFacilityEdit() {
               <div className="grid md:grid-cols-2 gap-4">
                 <div><Label>Phone</Label><Input value={form.phone} onChange={(e) => update("phone", e.target.value)} /></div>
                 <div><Label>Email</Label><Input value={form.email} onChange={(e) => update("email", e.target.value)} /></div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
+                </div>
+                <div><Label>Google Place ID</Label><Input value={form.google_place_id} onChange={(e) => update("google_place_id", e.target.value)} placeholder="For auto-fetching Google reviews" /></div>
+                <div className="space-y-4 border-t pt-4">
+                  <p className="text-sm font-semibold text-gray-700">Social Media Links</p>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div><Label>Google My Business</Label><Input value={form.google_my_business_url} onChange={(e) => update("google_my_business_url", e.target.value)} placeholder="https://..." /></div>
+                    <div><Label>Facebook</Label><Input value={form.facebook_url} onChange={(e) => update("facebook_url", e.target.value)} placeholder="https://..." /></div>
+                    <div><Label>Instagram</Label><Input value={form.instagram_url} onChange={(e) => update("instagram_url", e.target.value)} placeholder="https://..." /></div>
+                    <div><Label>X (Twitter)</Label><Input value={form.x_url} onChange={(e) => update("x_url", e.target.value)} placeholder="https://..." /></div>
+                    <div><Label>TikTok</Label><Input value={form.tiktok_url} onChange={(e) => update("tiktok_url", e.target.value)} placeholder="https://..." /></div>
+                    <div><Label>YouTube</Label><Input value={form.youtube_url} onChange={(e) => update("youtube_url", e.target.value)} placeholder="https://..." /></div>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <Label>Facility Type</Label>
                   <Select value={form.facility_type || "self_storage"} onValueChange={(v) => update("facility_type", v)}>
