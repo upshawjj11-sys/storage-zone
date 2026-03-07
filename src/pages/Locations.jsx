@@ -7,6 +7,7 @@ import { MapPin, Phone, Search, ArrowRight, Navigation, Map, X, SlidersHorizonta
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L from "leaflet";
 
 const DEFAULTS = {
   hero_bg_color: "#1B365D",
