@@ -405,6 +405,11 @@ export default function AdminPageEdit() {
           <ArrowLeft className="w-5 h-5" />
         </Button>
         <h1 className="text-xl font-bold flex-1">{pageId ? "Edit Page" : "New Page"}</h1>
+        {form.slug && (
+          <Button variant="outline" className="gap-2 rounded-full" onClick={() => window.open(`/page/${form.slug}`, "_blank")}>
+            <Eye className="w-4 h-4" /> Open Live
+          </Button>
+        )}
         <Button
           variant="outline"
           className="gap-2 rounded-full"
