@@ -77,6 +77,10 @@ const defaultLocations = {
   show_map_toggle: true,
   show_filter_toggle: true,
   show_near_me_button: true,
+  map_tile_style: "dark_all",
+  map_draggable: false,
+  map_marker_color: "#E8792F",
+  map_user_dot_color: "#1B365D",
 };
 
 function ColorRow({ label, hint, field, form, update }) {
