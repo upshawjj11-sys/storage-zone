@@ -75,7 +75,7 @@ export default function SizeGuide() {
         </div>
 
         {activeTab === "calculator" && <UnitCalculator categories={categories} cfg={cfg} />}
-        {activeTab === "guide" && <UnitSizeCards />}
+        {activeTab === "guide" && <UnitSizeCards unitSizes={cfg.unit_sizes} />}
       </div>
     </div>
   );
