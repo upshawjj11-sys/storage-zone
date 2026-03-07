@@ -315,10 +315,31 @@ export default function Home() {
               return col.image_url ? (
                 <img src={col.image_url} alt={col.alt || ""} className="w-full h-full object-cover rounded-2xl" />
               ) : null;
-            case "image_slider":
-              return (col.images || []).length > 0 ? (
-                <div className="h-72 md:h-full min-h-[280px]"><ImageSlider images={col.images} /></div>
-              ) : null;
+            case "image_slider": {
+              if (!(col.images || []).length) return null;
+              const perSlide = col.per_slide || 1;
+              if (perSlide === 2) {
+                const [slideIdx, setSlideIdx] = React.useState(0);
+                const imgs = col.images;
+                const total = Math.ceil(imgs.length / 2);
+                const pair = imgs.slice(slideIdx * 2, slideIdx * 2 + 2);
+                return (
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-3">
+                      {pair.map((img, i) => <img key={i} src={img} alt="" className="w-full h-52 object-cover rounded-xl" />)}
+                    </div>
+                    {total > 1 && (
+                      <div className="flex justify-center gap-2 mt-2">
+                        {Array.from({ length: total }).map((_, i) => (
+                          <button key={i} onClick={() => setSlideIdx(i)} className={`w-2 h-2 rounded-full transition ${i === slideIdx ? "bg-gray-700" : "bg-gray-300"}`} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+              return <div className="h-72 md:h-full min-h-[280px]"><ImageSlider images={col.images} /></div>;
+            }
             case "features":
               return (
                 <div className="space-y-5">
@@ -335,6 +356,29 @@ export default function Home() {
                   ))}
                 </div>
               );
+            case "testimonials": {
+              const tItems = col.items || [];
+              const cStarColor = col.star_color || "#facc15";
+              const cCardBg = col.card_bg || "#ffffff";
+              const cTextColor = col.text_color || "#374151";
+              return (
+                <div className="space-y-4">
+                  {tItems.map((t, i) => (
+                    <div key={i} className="p-5 rounded-2xl shadow-sm" style={{ background: cCardBg }}>
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: t.avatar_color || primaryColor }}>{(t.name||"?")[0]}</div>
+                        <div>
+                          <p className="font-semibold text-sm" style={{ color: cTextColor }}>{t.name}</p>
+                          {t.location && <p className="text-xs opacity-60" style={{ color: cTextColor }}>{t.location}</p>}
+                        </div>
+                      </div>
+                      <div className="flex mb-2">{[...Array(Math.max(1, Math.min(5, t.rating||5)))].map((_, j) => <Star key={j} className="w-3.5 h-3.5 fill-current" style={{ color: cStarColor }} />)}</div>
+                      <p className="text-sm leading-relaxed" style={{ color: cTextColor }}>"{t.text}"</p>
+                    </div>
+                  ))}
+                </div>
+              );
+            }
             case "text_block":
             default:
               return (
