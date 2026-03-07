@@ -424,55 +424,77 @@ export default function AdminFacilityEdit() {
                     <p className="text-sm text-gray-400 text-center py-4">No pillars yet. Click "Add Pillar" to get started.</p>
                   )}
 
-                  <div className="space-y-3">
-                    {form.pillars.map((p, i) => {
-                      const updatePillar = (patch) => {
-                        const ps = [...form.pillars]; ps[i] = { ...ps[i], ...patch }; update("pillars", ps);
-                      };
-                      return (
-                        <div key={i} className="p-4 bg-gray-50 rounded-xl border space-y-3">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Pillar {i + 1}</span>
-                            <Button variant="ghost" size="icon" className="text-red-400 w-7 h-7" onClick={() => update("pillars", form.pillars.filter((_, j) => j !== i))}>
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
-                          <div className="grid grid-cols-2 gap-3">
-                            <div>
-                              <Label className="text-xs">Icon</Label>
-                              <div className="mt-1">
-                                <IconPicker value={p.icon} onChange={(v) => updatePillar({ icon: v })} />
-                              </div>
-                            </div>
-                            <div>
-                              <Label className="text-xs">Main Text</Label>
-                              <Input className="mt-1 h-8 text-sm" value={p.text} placeholder="e.g. 24/7 Access" onChange={(e) => updatePillar({ text: e.target.value })} />
-                            </div>
-                            <div>
-                              <Label className="text-xs">Sub-label <span className="font-normal text-gray-400">(optional)</span></Label>
-                              <Input className="mt-1 h-8 text-sm" value={p.label || ""} placeholder="e.g. Gate Code Required" onChange={(e) => updatePillar({ label: e.target.value })} />
-                            </div>
-                            <div className="flex gap-4 items-end">
-                              <div>
-                                <Label className="text-xs">Icon Color</Label>
-                                <div className="flex items-center gap-1.5 mt-1">
-                                  <input type="color" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
-                                  <Input className="w-20 h-8 text-xs font-mono" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} />
-                                </div>
-                              </div>
-                              <div>
-                                <Label className="text-xs">Text Color</Label>
-                                <div className="flex items-center gap-1.5 mt-1">
-                                  <input type="color" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
-                                  <Input className="w-20 h-8 text-xs font-mono" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                  <DragDropContext onDragEnd={(result) => {
+                    if (!result.destination) return;
+                    const ps = Array.from(form.pillars);
+                    const [moved] = ps.splice(result.source.index, 1);
+                    ps.splice(result.destination.index, 0, moved);
+                    update("pillars", ps);
+                  }}>
+                    <Droppable droppableId="facility-pillars">
+                      {(provided) => (
+                        <div className="space-y-3" {...provided.droppableProps} ref={provided.innerRef}>
+                          {form.pillars.map((p, i) => {
+                            const updatePillar = (patch) => {
+                              const ps = [...form.pillars]; ps[i] = { ...ps[i], ...patch }; update("pillars", ps);
+                            };
+                            return (
+                              <Draggable key={i} draggableId={`facility-pillar-${i}`} index={i}>
+                                {(provided) => (
+                                  <div ref={provided.innerRef} {...provided.draggableProps} className="p-4 bg-gray-50 rounded-xl border space-y-3">
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-2">
+                                        <div {...provided.dragHandleProps} className="text-gray-300 cursor-grab">
+                                          <GripVertical className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Pillar {i + 1}</span>
+                                      </div>
+                                      <Button variant="ghost" size="icon" className="text-red-400 w-7 h-7" onClick={() => update("pillars", form.pillars.filter((_, j) => j !== i))}>
+                                        <Trash2 className="w-4 h-4" />
+                                      </Button>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                      <div>
+                                        <Label className="text-xs">Icon</Label>
+                                        <div className="mt-1">
+                                          <IconPicker value={p.icon} onChange={(v) => updatePillar({ icon: v })} />
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <Label className="text-xs">Main Text</Label>
+                                        <Input className="mt-1 h-8 text-sm" value={p.text} placeholder="e.g. 24/7 Access" onChange={(e) => updatePillar({ text: e.target.value })} />
+                                      </div>
+                                      <div>
+                                        <Label className="text-xs">Sub-label <span className="font-normal text-gray-400">(optional)</span></Label>
+                                        <Input className="mt-1 h-8 text-sm" value={p.label || ""} placeholder="e.g. Gate Code Required" onChange={(e) => updatePillar({ label: e.target.value })} />
+                                      </div>
+                                      <div className="flex gap-4 items-end">
+                                        <div>
+                                          <Label className="text-xs">Icon Color</Label>
+                                          <div className="flex items-center gap-1.5 mt-1">
+                                            <input type="color" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                                            <Input className="w-20 h-8 text-xs font-mono" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <Label className="text-xs">Text Color</Label>
+                                          <div className="flex items-center gap-1.5 mt-1">
+                                            <input type="color" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                                            <Input className="w-20 h-8 text-xs font-mono" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </Draggable>
+                            );
+                          })}
+                          {provided.placeholder}
                         </div>
-                      );
-                    })}
-                  </div>
+                      )}
+                    </Droppable>
+                  </DragDropContext>
                 </>
               )}
             </CardContent>
