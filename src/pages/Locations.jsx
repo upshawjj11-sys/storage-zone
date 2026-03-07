@@ -293,9 +293,11 @@ export default function Locations() {
 
       {/* Listings */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-        {userLocation && (
+        {activeCoords && (
           <p className="text-sm text-gray-500 mb-4 flex items-center gap-1">
-            <Navigation className="w-4 h-4" style={{ color: cfg.accent_color }} /> Showing results near your location
+            <Navigation className="w-4 h-4" style={{ color: cfg.accent_color }} />
+            {userLocation ? "Showing locations nearest to you" : `Showing locations within ${RADIUS_MI} miles of "${search}"`}
+            {geocoding && <span className="ml-2 text-xs text-gray-400">Locating...</span>}
           </p>
         )}
 
