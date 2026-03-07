@@ -45,6 +45,7 @@ const DEFAULT_CONFIG = {
   cta_bg: "#E8792F",
   cta_text_color: "#ffffff",
   buffer_notice: "50% buffer added — furniture can't be easily stacked, so extra room is factored in for access and layout.",
+  available_unit_sizes: DEFAULT_AVAILABLE_UNIT_SIZES,
   unit_sizes: DEFAULT_UNIT_SIZES,
   categories: ITEM_CATEGORIES.map((cat, ci) => ({
     id: `cat-${ci}`,
