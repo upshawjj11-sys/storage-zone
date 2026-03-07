@@ -137,19 +137,39 @@ export default function Locations() {
     setShowFilters(true);
   };
 
-  let filtered = facilities.filter((f) => {
-    const q = search.toLowerCase();
-    const matchSearch = !search || f.name?.toLowerCase().includes(q) || f.city?.toLowerCase().includes(q) || f.state?.toLowerCase().includes(q) || f.zip?.toLowerCase().includes(q);
-    const matchFeatures = selectedFeatures.length === 0 || selectedFeatures.every((feat) => (f.features || []).includes(feat));
-    return matchSearch && matchFeatures;
-  });
+  // Active coords: prefer userLocation (Near Me), fall back to geocoded search coords
+  const activeCoords = userLocation || searchCoords;
+  const RADIUS_MI = 30;
 
-  if (userLocation) {
-    filtered = filtered.map((f) => ({
+  let filtered = facilities
+    .map((f) => ({
       ...f,
-      distance: f.latitude && f.longitude ? distanceMiles(userLocation.lat, userLocation.lng, f.latitude, f.longitude) : null,
-    })).sort((a, b) => { if (a.distance == null) return 1; if (b.distance == null) return -1; return a.distance - b.distance; });
-  }
+      distance: activeCoords && f.latitude && f.longitude
+        ? distanceMiles(activeCoords.lat, activeCoords.lng, f.latitude, f.longitude)
+        : null,
+    }))
+    .filter((f) => {
+      const matchFeatures = selectedFeatures.length === 0 || selectedFeatures.every((feat) => (f.features || []).includes(feat));
+      if (!matchFeatures) return false;
+
+      if (activeCoords) {
+        // Distance mode: show anything within 30 miles (or no lat/lng as fallback text match)
+        if (f.distance != null) return f.distance <= RADIUS_MI;
+        // Facility has no coords — fall back to text match so it doesn't silently disappear
+        const q = search.toLowerCase();
+        return !search || f.name?.toLowerCase().includes(q) || f.city?.toLowerCase().includes(q) || f.state?.toLowerCase().includes(q) || f.zip?.toLowerCase().includes(q);
+      }
+
+      // No coords available yet — plain text match
+      const q = search.toLowerCase();
+      return !search || f.name?.toLowerCase().includes(q) || f.city?.toLowerCase().includes(q) || f.state?.toLowerCase().includes(q) || f.zip?.toLowerCase().includes(q);
+    })
+    .sort((a, b) => {
+      if (a.distance == null && b.distance == null) return 0;
+      if (a.distance == null) return 1;
+      if (b.distance == null) return -1;
+      return a.distance - b.distance;
+    });
 
   const mapCenter = userLocation ? [userLocation.lat, userLocation.lng] : filtered[0]?.latitude ? [filtered[0].latitude, filtered[0].longitude] : [39.5, -98.35];
 
