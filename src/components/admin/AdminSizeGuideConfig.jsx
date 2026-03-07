@@ -9,6 +9,15 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ITEM_CATEGORIES } from "../sizeguide/itemData";
 
+const DEFAULT_UNIT_SIZES = [
+  { label: "5' × 5'",   desc: "Walk-in closet size. Great for a few boxes, small furniture, seasonal items.", ideal: ["Boxes of offseason clothing and old toys", "Small furniture or appliances", "Seasonal decor or equipment such as garden tools and camping gear", "Office supplies and business records"], image_url: "" },
+  { label: "5' × 10'",  desc: "Large shed size. Fits a bedroom's worth of furniture.", ideal: ["Mattress sets, dressers, and coffee tables", "Artwork, musical instruments, and mid-size electronics", "Seasonal decor or equipment such as garden tools, skis, and camping gear", "Business supplies, records, or inventory"], image_url: "" },
+  { label: "10' × 10'", desc: "Half a standard garage. Fits 1-bedroom apartment contents.", ideal: ["Household furniture such as sofas, tables, dressers, and mattress sets", "Electronics and musical instruments", "Seasonal decor or equipment such as garden tools, bicycles, and skis", "Office equipment such as desks, chairs, and shelves"], image_url: "" },
+  { label: "10' × 15'", desc: "Large bedroom size. Fits 2-bedroom home contents.", ideal: ["Bulky household furniture such as sofas, dining tables, and bedroom sets", "Major appliances such as washers, dryers, and refrigerators", "Outdoor equipment such as grills, bicycles, skis, and camping gear", "Commercial inventory and office equipment"], image_url: "" },
+  { label: "10' × 20'", desc: "Small garage size. Fits 3–4 bedroom home.", ideal: ["Sectional sofas, dining tables, mattress sets, and entertainment centers", "Major appliances such as washers, dryers, and refrigerators", "Large musical instruments or equipment such as pianos and large TVs", "Outdoor equipment such as lawnmowers, grills, and bicycles"], image_url: "" },
+  { label: "10' × 30'", desc: "Large garage size. Fits 4–5 bedroom home.", ideal: ["Items that aren't easily boxed up", "Large household furniture such as sectional sofas and entertainment centers", "Major appliances such as washers, dryers, and refrigerators", "Outdoor equipment such as lawnmowers, grills, bicycles, and small boats"], image_url: "" },
+];
+
 const DEFAULT_CONFIG = {
   page_key: "size_guide",
   hero_title: "Storage Size Guide",
@@ -26,6 +35,8 @@ const DEFAULT_CONFIG = {
   cta_link: "/locations",
   cta_bg: "#E8792F",
   cta_text_color: "#ffffff",
+  buffer_notice: "50% buffer added — furniture can't be easily stacked, so extra room is factored in for access and layout.",
+  unit_sizes: DEFAULT_UNIT_SIZES,
   categories: ITEM_CATEGORIES.map((cat, ci) => ({
     id: `cat-${ci}`,
     label: cat.label,
