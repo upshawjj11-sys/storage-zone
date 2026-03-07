@@ -183,6 +183,26 @@ export default function AdminSizeGuideConfig({ onSaveStatus }) {
     updateCategory(catId, { items });
   };
 
+  // ── Available unit sizes (calculator) helpers ─────────────────
+  const availableUnitSizes = form.available_unit_sizes || DEFAULT_AVAILABLE_UNIT_SIZES;
+
+  const updateAvailableUnit = (idx, patch) => {
+    const arr = [...availableUnitSizes];
+    arr[idx] = { ...arr[idx], ...patch };
+    update("available_unit_sizes", arr);
+  };
+
+  const addAvailableUnit = () => {
+    update("available_unit_sizes", [
+      ...availableUnitSizes,
+      { label: "", sqft: 0, widthIn: 0, depthIn: 0, cuft: 0, desc: "" },
+    ]);
+  };
+
+  const removeAvailableUnit = (idx) => {
+    update("available_unit_sizes", availableUnitSizes.filter((_, i) => i !== idx));
+  };
+
   // ── Unit size helpers ─────────────────────────────────────────
   const updateUnitSize = (label, patch) => {
     setForm((p) => ({
