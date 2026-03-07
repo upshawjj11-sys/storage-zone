@@ -1,6 +1,6 @@
 import React from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { GripVertical } from "lucide-react";
+import { GripVertical, Eye, EyeOff } from "lucide-react";
 
 const ALL_SECTIONS = [
   { key: "contact", label: "Contact Information" },
@@ -11,13 +11,31 @@ const ALL_SECTIONS = [
   { key: "videos", label: "Videos" },
   { key: "reviews", label: "Customer Reviews" },
   { key: "faq", label: "Frequently Asked Questions" },
+  { key: "socials", label: "Social Media" },
 ];
 
 export default function FacilitySectionOrderEditor({ order, onChange }) {
-  // Fill in any missing sections at the end
+  // Parse order: can be array of strings (backwards compat) or objects with {key, visible}
+  const parseOrder = (rawOrder) => {
+    return rawOrder.map((item) => {
+      if (typeof item === "string") return { key: item, visible: true };
+      return item;
+    });
+  };
+
+  const normalizeOrder = (parsed) => {
+    return parsed.map((item) => ({
+      key: item.key,
+      visible: item.visible !== false,
+    }));
+  };
+
+  const parsedOrder = parseOrder(order || []);
   const fullOrder = [
-    ...order.filter((k) => ALL_SECTIONS.find((s) => s.key === k)),
-    ...ALL_SECTIONS.map((s) => s.key).filter((k) => !order.includes(k)),
+    ...parsedOrder.filter((item) => ALL_SECTIONS.find((s) => s.key === item.key)),
+    ...ALL_SECTIONS.map((s) => ({ key: s.key, visible: true })).filter(
+      (item) => !parsedOrder.find((p) => p.key === item.key)
+    ),
   ];
 
   const onDragEnd = (result) => {
@@ -25,7 +43,14 @@ export default function FacilitySectionOrderEditor({ order, onChange }) {
     const items = [...fullOrder];
     const [moved] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, moved);
-    onChange(items);
+    onChange(normalizeOrder(items));
+  };
+
+  const toggleVisibility = (key) => {
+    const updated = fullOrder.map((item) =>
+      item.key === key ? { ...item, visible: !item.visible } : item
+    );
+    onChange(normalizeOrder(updated));
   };
 
   return (
@@ -35,28 +60,38 @@ export default function FacilitySectionOrderEditor({ order, onChange }) {
         <Droppable droppableId="sections">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps} className="space-y-2">
-              {fullOrder.map((key, index) => {
-                const section = ALL_SECTIONS.find((s) => s.key === key);
-                if (!section) return null;
-                return (
-                  <Draggable key={key} draggableId={key} index={index}>
-                    {(prov, snap) => (
-                      <div
-                        ref={prov.innerRef}
-                        {...prov.draggableProps}
-                        {...prov.dragHandleProps}
-                        className={`flex items-center gap-3 p-3 bg-white border rounded-xl select-none transition-shadow ${snap.isDragging ? "shadow-lg border-[#E8792F]" : "border-gray-200"}`}
-                      >
-                        <GripVertical className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                        <span className="text-sm font-medium text-gray-700">{section.label}</span>
-                        <span className="ml-auto text-xs text-gray-400">#{index + 1}</span>
-                      </div>
-                    )}
-                  </Draggable>
-                );
-              })}
-              {provided.placeholder}
-            </div>
+               {fullOrder.map((item, index) => {
+                 const section = ALL_SECTIONS.find((s) => s.key === item.key);
+                 if (!section) return null;
+                 return (
+                   <Draggable key={item.key} draggableId={item.key} index={index}>
+                     {(prov, snap) => (
+                       <div
+                         ref={prov.innerRef}
+                         {...prov.draggableProps}
+                         {...prov.dragHandleProps}
+                         className={`flex items-center gap-3 p-3 bg-white border rounded-xl select-none transition-shadow ${snap.isDragging ? "shadow-lg border-[#E8792F]" : "border-gray-200"} ${!item.visible ? "opacity-50" : ""}`}
+                       >
+                         <GripVertical className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                         <span className="text-sm font-medium text-gray-700">{section.label}</span>
+                         <span className="ml-auto text-xs text-gray-400">#{index + 1}</span>
+                         <button
+                           onClick={() => toggleVisibility(item.key)}
+                           className="text-gray-400 hover:text-gray-600 transition"
+                         >
+                           {item.visible ? (
+                             <Eye className="w-4 h-4" />
+                           ) : (
+                             <EyeOff className="w-4 h-4" />
+                           )}
+                         </button>
+                       </div>
+                     )}
+                   </Draggable>
+                 );
+               })}
+               {provided.placeholder}
+             </div>
           )}
         </Droppable>
       </DragDropContext>
