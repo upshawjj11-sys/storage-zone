@@ -731,10 +731,41 @@ export default function AdminFacilityEdit() {
 
         <TabsContent value="widget">
           <Card>
-            <CardContent className="p-6 space-y-4">
-              <p className="text-sm text-gray-500">Connect to your storage management software for live unit availability.</p>
-              <div><Label>API Key</Label><Input value={form.unit_grid_api_key} onChange={(e) => update("unit_grid_api_key", e.target.value)} placeholder="Your storage management API key" /></div>
-              <div><Label>Widget Embed Code</Label><Textarea rows={6} value={form.unit_grid_widget_code} onChange={(e) => update("unit_grid_widget_code", e.target.value)} placeholder="Paste your widget HTML/JS embed code here" /></div>
+            <CardContent className="p-6 space-y-6">
+              <div>
+                <p className="text-sm font-semibold text-gray-700 mb-1">Unit Availability Widget</p>
+                <p className="text-sm text-gray-500 mb-4">Connect to your storage management software for live unit availability.</p>
+                <div className="space-y-4">
+                  <div><Label>API Key</Label><Input value={form.unit_grid_api_key} onChange={(e) => update("unit_grid_api_key", e.target.value)} placeholder="Your storage management API key" /></div>
+                  <div><Label>Widget Embed Code</Label><Textarea rows={6} value={form.unit_grid_widget_code} onChange={(e) => update("unit_grid_widget_code", e.target.value)} placeholder="Paste your widget HTML/JS embed code here" /></div>
+                </div>
+              </div>
+
+              <div className="border-t pt-6">
+                <p className="text-sm font-semibold text-gray-700 mb-1">Payment Center</p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Enter the URL for this facility's online payment portal. Customers can select this location on the <strong>Pay My Bill</strong> page and the portal will open in an embedded window — without leaving your website.
+                </p>
+                <div>
+                  <Label>Payment Portal URL</Label>
+                  <Input
+                    value={form.payment_center_url || ""}
+                    onChange={(e) => update("payment_center_url", e.target.value)}
+                    placeholder="https://pay.yoursoftware.com/facility-id"
+                    className="mt-1"
+                  />
+                  {form.payment_center_url && (
+                    <p className="text-xs text-green-600 mt-1.5 flex items-center gap-1">
+                      ✓ This facility will appear on the Pay My Bill page
+                    </p>
+                  )}
+                  {!form.payment_center_url && (
+                    <p className="text-xs text-gray-400 mt-1.5">
+                      Leave blank to hide this facility from the Pay My Bill page.
+                    </p>
+                  )}
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
