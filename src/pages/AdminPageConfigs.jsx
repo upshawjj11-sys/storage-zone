@@ -427,6 +427,30 @@ export default function AdminPageConfigs() {
               </div>
             </SectionCard>
 
+            <SectionCard title="Search Radius">
+              <div>
+                <Label>Default Search Radius (miles)</Label>
+                <p className="text-xs text-gray-400 mb-1">Used when customers search by city, zip, or use "Near Me"</p>
+                <Select value={String(loc.search_radius_miles || 50)} onValueChange={(v) => updateLoc("search_radius_miles", Number(v))}>
+                  <SelectTrigger className="mt-1 w-48"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10 miles</SelectItem>
+                    <SelectItem value="25">25 miles</SelectItem>
+                    <SelectItem value="50">50 miles</SelectItem>
+                    <SelectItem value="100">100 miles</SelectItem>
+                    <SelectItem value="250">250 miles</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <div>
+                  <p className="text-sm font-medium text-gray-800">Allow Customers to Change Radius</p>
+                  <p className="text-xs text-gray-400">Shows a radius dropdown in the filters bar for visitors to adjust</p>
+                </div>
+                <Switch checked={!!loc.allow_customer_radius_filter} onCheckedChange={(v) => updateLoc("allow_customer_radius_filter", v)} />
+              </div>
+            </SectionCard>
+
             <SectionCard title="Visibility Toggles">
               {[
                 { field: "show_facility_image", label: "Show Facility Image on Cards" },
