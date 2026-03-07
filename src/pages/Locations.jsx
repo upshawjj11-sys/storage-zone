@@ -6,7 +6,7 @@ import { base44 } from "@/api/base44Client";
 import { MapPin, Phone, Search, ArrowRight, Navigation, Map, X, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
 const DEFAULTS = {
   hero_bg_color: "#1B365D",
