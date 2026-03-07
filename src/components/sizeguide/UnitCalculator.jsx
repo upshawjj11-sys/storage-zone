@@ -83,9 +83,9 @@ export default function UnitCalculator() {
     setSelectedItems(items);
   };
 
-  // Visual unit fill percentage
+  // Visual unit fill percentage — based on recommended min unit
   const fillPct = recommendation
-    ? Math.min(100, Math.round((bufferedCuft / (recommendation.min?.cuft || 1)) * 100))
+    ? Math.min(99, Math.round((bufferedCuft / (recommendation.min?.cuft || 1)) * 100))
     : 0;
 
   return (
