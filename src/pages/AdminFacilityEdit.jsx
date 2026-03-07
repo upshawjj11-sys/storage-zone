@@ -6,6 +6,7 @@ import { base44 } from "@/api/base44Client";
 import {
   ArrowLeft, Save, Plus, Trash2, Upload, X, GripVertical, Eye
 } from "lucide-react";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import HoursEditor from "../components/admin/HoursEditor";
 import IconPicker from "../components/admin/IconPicker";
 import FacilitySectionOrderEditor from "../components/admin/FacilitySectionOrderEditor";
