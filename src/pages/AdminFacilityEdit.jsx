@@ -43,7 +43,7 @@ export default function AdminFacilityEdit() {
     show_pillars: false, pillars: [], pillars_bg_color: "#1B365D",
     features: [], photos: [], videos: [], hours: defaultHours, access_hours: [], holiday_hours: [],
     faqs: [], reviews: [], units: [],
-    unit_grid_api_key: "", unit_grid_widget_code: "",
+    unit_grid_api_key: "", unit_grid_widget_code: "", payment_center_url: "",
     latitude: null, longitude: null, meta_title: "", meta_description: "",
     sections_order: [], page_styles: {},
   });
