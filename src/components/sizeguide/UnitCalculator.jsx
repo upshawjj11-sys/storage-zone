@@ -101,13 +101,13 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
           <h2 className="text-lg font-bold text-gray-800 mb-4">1. Select Your Items</h2>
           <p className="text-sm text-gray-500 mb-4">Click any item to add it to your storage unit, then adjust quantities.</p>
           <div className="space-y-2">
-            {ITEM_CATEGORIES.map((cat) => {
-              const isOpen = openCategory === cat.label;
+            {categories.map((cat) => {
+              const isOpen = openCategory === cat.id || openCategory === cat.label;
               return (
-                <div key={cat.label} className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                <div key={cat.id || cat.label} className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
                   <button
                     className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition"
-                    onClick={() => setOpenCategory(isOpen ? null : cat.label)}
+                    onClick={() => setOpenCategory(isOpen ? null : (cat.id || cat.label))}
                   >
                     <span className="font-semibold text-gray-800 flex items-center gap-2">
                       <span>{cat.icon}</span> {cat.label}
