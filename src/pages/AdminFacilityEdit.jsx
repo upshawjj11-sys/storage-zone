@@ -126,6 +126,11 @@ export default function AdminFacilityEdit() {
             {facilityId ? "Edit Facility" : "New Facility"}
           </h1>
         </div>
+        {form.slug && (
+          <Button variant="outline" className="rounded-full gap-2" onClick={() => window.open(`/facility/${form.slug}`, "_blank")}>
+            <Eye className="w-4 h-4" /> Preview
+          </Button>
+        )}
         <Button onClick={handleSave} disabled={saving} className="rounded-full gap-2" style={{ background: "#E8792F" }}>
           <Save className="w-4 h-4" />
           {saving ? "Saving..." : "Save"}

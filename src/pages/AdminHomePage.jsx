@@ -576,6 +576,9 @@ export default function AdminHomePage() {
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Home Page Editor</h1>
           <p className="text-gray-500 mt-1">Customize every section of your home page.</p>
         </div>
+        <Button variant="outline" className="rounded-full gap-2" onClick={() => window.open("/", "_blank")}>
+          <Eye className="w-4 h-4" /> Preview
+        </Button>
         <Button onClick={handleSave} disabled={saving} className="rounded-full gap-2" style={{ background: "#E8792F" }}>
           <Save className="w-4 h-4" /> {saving ? "Saving..." : "Save Changes"}
         </Button>
