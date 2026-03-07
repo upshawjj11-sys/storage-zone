@@ -277,7 +277,7 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
               <div className="rounded-2xl p-6 shadow-lg" style={{ background: cfg.recommendation_bg || "#1B365D", color: cfg.recommendation_text || "#ffffff" }}>
                 <p className="text-sm font-medium mb-1 opacity-70">Recommended Unit Size</p>
                 {recommendation?.tooLarge ? (
-                  <p className="text-xl font-bold">10' × 30' or larger</p>
+                  <p className="text-xl font-bold">{UNIT_SIZES[UNIT_SIZES.length - 1]?.label}+</p>
                 ) : (
                   <p className="text-3xl font-bold">{recommendation?.recommended?.label}</p>
                 )}
