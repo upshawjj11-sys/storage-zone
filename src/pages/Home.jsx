@@ -463,7 +463,7 @@ export default function Home() {
 
       {/* Dynamic sections (pillars already rendered in hero, skip it) */}
       {hasSections ? (
-        sectionsWithoutHeroPillars.map(renderSection)
+        sectionsWithoutHeroPillars.map(renderSectionWithDisclaimer)
       ) : (
         <>
           <section className="py-20 bg-gray-50">
