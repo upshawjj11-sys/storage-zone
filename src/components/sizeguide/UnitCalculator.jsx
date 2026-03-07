@@ -17,8 +17,8 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
     [selectedItems]
   );
 
-  // Add 30% buffer for maneuvering/stacking
-  const bufferedCuft = totalCuft * 1.3;
+  // Add 50% buffer — furniture can't be stacked easily, need room to maneuver
+  const bufferedCuft = totalCuft * 1.5;
 
   const recommendation = useMemo(() => {
     if (totalCuft === 0) return null;
