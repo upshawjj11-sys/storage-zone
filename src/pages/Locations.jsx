@@ -174,7 +174,18 @@ export default function Locations() {
       return a.distance - b.distance;
     });
 
-  const mapCenter = userLocation ? [userLocation.lat, userLocation.lng] : filtered[0]?.latitude ? [filtered[0].latitude, filtered[0].longitude] : [39.5, -98.35];
+  const mapCenter = activeCoords
+    ? [activeCoords.lat, activeCoords.lng]
+    : filtered[0]?.latitude
+    ? [filtered[0].latitude, filtered[0].longitude]
+    : [39.5, -98.35];
+  const mapZoom = activeCoords ? 10 : 4;
+
+  function MapRecenter({ center, zoom }) {
+    const map = useMap();
+    useEffect(() => { map.setView(center, zoom); }, [center, zoom]);
+    return null;
+  }
 
   const gridClass = cfg.card_layout === "grid-2" ? "grid md:grid-cols-2 gap-6" : cfg.card_layout === "list" ? "flex flex-col gap-4" : "grid md:grid-cols-2 lg:grid-cols-3 gap-6";
 
