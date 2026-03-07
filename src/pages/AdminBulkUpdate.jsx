@@ -293,7 +293,7 @@ export default function AdminBulkUpdate() {
                       <SelectContent>
                         {popups.map((p) => (
                           <SelectItem key={p.id} value={p.id}>
-                            {p.title} <span className="text-gray-400 text-xs ml-2">({p.status})</span>
+                            {p.title || "Untitled"} ({p.status})
                           </SelectItem>
                         ))}
                       </SelectContent>
