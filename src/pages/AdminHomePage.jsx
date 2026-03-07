@@ -673,18 +673,15 @@ export default function AdminHomePage() {
 
             <div>
               <Label>Hero Carousel Images</Label>
-              <p className="text-xs text-gray-500 mb-2">Add multiple images — they will auto-rotate in the carousel.</p>
-              <div className="grid grid-cols-3 gap-2 mb-3">
-                {(form.hero_images || []).map((img, idx) => (
-                  <div key={idx} className="relative group">
-                    <img src={img} alt="" className="w-full h-24 object-cover rounded-lg border" />
-                    <button
-                      onClick={() => removeHeroImage(idx)}
-                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-                    >×</button>
-                    {idx === 0 && <span className="absolute bottom-1 left-1 bg-black/60 text-white text-xs px-1.5 rounded">Main</span>}
-                  </div>
-                ))}
+              <p className="text-xs text-gray-500 mb-2">Add multiple images — drag to reorder, hover to remove.</p>
+              <div className="mb-3">
+                <SortableImageGrid
+                  images={form.hero_images || []}
+                  onChange={(imgs) => { update("hero_images", imgs); update("hero_image", imgs[0] || ""); }}
+                  onRemove={removeHeroImage}
+                  showMainBadge
+                  droppableId="hero-images"
+                />
               </div>
               <label className="flex items-center gap-2 px-4 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit">
                 <Upload className="w-4 h-4" /> Add Carousel Image
