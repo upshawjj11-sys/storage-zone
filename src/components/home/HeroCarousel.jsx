@@ -132,34 +132,72 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
       </div>
 
       {/* Carousel arrows */}
-      {images.length > 1 && (
-        <>
-          <button
-            onClick={prev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white transition"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={next}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center text-white transition"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+      {images.length > 1 && (() => {
+        const ac = config?.hero_arrows || {};
+        const dc = config?.hero_dots || {};
+        const showArrows = ac.show !== false;
+        const showDots = dc.show !== false;
+        const arrowStyle = ac.style || "circle";
+        const arrowColor = ac.color || "rgba(0,0,0,0.4)";
+        const arrowIconColor = ac.icon_color || "#ffffff";
+        const dotStyle = dc.style || "circle";
+        const dotActiveColor = dc.active_color || secondaryColor;
+        const dotInactiveColor = dc.inactive_color || "rgba(255,255,255,0.4)";
 
-          {/* Dots */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2">
-            {images.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                className="w-2.5 h-2.5 rounded-full transition-all"
-                style={{ background: i === current ? secondaryColor : "rgba(255,255,255,0.4)" }}
-              />
-            ))}
-          </div>
-        </>
-      )}
+        const arrowBtnClass = {
+          circle: "w-10 h-10 rounded-full",
+          square: "w-10 h-10 rounded-lg",
+          pill: "w-14 h-9 rounded-full",
+          none: "w-10 h-10 rounded-full bg-transparent",
+        }[arrowStyle] || "w-10 h-10 rounded-full";
+
+        const ArrowIconLeft = arrowStyle === "arrow" ? ArrowLeft : ChevronLeft;
+        const ArrowIconRight = arrowStyle === "arrow" ? ArrowRightIcon : ChevronRight;
+
+        const dotShape = (active) => {
+          const base = { background: active ? dotActiveColor : dotInactiveColor };
+          if (dotStyle === "circle") return { ...base, width: 10, height: 10, borderRadius: "50%" };
+          if (dotStyle === "square") return { ...base, width: 10, height: 10, borderRadius: 2 };
+          if (dotStyle === "line") return { ...base, width: active ? 28 : 10, height: 4, borderRadius: 4 };
+          if (dotStyle === "dash") return { ...base, width: 20, height: 3, borderRadius: 2 };
+          return { ...base, width: 10, height: 10, borderRadius: "50%" };
+        };
+
+        return (
+          <>
+            {showArrows && (
+              <>
+                <button
+                  onClick={prev}
+                  className={`absolute left-4 top-1/2 -translate-y-1/2 z-30 ${arrowBtnClass} flex items-center justify-center transition hover:opacity-80`}
+                  style={{ background: arrowStyle === "none" ? "transparent" : arrowColor }}
+                >
+                  <ArrowIconLeft className="w-5 h-5" style={{ color: arrowIconColor }} />
+                </button>
+                <button
+                  onClick={next}
+                  className={`absolute right-4 top-1/2 -translate-y-1/2 z-30 ${arrowBtnClass} flex items-center justify-center transition hover:opacity-80`}
+                  style={{ background: arrowStyle === "none" ? "transparent" : arrowColor }}
+                >
+                  <ArrowIconRight className="w-5 h-5" style={{ color: arrowIconColor }} />
+                </button>
+              </>
+            )}
+            {showDots && (
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2 items-center">
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrent(i)}
+                    className="transition-all"
+                    style={dotShape(i === current)}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        );
+      })()}
     </section>
   );
 }
