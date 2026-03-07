@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { UNIT_SIZES } from "./itemData";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-const UNIT_DETAILS = [
+const DEFAULT_UNIT_DETAILS = [
   {
     label: "5' × 5'",
     ideal: [
@@ -59,8 +59,20 @@ const UNIT_DETAILS = [
   },
 ];
 
-export default function UnitSizeCards() {
+export default function UnitSizeCards({ unitSizes }) {
   const [expanded, setExpanded] = useState("10' × 10'");
+
+  // Merge saved config with defaults — saved config wins on desc/ideal/image_url
+  const mergedUnits = UNIT_SIZES.map((unit) => {
+    const saved = unitSizes?.find((u) => u.label === unit.label);
+    const fallback = DEFAULT_UNIT_DETAILS.find((d) => d.label === unit.label);
+    return {
+      ...unit,
+      desc: saved?.desc || unit.desc,
+      ideal: saved?.ideal?.length ? saved.ideal : (fallback?.ideal || []),
+      image_url: saved?.image_url || null,
+    };
+  });
 
   return (
     <div className="max-w-4xl mx-auto pb-16">
@@ -68,8 +80,7 @@ export default function UnitSizeCards() {
         Browse our available unit sizes and find the right fit for your belongings.
       </p>
       <div className="space-y-3">
-        {UNIT_SIZES.map((unit) => {
-          const detail = UNIT_DETAILS.find((d) => d.label === unit.label);
+        {mergedUnits.map((unit) => {
           const isOpen = expanded === unit.label;
           return (
             <div key={unit.label} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
@@ -78,9 +89,13 @@ export default function UnitSizeCards() {
                 onClick={() => setExpanded(isOpen ? null : unit.label)}
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#1B365D] rounded-xl flex items-center justify-center text-white font-bold text-xs text-center leading-tight">
-                    {unit.label.replace("' ×", "x").replace("'", "").replace("'", "")}
-                  </div>
+                  {unit.image_url ? (
+                    <img src={unit.image_url} alt={unit.label} className="w-12 h-12 object-cover rounded-xl border" />
+                  ) : (
+                    <div className="w-12 h-12 bg-[#1B365D] rounded-xl flex items-center justify-center text-white font-bold text-xs text-center leading-tight">
+                      {unit.label.replace("' ×", "x").replace(/'/g, "")}
+                    </div>
+                  )}
                   <div>
                     <p className="font-bold text-gray-900 text-lg">{unit.label}</p>
                     <p className="text-sm text-gray-500">{unit.sqft} sq ft · {unit.desc.split(".")[0]}</p>
@@ -88,18 +103,25 @@ export default function UnitSizeCards() {
                 </div>
                 {isOpen ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
               </button>
-              {isOpen && detail && (
+              {isOpen && (
                 <div className="px-6 pb-6 border-t border-gray-100 pt-4">
+                  {unit.image_url && (
+                    <img src={unit.image_url} alt={unit.label} className="w-full h-48 object-cover rounded-xl mb-4" />
+                  )}
                   <p className="text-gray-600 mb-3">{unit.desc}</p>
-                  <p className="font-semibold text-gray-800 mb-2">Ideal for storing:</p>
-                  <ul className="space-y-1">
-                    {detail.ideal.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                        <span className="text-[#E8792F] mt-0.5">•</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  {unit.ideal.length > 0 && (
+                    <>
+                      <p className="font-semibold text-gray-800 mb-2">Ideal for storing:</p>
+                      <ul className="space-y-1">
+                        {unit.ideal.map((item, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                            <span className="text-[#E8792F] mt-0.5">•</span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
                 </div>
               )}
             </div>
