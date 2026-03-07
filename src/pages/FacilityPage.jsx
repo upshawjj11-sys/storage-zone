@@ -33,6 +33,31 @@ export default function FacilityPage() {
     enabled: !!facilityId,
   });
 
+  const { data: nearbyFacilities = [] } = useQuery({
+    queryKey: ["nearby-facilities", facilityId, facility?.latitude, facility?.longitude],
+    queryFn: async () => {
+      if (!facility?.latitude || !facility?.longitude) return [];
+      const allFacilities = await base44.entities.Facility.list();
+      const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 3959; // Earth's radius in miles
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+      };
+      return allFacilities
+        .filter((f) => f.id !== facilityId && f.latitude && f.longitude && f.status === "active")
+        .map((f) => ({
+          ...f,
+          distance: calculateDistance(facility.latitude, facility.longitude, f.latitude, f.longitude),
+        }))
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 3);
+    },
+    enabled: !!facility?.latitude && !!facility?.longitude,
+  });
+
   const isBC = facility?.facility_type === "business_center";
 
   const handleAction = (unit = null) => {
@@ -392,7 +417,26 @@ export default function FacilityPage() {
                   ))}
                 </div>
               )}
-              <div className="rounded-2xl p-6 text-center" style={{ background: S.cta_bg }}>
+               {nearbyFacilities.length > 0 && (
+                 <div className="rounded-2xl p-6" style={{ background: S.sidebar_bg }}>
+                   <h3 className="font-bold mb-4" style={{ color: S.sidebar_heading_color }}>Other Locations Nearby</h3>
+                   <div className="space-y-3">
+                     {nearbyFacilities.map((nf) => (
+                       <a
+                         key={nf.id}
+                         href={`/facility/${nf.slug}?id=${nf.id}`}
+                         className="block p-3 rounded-xl border transition hover:border-orange-300 hover:bg-white/50"
+                         style={{ borderColor: S.faq_border_color }}
+                       >
+                         <p className="font-semibold text-sm" style={{ color: S.sidebar_heading_color }}>{nf.name}</p>
+                         <p className="text-xs mt-1" style={{ color: S.sidebar_text_color }}>{nf.city}, {nf.state}</p>
+                         <p className="text-xs font-medium mt-1" style={{ color: S.accent_color }}>{nf.distance.toFixed(1)} miles away</p>
+                       </a>
+                     ))}
+                   </div>
+                 </div>
+               )}
+               <div className="rounded-2xl p-6 text-center" style={{ background: S.cta_bg }}>
                 <h3 className="text-xl font-bold mb-2" style={{ color: S.cta_text_color }}>
                   {isBC ? "Interested in a Space?" : "Reserve Your Unit"}
                 </h3>
