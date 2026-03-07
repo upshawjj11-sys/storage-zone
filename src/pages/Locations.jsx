@@ -128,8 +128,13 @@ export default function Locations() {
   const handleUseMyLocation = () => {
     setLocationLoading(true);
     navigator.geolocation.getCurrentPosition(
-      (pos) => { setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }); setSearch(""); setSearchCoords(null); setLocationLoading(false); },
-      () => { alert("Could not get your location."); setLocationLoading(false); }
+      (pos) => {
+        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setSearch("");
+        setSearchCoords(null);
+        setLocationLoading(false);
+      },
+      () => { alert("Could not get your location. Please allow location access in your browser."); setLocationLoading(false); }
     );
   };
 
