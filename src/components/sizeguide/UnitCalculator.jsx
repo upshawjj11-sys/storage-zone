@@ -184,7 +184,9 @@ export default function UnitCalculator() {
                               <span className="text-xl flex-shrink-0">{si.icon}</span>
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium text-gray-800 truncate">{si.label}</p>
-                                <p className="text-xs text-gray-400">{si.cuft * si.qty} cu ft total</p>
+                                <p className="text-xs text-gray-400">
+                                  {Math.round(si.w / 12 * 10) / 10}' × {Math.round(si.d / 12 * 10) / 10}' × {Math.round(si.h / 12 * 10) / 10}' · {si.cuft * si.qty} cu ft
+                                </p>
                               </div>
                               <div className="flex items-center gap-1.5 flex-shrink-0">
                                 <button
