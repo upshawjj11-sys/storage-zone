@@ -31,6 +31,7 @@ const COLUMN_BLOCK_TYPES = [
   { value: "image", label: "Single Image" },
   { value: "features", label: "Features List" },
   { value: "image_slider", label: "Image Slider" },
+  { value: "testimonials", label: "Testimonials / Reviews" },
 ];
 
 function SectionEditor({ section, onChange, onRemove, index }) {
