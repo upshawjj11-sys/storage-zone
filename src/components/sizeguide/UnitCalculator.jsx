@@ -3,9 +3,14 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { ITEM_CATEGORIES, UNIT_SIZES } from "./itemData";
 import { Plus, Minus, Trash2, GripVertical, ChevronDown, ChevronUp, Info } from "lucide-react";
 
-export default function UnitCalculator() {
+export default function UnitCalculator({ categories: propCategories, cfg = {} }) {
   const [selectedItems, setSelectedItems] = useState([]);
-  const [openCategory, setOpenCategory] = useState("Seating");
+  const [openCategory, setOpenCategory] = useState(null);
+
+  // Use prop categories if provided, otherwise fall back to hardcoded
+  const categories = propCategories || ITEM_CATEGORIES.map((cat, ci) => ({
+    id: `cat-${ci}`, label: cat.label, icon: cat.icon, items: cat.items,
+  }));
 
   const totalCuft = useMemo(
     () => selectedItems.reduce((sum, si) => sum + si.cuft * si.qty, 0),
