@@ -94,6 +94,7 @@ export default function Locations() {
   const [geocoding, setGeocoding] = useState(false);
   const [selectedFeatures, setSelectedFeatures] = useState(() => getParams().features);
   const [showFilters, setShowFilters] = useState(() => getParams().features.length > 0);
+  const [customRadius, setCustomRadius] = useState(null);
   const geocodeTimer = React.useRef(null);
 
   useEffect(() => {
