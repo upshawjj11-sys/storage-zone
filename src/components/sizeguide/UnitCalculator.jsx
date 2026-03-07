@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { ITEM_CATEGORIES, UNIT_SIZES } from "./itemData";
+import { ITEM_CATEGORIES, UNIT_SIZES as FALLBACK_UNIT_SIZES } from "./itemData";
 import { Plus, Minus, Trash2, GripVertical, ChevronDown, ChevronUp, Info } from "lucide-react";
 
 export default function UnitCalculator({ categories: propCategories, cfg = {} }) {
