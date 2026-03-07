@@ -145,6 +145,19 @@ export default function Locations() {
   // While geocoding is in progress for a typed search, don't filter yet
   const isWaitingForGeocode = search.trim() && !userLocation && geocoding;
 
+  const q = search.trim().toLowerCase();
+
+  function textMatch(f) {
+    if (!q) return true;
+    return (
+      f.name?.toLowerCase().includes(q) ||
+      f.city?.toLowerCase().includes(q) ||
+      f.state?.toLowerCase().includes(q) ||
+      f.zip?.toLowerCase().includes(q) ||
+      f.address?.toLowerCase().includes(q)
+    );
+  }
+
   let filtered = isWaitingForGeocode ? [] : facilities
     .map((f) => ({
       ...f,
@@ -156,17 +169,15 @@ export default function Locations() {
       const matchFeatures = selectedFeatures.length === 0 || selectedFeatures.every((feat) => (f.features || []).includes(feat));
       if (!matchFeatures) return false;
 
-      if (activeCoords) {
-        // Distance mode: show anything within 30 miles
-        if (f.distance != null) return f.distance <= RADIUS_MI;
-        // Facility has no coords — fall back to text match
-        const q = search.toLowerCase();
-        return !search || f.name?.toLowerCase().includes(q) || f.city?.toLowerCase().includes(q) || f.state?.toLowerCase().includes(q) || f.zip?.toLowerCase().includes(q);
-      }
+      if (!q) return true;
 
-      // searchCoords failed to resolve — plain text match fallback
-      const q = search.toLowerCase();
-      return !search || f.name?.toLowerCase().includes(q) || f.city?.toLowerCase().includes(q) || f.state?.toLowerCase().includes(q) || f.zip?.toLowerCase().includes(q);
+      // Always try text match first — handles state names, abbreviations, city names, etc.
+      if (textMatch(f)) return true;
+
+      // Also include if within range of geocoded coords (for things like "33101" zip searches)
+      if (userLocation && f.distance != null) return f.distance <= RADIUS_MI;
+
+      return false;
     })
     .sort((a, b) => {
       if (a.distance == null && b.distance == null) return 0;
