@@ -327,15 +327,13 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                           </SelectContent>
                         </Select>
                       </div>
-                      <Label className="text-xs">Images</Label>
-                      <div className="grid grid-cols-3 gap-2">
-                        {(col.images || []).map((img, idx) => (
-                          <div key={idx} className="relative group">
-                            <img src={img} alt="" className="w-full h-16 object-cover rounded border" />
-                            <button onClick={() => updateCol("images", (col.images || []).filter((_, i) => i !== idx))} className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100">×</button>
-                          </div>
-                        ))}
-                      </div>
+                      <Label className="text-xs">Images (drag to reorder)</Label>
+                      <SortableImageGrid
+                        images={col.images || []}
+                        onChange={(imgs) => updateCol("images", imgs)}
+                        onRemove={(idx) => updateCol("images", (col.images || []).filter((_, i) => i !== idx))}
+                        droppableId={`col-images-${side}`}
+                      />
                       <label className="flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit text-sm">
                         <Upload className="w-3 h-3" /> Add Image
                         <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
