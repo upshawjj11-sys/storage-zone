@@ -1,51 +1,54 @@
 // All sizes in cubic feet (approximate real-world volumes)
+// NOTE: Large furniture cuft values are intentionally floor-space dominant
+// (width × depth × ~4ft effective height) since furniture generally cannot be stacked.
+// Boxes/bins use a more compressed stacking height assumption.
 export const ITEM_CATEGORIES = [
   {
     label: "Seating",
     icon: "🛋️",
     items: [
-      { id: "sofa_3seat", label: "Sofa (3-seat)", icon: "🛋️", cuft: 45, w: 84, d: 35, h: 34 },
-      { id: "sofa_sectional", label: "Sectional Sofa", icon: "🛋️", cuft: 85, w: 110, d: 85, h: 34 },
-      { id: "loveseat", label: "Loveseat", icon: "🛋️", cuft: 30, w: 60, d: 35, h: 34 },
-      { id: "recliner", label: "Recliner", icon: "🪑", cuft: 20, w: 32, d: 38, h: 42 },
-      { id: "armchair", label: "Armchair", icon: "🪑", cuft: 14, w: 30, d: 30, h: 38 },
-      { id: "office_chair", label: "Office Chair", icon: "🪑", cuft: 8, w: 26, d: 26, h: 48 },
+      { id: "sofa_3seat", label: "Sofa (3-seat)", icon: "🛋️", cuft: 70, w: 84, d: 35, h: 34 },
+      { id: "sofa_sectional", label: "Sectional Sofa", icon: "🛋️", cuft: 130, w: 110, d: 85, h: 34 },
+      { id: "loveseat", label: "Loveseat", icon: "🛋️", cuft: 50, w: 60, d: 35, h: 34 },
+      { id: "recliner", label: "Recliner", icon: "🪑", cuft: 35, w: 32, d: 38, h: 42 },
+      { id: "armchair", label: "Armchair", icon: "🪑", cuft: 25, w: 30, d: 30, h: 38 },
+      { id: "office_chair", label: "Office Chair", icon: "🪑", cuft: 12, w: 26, d: 26, h: 48 },
     ],
   },
   {
     label: "Tables",
     icon: "🪵",
     items: [
-      { id: "dining_table_4", label: "Dining Table (4-seat)", icon: "🪵", cuft: 18, w: 48, d: 36, h: 30 },
-      { id: "dining_table_6", label: "Dining Table (6-seat)", icon: "🪵", cuft: 27, w: 72, d: 36, h: 30 },
-      { id: "coffee_table", label: "Coffee Table", icon: "🪵", cuft: 8, w: 48, d: 24, h: 18 },
-      { id: "end_table", label: "End / Side Table", icon: "🪵", cuft: 3, w: 20, d: 20, h: 24 },
-      { id: "desk", label: "Desk", icon: "🖥️", cuft: 16, w: 54, d: 30, h: 30 },
-      { id: "desk_l", label: "L-Shape Desk", icon: "🖥️", cuft: 28, w: 60, d: 60, h: 30 },
+      { id: "dining_table_4", label: "Dining Table (4-seat)", icon: "🪵", cuft: 30, w: 48, d: 36, h: 30 },
+      { id: "dining_table_6", label: "Dining Table (6-seat)", icon: "🪵", cuft: 45, w: 72, d: 36, h: 30 },
+      { id: "coffee_table", label: "Coffee Table", icon: "🪵", cuft: 16, w: 48, d: 24, h: 18 },
+      { id: "end_table", label: "End / Side Table", icon: "🪵", cuft: 6, w: 20, d: 20, h: 24 },
+      { id: "desk", label: "Desk", icon: "🖥️", cuft: 27, w: 54, d: 30, h: 30 },
+      { id: "desk_l", label: "L-Shape Desk", icon: "🖥️", cuft: 50, w: 60, d: 60, h: 30 },
     ],
   },
   {
     label: "Beds",
     icon: "🛏️",
     items: [
-      { id: "bed_twin", label: "Twin Bed & Frame", icon: "🛏️", cuft: 22, w: 39, d: 75, h: 14 },
-      { id: "bed_full", label: "Full Bed & Frame", icon: "🛏️", cuft: 30, w: 54, d: 75, h: 14 },
-      { id: "bed_queen", label: "Queen Bed & Frame", icon: "🛏️", cuft: 38, w: 60, d: 80, h: 14 },
-      { id: "bed_king", label: "King Bed & Frame", icon: "🛏️", cuft: 48, w: 76, d: 80, h: 14 },
-      { id: "mattress_twin", label: "Mattress (Twin)", icon: "🛏️", cuft: 12, w: 39, d: 75, h: 9 },
-      { id: "mattress_queen", label: "Mattress (Queen)", icon: "🛏️", cuft: 20, w: 60, d: 80, h: 9 },
+      { id: "bed_twin", label: "Twin Bed & Frame", icon: "🛏️", cuft: 55, w: 39, d: 75, h: 14 },
+      { id: "bed_full", label: "Full Bed & Frame", icon: "🛏️", cuft: 72, w: 54, d: 75, h: 14 },
+      { id: "bed_queen", label: "Queen Bed & Frame", icon: "🛏️", cuft: 85, w: 60, d: 80, h: 14 },
+      { id: "bed_king", label: "King Bed & Frame", icon: "🛏️", cuft: 108, w: 76, d: 80, h: 14 },
+      { id: "mattress_twin", label: "Mattress (Twin)", icon: "🛏️", cuft: 20, w: 39, d: 75, h: 9 },
+      { id: "mattress_queen", label: "Mattress (Queen)", icon: "🛏️", cuft: 32, w: 60, d: 80, h: 9 },
     ],
   },
   {
     label: "Storage & Shelving",
     icon: "🗄️",
     items: [
-      { id: "dresser_sm", label: "Dresser (Small)", icon: "🗄️", cuft: 12, w: 36, d: 18, h: 42 },
-      { id: "dresser_lg", label: "Dresser (Large)", icon: "🗄️", cuft: 20, w: 60, d: 20, h: 48 },
-      { id: "bookcase", label: "Bookcase", icon: "📚", cuft: 10, w: 36, d: 12, h: 72 },
-      { id: "wardrobe", label: "Wardrobe / Armoire", icon: "🗄️", cuft: 30, w: 48, d: 24, h: 72 },
-      { id: "filing_cabinet", label: "Filing Cabinet", icon: "🗄️", cuft: 6, w: 18, d: 26, h: 52 },
-      { id: "shelving_unit", label: "Shelving Unit", icon: "🗄️", cuft: 10, w: 36, d: 18, h: 72 },
+      { id: "dresser_sm", label: "Dresser (Small)", icon: "🗄️", cuft: 20, w: 36, d: 18, h: 42 },
+      { id: "dresser_lg", label: "Dresser (Large)", icon: "🗄️", cuft: 32, w: 60, d: 20, h: 48 },
+      { id: "bookcase", label: "Bookcase", icon: "📚", cuft: 18, w: 36, d: 12, h: 72 },
+      { id: "wardrobe", label: "Wardrobe / Armoire", icon: "🗄️", cuft: 48, w: 48, d: 24, h: 72 },
+      { id: "filing_cabinet", label: "Filing Cabinet", icon: "🗄️", cuft: 10, w: 18, d: 26, h: 52 },
+      { id: "shelving_unit", label: "Shelving Unit", icon: "🗄️", cuft: 18, w: 36, d: 18, h: 72 },
     ],
   },
   {
