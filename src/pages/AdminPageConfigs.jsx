@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { Save, Upload, CreditCard, MapPin } from "lucide-react";
+import { Save, Upload, CreditCard, MapPin, Ruler } from "lucide-react";
+import AdminSizeGuideConfig from "../components/admin/AdminSizeGuideConfig";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
