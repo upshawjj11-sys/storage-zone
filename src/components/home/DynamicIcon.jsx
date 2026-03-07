@@ -57,6 +57,10 @@ export const ICONS = {
 };
 
 export default function DynamicIcon({ name, className, style }) {
+  // If the value looks like a URL, render as an image
+  if (name && (name.startsWith("http") || name.startsWith("/"))) {
+    return <img src={name} alt="icon" className={className} style={{ objectFit: "contain", ...style }} />;
+  }
   const Icon = name && ICONS[name] ? ICONS[name] : Shield;
   return <Icon className={className} style={style} />;
 }
