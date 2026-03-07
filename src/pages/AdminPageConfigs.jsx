@@ -81,6 +81,8 @@ const defaultLocations = {
   map_draggable: false,
   map_marker_color: "#E8792F",
   map_user_dot_color: "#1B365D",
+  search_radius_miles: 50,
+  allow_customer_radius_filter: false,
 };
 
 function ColorRow({ label, hint, field, form, update }) {
