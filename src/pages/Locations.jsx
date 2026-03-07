@@ -286,21 +286,34 @@ export default function Locations() {
         </div>
       </div>
 
-      {/* Map */}
+      {/* Map — full-width inline expanded section */}
       {showMap && (
-        <div className="h-80 border-b">
-          <MapContainer center={mapCenter} zoom={userLocation ? 10 : 4} style={{ height: "100%", width: "100%" }}>
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <div className="w-full border-t border-b border-gray-200" style={{ height: "420px" }}>
+          <MapContainer
+            center={mapCenter}
+            zoom={mapZoom}
+            style={{ height: "100%", width: "100%" }}
+            scrollWheelZoom={false}
+            dragging={true}
+            zoomControl={true}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' />
+            <MapRecenter center={mapCenter} zoom={mapZoom} />
             {filtered.filter((f) => f.latitude && f.longitude).map((f) => (
               <Marker key={f.id} position={[f.latitude, f.longitude]}>
                 <Popup>
                   <strong>{f.name}</strong><br />
                   {f.city}, {f.state}<br />
-                  <a href={createPageUrl("FacilityPage") + `?id=${f.id}`} className="text-blue-600 underline">View Details</a>
+                  {f.distance != null && <span className="text-gray-500 text-xs">{f.distance.toFixed(1)} mi away</span>}<br />
+                  <a href={createPageUrl("FacilityPage") + `?id=${f.id}`} className="text-blue-600 underline text-sm">View Details</a>
                 </Popup>
               </Marker>
             ))}
-            {userLocation && <Marker position={[userLocation.lat, userLocation.lng]}><Popup>Your Location</Popup></Marker>}
+            {userLocation && (
+              <Marker position={[userLocation.lat, userLocation.lng]}>
+                <Popup>📍 Your Location</Popup>
+              </Marker>
+            )}
           </MapContainer>
         </div>
       )}
