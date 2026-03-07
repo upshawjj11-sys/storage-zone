@@ -173,6 +173,42 @@ export default function AdminSizeGuideConfig({ onSaveStatus }) {
     updateCategory(catId, { items });
   };
 
+  // ── Unit size helpers ─────────────────────────────────────────
+  const updateUnitSize = (label, patch) => {
+    setForm((p) => ({
+      ...p,
+      unit_sizes: (p.unit_sizes || DEFAULT_UNIT_SIZES).map((u) =>
+        u.label === label ? { ...u, ...patch } : u
+      ),
+    }));
+  };
+
+  const updateUnitIdealItem = (label, idx, value) => {
+    const unit = (form.unit_sizes || DEFAULT_UNIT_SIZES).find((u) => u.label === label);
+    if (!unit) return;
+    const ideal = [...(unit.ideal || [])];
+    ideal[idx] = value;
+    updateUnitSize(label, { ideal });
+  };
+
+  const addUnitIdealItem = (label) => {
+    const unit = (form.unit_sizes || DEFAULT_UNIT_SIZES).find((u) => u.label === label);
+    updateUnitSize(label, { ideal: [...(unit?.ideal || []), ""] });
+  };
+
+  const removeUnitIdealItem = (label, idx) => {
+    const unit = (form.unit_sizes || DEFAULT_UNIT_SIZES).find((u) => u.label === label);
+    const ideal = (unit?.ideal || []).filter((_, i) => i !== idx);
+    updateUnitSize(label, { ideal });
+  };
+
+  const handleUnitImageUpload = async (e, label) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    updateUnitSize(label, { image_url: file_url });
+  };
+
   const moveItemToCategory = (item, fromCatId, toCatId) => {
     if (fromCatId === toCatId) return;
     setForm((p) => ({
