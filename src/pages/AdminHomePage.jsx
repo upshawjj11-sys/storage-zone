@@ -51,7 +51,14 @@ function SectionEditor({ section, onChange, onRemove, index }) {
 
   const renderDataEditor = () => {
     switch (section.type) {
-      case "pillars":
+      case "pillars": {
+        const onPillarDragEnd = (result) => {
+          if (!result.destination) return;
+          const items = Array.from(data.items || []);
+          const [moved] = items.splice(result.source.index, 1);
+          items.splice(result.destination.index, 0, moved);
+          onChange({ ...section, data: { ...data, items } });
+        };
         return (
           <div className="space-y-3">
             <p className="text-xs text-gray-500">Shown as a horizontal bar on the hero or below it. Great for value propositions like "Rest of Month Free".</p>
@@ -83,33 +90,50 @@ function SectionEditor({ section, onChange, onRemove, index }) {
             <Button size="sm" variant="outline" className="gap-1" onClick={() => addItem({ icon: "Check", text: "" })}>
               <Plus className="w-3 h-3" /> Add Pillar
             </Button>
-            {(data.items || []).map((item, i) => (
-              <div key={i} className="p-3 border rounded-lg bg-gray-50 space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="w-36 flex-shrink-0">
-                    <Label className="text-xs mb-1 block">Icon</Label>
-                    <IconPicker value={item.icon || ""} onChange={(v) => updateItem(data.items, i, "icon", v)} />
+            <DragDropContext onDragEnd={onPillarDragEnd}>
+              <Droppable droppableId={`pillars-${section.id}`}>
+                {(provided) => (
+                  <div className="space-y-2" {...provided.droppableProps} ref={provided.innerRef}>
+                    {(data.items || []).map((item, i) => (
+                      <Draggable key={i} draggableId={`pillar-${section.id}-${i}`} index={i}>
+                        {(provided) => (
+                          <div ref={provided.innerRef} {...provided.draggableProps} className="p-3 border rounded-lg bg-gray-50 space-y-2">
+                            <div className="flex items-center gap-3">
+                              <div {...provided.dragHandleProps} className="text-gray-300 cursor-grab flex-shrink-0">
+                                <GripVertical className="w-4 h-4" />
+                              </div>
+                              <div className="w-36 flex-shrink-0">
+                                <Label className="text-xs mb-1 block">Icon</Label>
+                                <IconPicker value={item.icon || ""} onChange={(v) => updateItem(data.items, i, "icon", v)} />
+                              </div>
+                              <div className="flex-1">
+                                <Label className="text-xs mb-1 block">Text</Label>
+                                <Input placeholder="Rest of Month Free" value={item.text || ""} onChange={(e) => updateItem(data.items, i, "text", e.target.value)} />
+                              </div>
+                              <Button size="sm" variant="ghost" className="text-red-500 flex-shrink-0 mt-4" onClick={() => removeItem(i)}><Trash2 className="w-3 h-3" /></Button>
+                            </div>
+                            <div className="flex gap-3 pl-7">
+                              <div className="flex items-center gap-2">
+                                <Label className="text-xs">Icon Color</Label>
+                                <input type="color" value={item.icon_color || "#E8792F"} onChange={(e) => updateItem(data.items, i, "icon_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Label className="text-xs">Text Color</Label>
+                                <input type="color" value={item.text_color || "#ffffff"} onChange={(e) => updateItem(data.items, i, "text_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
                   </div>
-                  <div className="flex-1">
-                    <Label className="text-xs mb-1 block">Text</Label>
-                    <Input placeholder="Rest of Month Free" value={item.text || ""} onChange={(e) => updateItem(data.items, i, "text", e.target.value)} />
-                  </div>
-                  <Button size="sm" variant="ghost" className="text-red-500 flex-shrink-0 mt-4" onClick={() => removeItem(i)}><Trash2 className="w-3 h-3" /></Button>
-                </div>
-                <div className="flex gap-3">
-                  <div className="flex items-center gap-2">
-                    <Label className="text-xs">Icon Color</Label>
-                    <input type="color" value={item.icon_color || "#E8792F"} onChange={(e) => updateItem(data.items, i, "icon_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Label className="text-xs">Text Color</Label>
-                    <input type="color" value={item.text_color || "#ffffff"} onChange={(e) => updateItem(data.items, i, "text_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
-                  </div>
-                </div>
-              </div>
-            ))}
+                )}
+              </Droppable>
+            </DragDropContext>
           </div>
         );
+      }
       case "features":
         return (
           <div className="space-y-3">
