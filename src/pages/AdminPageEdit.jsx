@@ -276,7 +276,35 @@ export default function AdminPageEdit() {
                 </div>
               </div>
             </div>
-            <div><Label>Background Image URL</Label><Input value={data.bg_image || ""} onChange={(e) => updateBlock(index, { bg_image: e.target.value })} /></div>
+            <div>
+              <Label>Background Image</Label>
+              <div className="space-y-2 mt-1">
+                <div className="flex gap-2 items-center">
+                  <Input
+                    placeholder="Paste image URL..."
+                    value={data.bg_image || ""}
+                    onChange={(e) => updateBlock(index, { bg_image: e.target.value })}
+                  />
+                  {data.bg_image && (
+                    <button onClick={() => updateBlock(index, { bg_image: "" })} className="text-red-400 hover:text-red-600 flex-shrink-0">
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+                <label className="flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit text-sm text-gray-600">
+                  <Upload className="w-4 h-4" /> Upload Image
+                  <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                    updateBlock(index, { bg_image: file_url });
+                  }} />
+                </label>
+                {data.bg_image && (
+                  <img src={data.bg_image} alt="" className="w-full h-28 object-cover rounded-lg border" />
+                )}
+              </div>
+            </div>
           </div>
         );
       case "text":
