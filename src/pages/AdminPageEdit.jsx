@@ -317,7 +317,24 @@ export default function AdminPageEdit() {
       case "image":
         return (
           <div className="space-y-3">
-            <div><Label>Image URL</Label><Input value={data.url || ""} onChange={(e) => updateBlock(index, { url: e.target.value })} /></div>
+            <div>
+              <Label>Image</Label>
+              <div className="space-y-2 mt-1">
+                <div className="flex gap-2 items-center">
+                  <Input placeholder="Paste image URL..." value={data.url || ""} onChange={(e) => updateBlock(index, { url: e.target.value })} />
+                  {data.url && <button onClick={() => updateBlock(index, { url: "" })} className="text-red-400 hover:text-red-600 flex-shrink-0"><X className="w-4 h-4" /></button>}
+                </div>
+                <label className="flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit text-sm text-gray-600">
+                  <Upload className="w-4 h-4" /> Upload Image
+                  <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                    updateBlock(index, { url: file_url });
+                  }} />
+                </label>
+              </div>
+            </div>
             {data.url && <img src={data.url} alt="" className="w-full h-40 object-cover rounded-xl" />}
             <div><Label>Alt Text</Label><Input value={data.alt || ""} onChange={(e) => updateBlock(index, { alt: e.target.value })} /></div>
             <div><Label>Caption</Label><Input value={data.caption || ""} onChange={(e) => updateBlock(index, { caption: e.target.value })} /></div>
