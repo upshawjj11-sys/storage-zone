@@ -85,12 +85,12 @@ export const ITEM_CATEGORIES = [
   },
 ];
 
-// All unit sizes in sq ft (width x depth in feet)
+// All unit sizes — widthIn/depthIn are floor dimensions in inches, cuft is usable storage volume
 export const UNIT_SIZES = [
-  { label: "5' × 5'", sqft: 25, cuft: 200, desc: "Walk-in closet size. Great for a few boxes, small furniture, seasonal items." },
-  { label: "5' × 10'", sqft: 50, cuft: 400, desc: "Large shed size. Fits a bedroom's worth of furniture." },
-  { label: "10' × 10'", sqft: 100, cuft: 800, desc: "Half a standard garage. Fits 1-bedroom apartment contents." },
-  { label: "10' × 15'", sqft: 150, cuft: 1200, desc: "Large bedroom size. Fits 2-bedroom home contents." },
-  { label: "10' × 20'", sqft: 200, cuft: 1600, desc: "Small garage size. Fits 3–4 bedroom home." },
-  { label: "10' × 30'", sqft: 300, cuft: 2400, desc: "Large garage size. Fits 4–5 bedroom home." },
+  { label: "5' × 5'",  sqft: 25,  widthIn: 60,  depthIn: 60,  cuft: 200,  desc: "Walk-in closet size. Great for a few boxes, small furniture, seasonal items." },
+  { label: "5' × 10'", sqft: 50,  widthIn: 60,  depthIn: 120, cuft: 400,  desc: "Large shed size. Fits a bedroom's worth of furniture." },
+  { label: "10' × 10'",sqft: 100, widthIn: 120, depthIn: 120, cuft: 800,  desc: "Half a standard garage. Fits 1-bedroom apartment contents." },
+  { label: "10' × 15'",sqft: 150, widthIn: 120, depthIn: 180, cuft: 1200, desc: "Large bedroom size. Fits 2-bedroom home contents." },
+  { label: "10' × 20'",sqft: 200, widthIn: 120, depthIn: 240, cuft: 1600, desc: "Small garage size. Fits 3–4 bedroom home." },
+  { label: "10' × 30'",sqft: 300, widthIn: 120, depthIn: 360, cuft: 2400, desc: "Large garage size. Fits 4–5 bedroom home." },
 ];
