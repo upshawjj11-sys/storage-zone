@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, ChevronLeft, ChevronRight, Building2, Warehouse } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, ChevronLeft, ChevronRight, Building2, Warehouse, Facebook, Instagram, Youtube, Twitter, Music } from "lucide-react";
 import DynamicIcon from "../components/home/DynamicIcon";
 import { Badge } from "@/components/ui/badge";
 import ImageSlider from "../components/shared/ImageSlider";
@@ -85,11 +85,22 @@ export default function FacilityPage() {
     review_card_bg: ps.review_card_bg || "#F9FAFB",
   };
 
-  const DEFAULT_ORDER = ["contact", "about", "features", "units", "photos", "videos", "reviews", "faq"];
+  const DEFAULT_ORDER = ["contact", "about", "features", "units", "photos", "videos", "reviews", "faq", "socials"];
   const rawOrder = facility.sections_order?.length > 0 ? facility.sections_order : DEFAULT_ORDER;
+  
+  // Parse sections order: handle both old string format and new object format with visibility
+  const parseOrderItem = (item) => {
+    if (typeof item === "string") return { key: item, visible: true };
+    return { key: item.key, visible: item.visible !== false };
+  };
+
   const sectionsOrder = [
-    ...rawOrder.filter((k) => DEFAULT_ORDER.includes(k)),
-    ...DEFAULT_ORDER.filter((k) => !rawOrder.includes(k)),
+    ...rawOrder
+      .map(parseOrderItem)
+      .filter((item) => DEFAULT_ORDER.includes(item.key)),
+    ...DEFAULT_ORDER.map((key) => ({ key, visible: true })).filter(
+      (item) => !rawOrder.map(parseOrderItem).find((p) => p.key === item.key)
+    ),
   ];
 
   const sectionMap = {
@@ -243,6 +254,44 @@ export default function FacilityPage() {
         </div>
       </div>
     ) : null,
+
+    socials: facility.google_my_business_url || facility.facebook_url || facility.instagram_url || facility.x_url || facility.tiktok_url || facility.youtube_url ? (
+      <div key="socials">
+        <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Follow Us</h2>
+        <div className="flex gap-4 flex-wrap">
+          {facility.google_my_business_url && (
+            <a href={facility.google_my_business_url} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl hover:opacity-75 transition" style={{ background: S.section_card_bg }}>
+              <MapPin className="w-5 h-5" style={{ color: S.accent_color }} />
+            </a>
+          )}
+          {facility.facebook_url && (
+            <a href={facility.facebook_url} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl hover:opacity-75 transition" style={{ background: S.section_card_bg }}>
+              <Facebook className="w-5 h-5" style={{ color: "#1877F2" }} />
+            </a>
+          )}
+          {facility.instagram_url && (
+            <a href={facility.instagram_url} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl hover:opacity-75 transition" style={{ background: S.section_card_bg }}>
+              <Instagram className="w-5 h-5" style={{ color: "#E1306C" }} />
+            </a>
+          )}
+          {facility.x_url && (
+            <a href={facility.x_url} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl hover:opacity-75 transition" style={{ background: S.section_card_bg }}>
+              <Twitter className="w-5 h-5" style={{ color: "#000000" }} />
+            </a>
+          )}
+          {facility.tiktok_url && (
+            <a href={facility.tiktok_url} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl hover:opacity-75 transition" style={{ background: S.section_card_bg }}>
+              <Music className="w-5 h-5" style={{ color: "#000000" }} />
+            </a>
+          )}
+          {facility.youtube_url && (
+            <a href={facility.youtube_url} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl hover:opacity-75 transition" style={{ background: S.section_card_bg }}>
+              <Youtube className="w-5 h-5" style={{ color: "#FF0000" }} />
+            </a>
+          )}
+        </div>
+      </div>
+    ) : null,
   };
 
   // Banner: use dedicated banner_image first, then photos, then fallback
@@ -290,9 +339,9 @@ export default function FacilityPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-12">
-            {sectionsOrder.map((key) => sectionMap[key] || null)}
-          </div>
+           <div className="lg:col-span-2 space-y-12">
+             {sectionsOrder.map((item) => item.visible !== false && (sectionMap[item.key] || null))}
+           </div>
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
