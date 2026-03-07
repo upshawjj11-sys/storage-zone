@@ -719,11 +719,48 @@ export default function AdminFacilityEdit() {
         </TabsContent>
 
         <TabsContent value="reviews">
-          <Card>
-            <CardContent className="p-6 space-y-4">
-              <Button variant="outline" className="gap-2" onClick={() => update("reviews", [...form.reviews, { name: "", rating: 5, text: "", date: "" }])}>
-                <Plus className="w-4 h-4" /> Add Review
-              </Button>
+           <Card>
+             <CardContent className="p-6 space-y-4">
+               <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl space-y-3">
+                 <div>
+                   <p className="text-sm font-semibold text-blue-900">Fetch Reviews from Google</p>
+                   <p className="text-xs text-blue-700 mt-1">Find your Google Place ID at <a href="https://developers.google.com/maps/documentation/places/web-service/details" target="_blank" rel="noopener noreferrer" className="underline">Google Places API docs</a></p>
+                 </div>
+                 <div className="flex gap-2">
+                   <Input
+                     id="googlePlaceId"
+                     placeholder="Enter Google Place ID (e.g., ChIJN1blFLsCEmsRCC_ei2z84QE)"
+                     className="flex-1"
+                   />
+                   <Button
+                     variant="outline"
+                     className="gap-2"
+                     onClick={async () => {
+                       const placeId = document.getElementById("googlePlaceId").value.trim();
+                       if (!placeId) {
+                         alert("Please enter a Google Place ID");
+                         return;
+                       }
+                       try {
+                         const res = await base44.functions.invoke('fetchGoogleReviews', { placeId });
+                         if (res.data?.reviews) {
+                           update("reviews", res.data.reviews);
+                           document.getElementById("googlePlaceId").value = "";
+                           alert(`Fetched ${res.data.reviews.length} reviews from Google!`);
+                         }
+                       } catch (err) {
+                         alert(`Error: ${err.message}`);
+                       }
+                     }}
+                   >
+                     Fetch Reviews
+                   </Button>
+                 </div>
+               </div>
+
+               <Button variant="outline" className="gap-2" onClick={() => update("reviews", [...form.reviews, { name: "", rating: 5, text: "", date: "" }])}>
+                 <Plus className="w-4 h-4" /> Add Review Manually
+               </Button>
               {form.reviews.map((review, i) => (
                 <div key={i} className="p-4 border rounded-xl space-y-3">
                   <div className="flex items-center justify-between">
