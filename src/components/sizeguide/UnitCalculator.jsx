@@ -28,10 +28,8 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
   const recommendation = useMemo(() => {
     if (totalCuft === 0) return null;
 
-    // For each item, find the minimum unit whose floor can fit it
-    // (item can be rotated, so we check both orientations)
     const itemFitsInUnit = (item, unit) => {
-      const { w, d } = item; // item dimensions in inches
+      const { w, d } = item;
       const { widthIn, depthIn } = unit;
       return (
         (w <= widthIn && d <= depthIn) ||
@@ -39,16 +37,13 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
       );
     };
 
-    // Find the smallest unit index that can fit EVERY selected item AND has enough volume
     const minIndexByFootprint = selectedItems.reduce((maxIdx, si) => {
       const idx = UNIT_SIZES.findIndex((u) => itemFitsInUnit(si, u));
       return idx === -1 ? UNIT_SIZES.length - 1 : Math.max(maxIdx, idx);
     }, 0);
 
-    // Find smallest unit index by volume
     const minIndexByVolume = UNIT_SIZES.findIndex((u) => u.cuft >= bufferedCuft);
 
-    // Take the larger of the two constraints
     const minIndex = Math.max(
       minIndexByFootprint,
       minIndexByVolume === -1 ? UNIT_SIZES.length - 1 : minIndexByVolume
@@ -58,13 +53,11 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
       return { min: UNIT_SIZES[UNIT_SIZES.length - 1], max: null, tooLarge: true };
     }
 
-    // Bias toward the next size up — furniture is hard to stack and customers
-    // generally need more room than they think. Show min as the "at least" size
-    // and max (one step up) as the primary recommendation.
     const min = UNIT_SIZES[minIndex];
     const max = minIndex + 1 < UNIT_SIZES.length ? UNIT_SIZES[minIndex + 1] : null;
     return { min, recommended: max || min, max, tooLarge: false };
-  }, [bufferedCuft, totalCuft, selectedItems]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bufferedCuft, totalCuft, selectedItems, cfg.available_unit_sizes]);
 
   const addItem = (item) => {
     setSelectedItems((prev) => {
