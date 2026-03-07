@@ -161,21 +161,30 @@ export default function Locations() {
 
   // Active coords: prefer userLocation (Near Me), fall back to geocoded search coords
   const activeCoords = userLocation || searchCoords;
-  const RADIUS_MI = 30;
+  const RADIUS_MI = customRadius ?? (cfg.search_radius_miles || 50);
 
   // While geocoding is in progress for a typed search, don't filter yet
   const isWaitingForGeocode = search.trim() && !userLocation && geocoding;
 
   const q = search.trim().toLowerCase();
+  // Resolve full state name to abbreviation (e.g. "florida" → "FL")
+  const qStateAbbr = STATE_ABBR[q] || null;
 
   function textMatch(f) {
     if (!q) return true;
+    const name = f.name?.toLowerCase() || "";
+    const city = f.city?.toLowerCase() || "";
+    const state = (f.state || "").toLowerCase();
+    const zip = f.zip?.toLowerCase() || "";
+    const address = f.address?.toLowerCase() || "";
+    // Match on any field, or if query is a full state name match the abbreviation
     return (
-      f.name?.toLowerCase().includes(q) ||
-      f.city?.toLowerCase().includes(q) ||
-      f.state?.toLowerCase().includes(q) ||
-      f.zip?.toLowerCase().includes(q) ||
-      f.address?.toLowerCase().includes(q)
+      name.includes(q) ||
+      city.includes(q) ||
+      state.includes(q) ||
+      zip.includes(q) ||
+      address.includes(q) ||
+      (qStateAbbr && state.toUpperCase() === qStateAbbr)
     );
   }
 
@@ -197,11 +206,11 @@ export default function Locations() {
 
       if (!q) return true;
 
-      // Always try text match first — handles state names, abbreviations, city names, etc.
+      // Text match covers: city, state (full name or abbrev), zip, name, address
       if (textMatch(f)) return true;
 
-      // Also include if within range when Near Me is active alongside a search
-      if (userLocation && f.distance != null) return f.distance <= RADIUS_MI;
+      // Geocoded coordinates resolved: also show nearby facilities within radius
+      if (activeCoords && f.distance != null && f.distance <= RADIUS_MI) return true;
 
       return false;
     })
