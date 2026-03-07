@@ -45,6 +45,34 @@ export default function Home() {
   const heroPillarsSection = visibleSections.find((s) => s.type === "pillars");
   const sectionsWithoutHeroPillars = visibleSections.filter((s) => s !== heroPillarsSection);
 
+  const renderDisclaimer = (section) => {
+    const d = section.data?.disclaimer;
+    if (!d?.enabled || !d?.text) return null;
+    const sizeMap = { xs: "0.7rem", sm: "0.8rem", base: "1rem", lg: "1.125rem" };
+    const styleMap = {
+      normal: {},
+      italic: { fontStyle: "italic" },
+      bold: { fontWeight: "700" },
+      "bold-italic": { fontWeight: "700", fontStyle: "italic" },
+    };
+    return (
+      <div style={{ textAlign: d.align || "center", paddingBottom: "1.25rem" }}>
+        <p style={{
+          fontSize: sizeMap[d.size || "xs"],
+          color: d.color || "#6b7280",
+          fontFamily: d.font === "inherit" || !d.font ? undefined : d.font,
+          ...(styleMap[d.style || "normal"]),
+          maxWidth: "56rem",
+          margin: "0 auto",
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
+        }}>
+          {d.text}
+        </p>
+      </div>
+    );
+  };
+
   const renderSection = (section) => {
     const data = section.data || {};
     const cols = data.columns || 4;
