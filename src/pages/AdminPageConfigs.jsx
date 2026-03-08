@@ -284,6 +284,25 @@ export default function AdminPageConfigs() {
               </div>
             </SectionCard>
 
+            <SectionCard title="Facility Search Bar">
+              <p className="text-sm text-gray-500">Live search bar shown above the facility list so customers can quickly find their location.</p>
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                <Switch checked={pmb.pmb_show_search_bar !== false} onCheckedChange={(v) => updatePmb("pmb_show_search_bar", v)} />
+                <div>
+                  <p className="text-sm font-medium text-gray-800">Show Search Bar</p>
+                  <p className="text-xs text-gray-400">Display a search input above the location list</p>
+                </div>
+              </div>
+              <div>
+                <Label>Placeholder Text</Label>
+                <Input className="mt-1" value={pmb.pmb_search_bar_placeholder || ""} onChange={(e) => updatePmb("pmb_search_bar_placeholder", e.target.value)} placeholder="Search by name, city, or address..." />
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <ColorRow label="Search Bar Background" field="pmb_search_bar_bg" form={pmb} update={updatePmb} />
+                <ColorRow label="Search Bar Text Color" field="pmb_search_bar_text_color" form={pmb} update={updatePmb} />
+              </div>
+            </SectionCard>
+
             <SectionCard title="Payment Portal Header Bar">
               <p className="text-sm text-gray-500">Styles the top bar shown when a customer has selected a location and the payment iframe is active.</p>
               <div className="grid md:grid-cols-2 gap-4">
