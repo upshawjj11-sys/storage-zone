@@ -451,15 +451,17 @@ export default function Locations() {
         ) : (
           <div className={gridClass}>
             {filtered.map((f) => (
-              <Link
+              <a
                 key={f.id}
-                to={facilityUrl(f)}
+                href={facilityUrl(f)}
                 className="group overflow-hidden transition-all duration-300"
                 style={{
                   backgroundColor: cfg.card_bg_color,
                   borderRadius: cfg.card_border_radius,
                   border: `1px solid ${cfg.card_border_color}`,
                   boxShadow: shadowMap[cfg.card_shadow] || shadowMap.sm,
+                  display: "block",
+                  textDecoration: "none",
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.borderColor = cfg.card_hover_border_color}
                 onMouseLeave={(e) => e.currentTarget.style.borderColor = cfg.card_border_color}
