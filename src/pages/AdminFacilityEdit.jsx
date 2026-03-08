@@ -129,7 +129,11 @@ export default function AdminFacilityEdit() {
           </h1>
         </div>
         {form.slug && (
-          <Button variant="outline" className="rounded-full gap-2" onClick={() => window.open(`/facility/${form.slug}`, "_blank")}>
+          <Button variant="outline" className="rounded-full gap-2" onClick={() => {
+            const state = (form.state || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+            const city = (form.city || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+            window.open(`/locations/${state}/${city}/${form.slug}/`, "_blank");
+          }}>
             <Eye className="w-4 h-4" /> Preview
           </Button>
         )}
