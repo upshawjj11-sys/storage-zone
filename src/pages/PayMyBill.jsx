@@ -132,8 +132,31 @@ export default function PayMyBill() {
         </div>
       </div>
 
+      {/* Search bar */}
+      {cfg.pmb_show_search_bar !== false && (
+        <div className="max-w-2xl mx-auto px-6 -mt-6 relative z-10">
+          <div
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl shadow-md border border-gray-100"
+            style={{ backgroundColor: cfg.pmb_search_bar_bg }}
+          >
+            <Search className="w-5 h-5 flex-shrink-0 text-gray-400" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={cfg.pmb_search_bar_placeholder}
+              className="flex-1 bg-transparent outline-none text-sm"
+              style={{ color: cfg.pmb_search_bar_text_color }}
+            />
+            {search && (
+              <button onClick={() => setSearch("")} className="text-gray-400 hover:text-gray-600 text-lg leading-none">×</button>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Facility list */}
-      <div className="max-w-2xl mx-auto px-6 py-12">
+      <div className="max-w-2xl mx-auto px-6 py-8">
         {facLoading ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
