@@ -91,6 +91,18 @@ export default function Layout({ children, currentPageName }) {
   // Extract facilityId from URL for facility-specific popup matching
   const facilityId = new URLSearchParams(window.location.search).get("id");
 
+  // Serve FacilityPage for /locations/[state]/[city]/[slug]/ URLs
+  if (isFacilitySlugPage) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1"><FacilityPage /></main>
+        <Footer />
+        <PopupRenderer currentPageName="FacilityPage" facilityId={null} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
