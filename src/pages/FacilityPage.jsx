@@ -11,10 +11,16 @@ import InquiryDialog from "../components/facility/InquiryDialog";
 // Helper to build the canonical URL for a facility
 export function facilityUrl(facility) {
   if (!facility) return "#";
+  const slug = facility.slug;
+  // If slug is already a full path (starts with "locations/"), use it directly
+  if (slug && slug.startsWith("locations/")) {
+    return `/${slug.replace(/\/$/, "")}/`;
+  }
+  // Otherwise build path from state/city/slug
   const state = (facility.state || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
   const city = (facility.city || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-  const slug = facility.slug || facility.id;
-  return `/locations/${state}/${city}/${slug}/`;
+  const idOrSlug = slug || facility.id;
+  return `/locations/${state}/${city}/${idOrSlug}/`;
 }
 
 export default function FacilityPage() {
