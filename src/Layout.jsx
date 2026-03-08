@@ -23,10 +23,17 @@ const adminPages = [
   "AdminPageConfigs",
 ];
 
+// Detect /locations/[state]/[city]/[slug]/ pattern
+function isFacilityPath() {
+  const parts = window.location.pathname.replace(/\/$/, "").split("/").filter(Boolean);
+  return parts[0] === "locations" && parts.length >= 4;
+}
+
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const isAdmin = adminPages.includes(currentPageName);
+  const isFacilitySlugPage = isFacilityPath();
 
   useEffect(() => {
     const checkAuth = async () => {
