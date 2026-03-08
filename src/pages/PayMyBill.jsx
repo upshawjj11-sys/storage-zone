@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { MapPin, CreditCard, ChevronRight, ArrowLeft } from "lucide-react";
+import { MapPin, CreditCard, ChevronRight, ArrowLeft, Search } from "lucide-react";
 
 const DEFAULTS = {
   hero_bg_color: "#1B365D",
