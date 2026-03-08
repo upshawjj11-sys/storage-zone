@@ -451,10 +451,10 @@ export default function Locations() {
         ) : (
           <div className={gridClass}>
             {filtered.map((f) => (
-              <a
+              <div
                 key={f.id}
-                href={facilityUrl(f)}
-                className="group overflow-hidden transition-all duration-300"
+                onClick={() => { window.history.pushState({}, "", facilityUrl(f)); window.dispatchEvent(new PopStateEvent("popstate")); }}
+                className="group overflow-hidden transition-all duration-300 cursor-pointer"
                 style={{
                   backgroundColor: cfg.card_bg_color,
                   borderRadius: cfg.card_border_radius,
