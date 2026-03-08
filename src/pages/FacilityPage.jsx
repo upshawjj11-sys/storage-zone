@@ -22,9 +22,12 @@ export default function FacilityPage() {
   const facilityIdParam = urlParams.get("id");
 
   // Parse slug from path: /locations/[state]/[city]/[slug]/
-  const pathParts = window.location.pathname.replace(/\/$/, "").split("/").filter(Boolean);
-  // pathParts: ["locations", state, city, slug]
+  // The slug stored in DB may be the full path like "locations/florida/city/slug/" OR just the last segment
+  const rawPath = window.location.pathname.replace(/^\//, ""); // strip leading slash
+  const pathParts = rawPath.replace(/\/$/, "").split("/").filter(Boolean);
   const slugFromPath = pathParts.length >= 4 ? pathParts[pathParts.length - 1] : null;
+  // Full path for matching against facilities that store the full URL as slug
+  const fullPathSlug = rawPath; // e.g. "locations/fl/jacksonville/my-slug/"
 
   const [openFaq, setOpenFaq] = useState(null);
   const [hoursTab, setHoursTab] = useState("office");
