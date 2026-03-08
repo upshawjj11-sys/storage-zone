@@ -32,8 +32,15 @@ function isFacilityPath() {
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [, forceUpdate] = useState(0);
   const isAdmin = adminPages.includes(currentPageName);
   const isFacilitySlugPage = isFacilityPath();
+
+  useEffect(() => {
+    const handler = () => forceUpdate((n) => n + 1);
+    window.addEventListener("popstate", handler);
+    return () => window.removeEventListener("popstate", handler);
+  }, []);
 
   useEffect(() => {
     const checkAuth = async () => {
