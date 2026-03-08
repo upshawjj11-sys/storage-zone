@@ -48,8 +48,15 @@ export default function FacilityPage() {
         return items[0];
       }
       if (slugFromPath) {
-        const items = await base44.entities.Facility.filter({ slug: slugFromPath });
-        return items[0];
+        // Try by slug first
+        const bySlug = await base44.entities.Facility.filter({ slug: slugFromPath });
+        if (bySlug.length > 0) return bySlug[0];
+        // Fallback: try matching by id (for facilities without a slug set)
+        const byId = await base44.entities.Facility.filter({ id: slugFromPath });
+        if (byId.length > 0) return byId[0];
+        // Fallback: load all and find by slug OR id match
+        const all = await base44.entities.Facility.list();
+        return all.find((f) => f.slug === slugFromPath || f.id === slugFromPath) || null;
       }
       return null;
     },
