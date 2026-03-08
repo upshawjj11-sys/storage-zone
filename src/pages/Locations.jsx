@@ -404,7 +404,7 @@ export default function Locations() {
                     <div style={{ fontWeight: 700, fontSize: "14px", color: "#1B365D", marginBottom: "4px" }}>{f.name}</div>
                     <div style={{ fontSize: "12px", color: "#6b7280", marginBottom: "6px" }}>{f.city}, {f.state}</div>
                     {f.distance != null && <div style={{ fontSize: "11px", color: "#E8792F", fontWeight: 600, marginBottom: "6px" }}>{f.distance.toFixed(1)} mi away</div>}
-                    <a href={facilityUrl(f)} style={{ fontSize: "12px", color: "#E8792F", fontWeight: 600, textDecoration: "none" }}>View Details →</a>
+                    <span onClick={() => { window.history.pushState({}, "", facilityUrl(f)); window.dispatchEvent(new PopStateEvent("popstate")); }} style={{ fontSize: "12px", color: "#E8792F", fontWeight: 600, textDecoration: "none", cursor: "pointer" }}>View Details →</span>
                   </div>
                 </Popup>
               </Marker>
