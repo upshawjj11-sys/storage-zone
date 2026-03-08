@@ -25,6 +25,10 @@ const DEFAULTS = {
   portal_header_bg: "#ffffff",
   portal_header_text_color: "#1f2937",
   portal_back_btn_color: "#1B365D",
+  pmb_show_search_bar: true,
+  pmb_search_bar_placeholder: "Search by name, city, or address...",
+  pmb_search_bar_bg: "#ffffff",
+  pmb_search_bar_text_color: "#111827",
 };
 
 const shadowMap = { none: "none", sm: "0 1px 3px rgba(0,0,0,.1)", md: "0 4px 6px rgba(0,0,0,.1)", lg: "0 10px 15px rgba(0,0,0,.1)", xl: "0 20px 25px rgba(0,0,0,.15)" };
