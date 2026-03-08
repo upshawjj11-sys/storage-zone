@@ -511,7 +511,7 @@ export default function Locations() {
                     </div>
                   )}
                   <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: cfg.accent_color }}>
-                    View Details <ArrowRight className="w-4 h-4" />
+                    View Details <ArrowRight className="w-4 h-4" /> 
                   </div>
                 </div>
               </div>
