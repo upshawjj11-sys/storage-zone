@@ -48,7 +48,19 @@ export default function PayMyBill() {
   });
 
   const cfg = { ...DEFAULTS, ...(configs[0] || {}) };
-  const payableFacilities = facilities.filter((f) => f.payment_center_url);
+  const payableFacilities = facilities
+    .filter((f) => f.payment_center_url)
+    .filter((f) => {
+      if (!search.trim()) return true;
+      const q = search.toLowerCase();
+      return (
+        f.name?.toLowerCase().includes(q) ||
+        f.city?.toLowerCase().includes(q) ||
+        f.state?.toLowerCase().includes(q) ||
+        f.address?.toLowerCase().includes(q) ||
+        f.zip?.toLowerCase().includes(q)
+      );
+    });
 
   const heroStyle = {
     backgroundColor: cfg.hero_bg_color,
