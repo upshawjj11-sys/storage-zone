@@ -514,7 +514,7 @@ export default function Locations() {
                     View Details <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
-              </Link>
+              </a>
             ))}
           </div>
         )}
