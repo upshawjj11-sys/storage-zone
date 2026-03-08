@@ -93,7 +93,7 @@ export default function FacilityPage() {
     setSubmitting(true);
     await base44.entities.Reservation.create({
       ...form,
-      facility_id: facilityId,
+      facility_id: facility.id,
       facility_name: facility.name,
       facility_type: facility.facility_type || "self_storage",
       unit_name: selectedUnit?.name || "",
