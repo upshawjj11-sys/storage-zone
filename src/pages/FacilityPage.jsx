@@ -57,7 +57,7 @@ export default function FacilityPage() {
   });
 
   const { data: nearbyFacilities = [] } = useQuery({
-    queryKey: ["nearby-facilities", facilityId, facility?.latitude, facility?.longitude],
+    queryKey: ["nearby-facilities", facility?.id, facility?.latitude, facility?.longitude],
     queryFn: async () => {
       if (!facility?.latitude || !facility?.longitude) return [];
       const allFacilities = await base44.entities.Facility.list();
@@ -70,7 +70,7 @@ export default function FacilityPage() {
         return R * c;
       };
       return allFacilities
-        .filter((f) => f.id !== facilityId && f.latitude && f.longitude && f.status === "active")
+        .filter((f) => f.id !== facility.id && f.latitude && f.longitude && f.status === "active")
         .map((f) => ({
           ...f,
           distance: calculateDistance(facility.latitude, facility.longitude, f.latitude, f.longitude),
