@@ -4,6 +4,7 @@ import { createPageUrl } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { MapPin, Phone, Search, ArrowRight, Navigation, Map, X, SlidersHorizontal } from "lucide-react";
+import { facilityUrl } from "./FacilityPage";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
@@ -403,7 +404,7 @@ export default function Locations() {
                     <div style={{ fontWeight: 700, fontSize: "14px", color: "#1B365D", marginBottom: "4px" }}>{f.name}</div>
                     <div style={{ fontSize: "12px", color: "#6b7280", marginBottom: "6px" }}>{f.city}, {f.state}</div>
                     {f.distance != null && <div style={{ fontSize: "11px", color: "#E8792F", fontWeight: 600, marginBottom: "6px" }}>{f.distance.toFixed(1)} mi away</div>}
-                    <a href={createPageUrl("FacilityPage") + `?id=${f.id}`} style={{ fontSize: "12px", color: "#E8792F", fontWeight: 600, textDecoration: "none" }}>View Details →</a>
+                    <a href={facilityUrl(f)} style={{ fontSize: "12px", color: "#E8792F", fontWeight: 600, textDecoration: "none" }}>View Details →</a>
                   </div>
                 </Popup>
               </Marker>
@@ -452,7 +453,7 @@ export default function Locations() {
             {filtered.map((f) => (
               <Link
                 key={f.id}
-                to={createPageUrl("FacilityPage") + `?id=${f.id}`}
+                to={facilityUrl(f)}
                 className="group overflow-hidden transition-all duration-300"
                 style={{
                   backgroundColor: cfg.card_bg_color,

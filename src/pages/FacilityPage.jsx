@@ -447,7 +447,7 @@ export default function FacilityPage() {
                      {nearbyFacilities.map((nf) => (
                        <a
                          key={nf.id}
-                         href={`/facility/${nf.slug}?id=${nf.id}`}
+                         href={facilityUrl(nf)}
                          className="block p-3 rounded-xl border transition hover:border-orange-300 hover:bg-white/50"
                          style={{ borderColor: S.faq_border_color }}
                        >
