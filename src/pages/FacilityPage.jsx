@@ -8,9 +8,24 @@ import ImageSlider from "../components/shared/ImageSlider";
 import UnitCard from "../components/facility/UnitCard";
 import InquiryDialog from "../components/facility/InquiryDialog";
 
+// Helper to build the canonical URL for a facility
+export function facilityUrl(facility) {
+  if (!facility) return "#";
+  const state = (facility.state || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+  const city = (facility.city || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+  const slug = facility.slug || facility.id;
+  return `/locations/${state}/${city}/${slug}/`;
+}
+
 export default function FacilityPage() {
   const urlParams = new URLSearchParams(window.location.search);
-  const facilityId = urlParams.get("id");
+  const facilityIdParam = urlParams.get("id");
+
+  // Parse slug from path: /locations/[state]/[city]/[slug]/
+  const pathParts = window.location.pathname.replace(/\/$/, "").split("/").filter(Boolean);
+  // pathParts: ["locations", state, city, slug]
+  const slugFromPath = pathParts.length >= 4 ? pathParts[pathParts.length - 1] : null;
+
   const [openFaq, setOpenFaq] = useState(null);
   const [hoursTab, setHoursTab] = useState("office");
   const [aboutExpanded, setAboutExpanded] = useState(false);
@@ -25,12 +40,20 @@ export default function FacilityPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const { data: facility, isLoading } = useQuery({
-    queryKey: ["facility", facilityId],
+    queryKey: ["facility", facilityIdParam, slugFromPath],
     queryFn: async () => {
-      const items = await base44.entities.Facility.filter({ id: facilityId });
-      return items[0];
+      // Prefer ?id= param (admin preview), then slug from path
+      if (facilityIdParam) {
+        const items = await base44.entities.Facility.filter({ id: facilityIdParam });
+        return items[0];
+      }
+      if (slugFromPath) {
+        const items = await base44.entities.Facility.filter({ slug: slugFromPath });
+        return items[0];
+      }
+      return null;
     },
-    enabled: !!facilityId,
+    enabled: !!(facilityIdParam || slugFromPath),
   });
 
   const { data: nearbyFacilities = [] } = useQuery({
