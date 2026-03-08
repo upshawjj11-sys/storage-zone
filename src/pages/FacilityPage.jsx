@@ -43,7 +43,7 @@ export default function FacilityPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const { data: facility, isLoading } = useQuery({
-    queryKey: ["facility", facilityIdParam, slugFromPath],
+    queryKey: ["facility", facilityIdParam, fullPathSlug],
     queryFn: async () => {
       // Prefer ?id= param (admin preview), then slug from path
       if (facilityIdParam) {
@@ -51,15 +51,15 @@ export default function FacilityPage() {
         return items[0];
       }
       if (slugFromPath) {
-        // Try by slug first
-        const bySlug = await base44.entities.Facility.filter({ slug: slugFromPath });
-        if (bySlug.length > 0) return bySlug[0];
-        // Fallback: try matching by id (for facilities without a slug set)
-        const byId = await base44.entities.Facility.filter({ id: slugFromPath });
-        if (byId.length > 0) return byId[0];
-        // Fallback: load all and find by slug OR id match
+        // Load all and match: slug may be full path or just last segment or the facility id
         const all = await base44.entities.Facility.list();
-        return all.find((f) => f.slug === slugFromPath || f.id === slugFromPath) || null;
+        return (
+          all.find((f) => f.slug === fullPathSlug) ||          // full path match e.g. "locations/fl/city/slug/"
+          all.find((f) => f.slug === fullPathSlug + "/") ||    // with trailing slash
+          all.find((f) => f.slug === slugFromPath) ||          // last segment match
+          all.find((f) => f.id === slugFromPath) ||            // id match
+          null
+        );
       }
       return null;
     },
