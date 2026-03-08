@@ -166,8 +166,18 @@ export default function PayMyBill() {
         ) : payableFacilities.length === 0 ? (
           <div className="text-center py-16 text-gray-400">
             <CreditCard className="w-12 h-12 mx-auto mb-4 opacity-40" />
-            <p className="text-lg font-medium">No payment portals configured yet.</p>
-            <p className="text-sm mt-1">Please contact us directly for payment assistance.</p>
+            {search.trim() ? (
+              <>
+                <p className="text-lg font-medium">No locations match "{search}"</p>
+                <p className="text-sm mt-1">Try a different name, city, or address.</p>
+                <button onClick={() => setSearch("")} className="mt-4 text-sm font-semibold underline" style={{ color: cfg.accent_color }}>Clear search</button>
+              </>
+            ) : (
+              <>
+                <p className="text-lg font-medium">No payment portals configured yet.</p>
+                <p className="text-sm mt-1">Please contact us directly for payment assistance.</p>
+              </>
+            )}
           </div>
         ) : (
           <div className="space-y-3">
