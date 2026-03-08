@@ -4,6 +4,7 @@ import Navbar from "./components/public/Navbar";
 import Footer from "./components/public/Footer";
 import AdminSidebar from "./components/admin/AdminSidebar";
 import PopupRenderer from "./components/popup/PopupRenderer";
+import FacilityPage from "./pages/FacilityPage";
 
 const adminPages = [
   "AdminDashboard",
