@@ -13,6 +13,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const defaultPayMyBill = {
   page_key: "pay_my_bill",
+  pmb_show_search_bar: true,
+  pmb_search_bar_placeholder: "Search by name, city, or address...",
+  pmb_search_bar_bg: "#ffffff",
+  pmb_search_bar_text_color: "#111827",
   hero_bg_color: "#1B365D",
   hero_bg_image: "",
   hero_bg_image_overlay: "rgba(0,0,0,0.4)",
