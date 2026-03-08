@@ -35,6 +35,7 @@ const shadowMap = { none: "none", sm: "0 1px 3px rgba(0,0,0,.1)", md: "0 4px 6px
 
 export default function PayMyBill() {
   const [selected, setSelected] = useState(null);
+  const [search, setSearch] = useState("");
 
   const { data: facilities = [], isLoading: facLoading } = useQuery({
     queryKey: ["facilities-payment"],
