@@ -3,8 +3,18 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import FacilityPage from "../pages/FacilityPage";
+
+function isFacilityPath() {
+  const parts = window.location.pathname.replace(/\/$/, "").split("/").filter(Boolean);
+  return parts[0] === "locations" && parts.length >= 4;
+}
 
 export default function PageNotFound() {
+  if (isFacilityPath()) {
+    return <FacilityPage />;
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="text-center max-w-md">
