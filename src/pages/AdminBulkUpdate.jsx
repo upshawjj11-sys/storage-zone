@@ -66,6 +66,76 @@ export default function AdminBulkUpdate() {
     setTimeout(() => setHolidaySaved(false), 3000);
   };
 
+  // --- Bulk Features state ---
+  const [bulkFeatures, setBulkFeatures] = useState([""]);
+  const [featuresSaving, setFeaturesSaving] = useState(false);
+  const [featuresSaved, setFeaturesSaved] = useState(false);
+
+  const saveFeatures = async () => {
+    if (!selectedIds.length) return;
+    const toAdd = bulkFeatures.map((f) => f.trim()).filter(Boolean);
+    if (!toAdd.length) return;
+    setFeaturesSaving(true);
+    for (const id of selectedIds) {
+      const fac = facilities.find((f) => f.id === id);
+      const existing = fac?.features || [];
+      const merged = [...new Set([...existing, ...toAdd])];
+      await base44.entities.Facility.update(id, { features: merged });
+    }
+    setFeaturesSaving(false);
+    setFeaturesSaved(true);
+    queryClient.invalidateQueries({ queryKey: ["facilities-bulk"] });
+    setTimeout(() => setFeaturesSaved(false), 3000);
+  };
+
+  // --- Bulk FAQs state ---
+  const [bulkFaqs, setBulkFaqs] = useState([{ question: "", answer: "" }]);
+  const [faqsSaving, setFaqsSaving] = useState(false);
+  const [faqsSaved, setFaqsSaved] = useState(false);
+
+  const saveFaqs = async () => {
+    if (!selectedIds.length) return;
+    const toAdd = bulkFaqs.filter((f) => f.question.trim() && f.answer.trim());
+    if (!toAdd.length) return;
+    setFaqsSaving(true);
+    for (const id of selectedIds) {
+      const fac = facilities.find((f) => f.id === id);
+      const existing = fac?.faqs || [];
+      await base44.entities.Facility.update(id, { faqs: [...existing, ...toAdd] });
+    }
+    setFaqsSaving(false);
+    setFaqsSaved(true);
+    queryClient.invalidateQueries({ queryKey: ["facilities-bulk"] });
+    setTimeout(() => setFaqsSaved(false), 3000);
+  };
+
+  // --- Bulk Pillars state ---
+  const [bulkPillars, setBulkPillars] = useState([{ icon: "Check", text: "", label: "", icon_color: "#E8792F", text_color: "#ffffff" }]);
+  const [pillarsBgColor, setPillarsBgColor] = useState("#1B365D");
+  const [pillarsSaving, setPillarsSaving] = useState(false);
+  const [pillarsSaved, setPillarsSaved] = useState(false);
+  const [pillarsMode, setPillarsMode] = useState("replace"); // "replace" | "append"
+
+  const savePillars = async () => {
+    if (!selectedIds.length) return;
+    const toSave = bulkPillars.filter((p) => p.text.trim());
+    if (!toSave.length) return;
+    setPillarsSaving(true);
+    for (const id of selectedIds) {
+      const fac = facilities.find((f) => f.id === id);
+      const patch = {
+        show_pillars: true,
+        pillars_bg_color: pillarsBgColor,
+        pillars: pillarsMode === "append" ? [...(fac?.pillars || []), ...toSave] : toSave,
+      };
+      await base44.entities.Facility.update(id, patch);
+    }
+    setPillarsSaving(false);
+    setPillarsSaved(true);
+    queryClient.invalidateQueries({ queryKey: ["facilities-bulk"] });
+    setTimeout(() => setPillarsSaved(false), 3000);
+  };
+
   // --- Banner bulk state ---
   const [bannerTitle, setBannerTitle] = useState("");
   const [bannerSubtitle, setBannerSubtitle] = useState("");
