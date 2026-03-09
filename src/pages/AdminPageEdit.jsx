@@ -442,9 +442,12 @@ export default function AdminPageEdit() {
           <h1 className="text-lg font-semibold text-gray-900">{pageId ? "Edit Page" : "New Page"}</h1>
         </div>
         <div className="flex gap-2">
+          <Button variant="outline" size="sm" className="gap-2" onClick={() => setShowPreview(p => !p)}>
+            <Columns className="w-4 h-4" />{showPreview ? "Hide Preview" : "Show Preview"}
+          </Button>
           {pageId && (
             <a href={`/page/${form.slug}`} target="_blank" rel="noreferrer">
-              <Button variant="outline" size="sm" className="gap-2"><Eye className="w-4 h-4" />Preview</Button>
+              <Button variant="outline" size="sm" className="gap-2"><Eye className="w-4 h-4" />Open Live</Button>
             </a>
           )}
           <Button size="sm" className="gap-2" style={{ background: "#E8792F" }} onClick={handleSave} disabled={saving}>
