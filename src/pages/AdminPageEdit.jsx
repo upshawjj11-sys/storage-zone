@@ -383,6 +383,7 @@ export default function AdminPageEdit() {
     content_blocks: [],
   });
   const [saving, setSaving] = useState(false);
+  const [showPreview, setShowPreview] = useState(true);
 
   const { data: pageData } = useQuery({
     queryKey: ["static-page", pageId],
