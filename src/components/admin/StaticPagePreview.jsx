@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { base44 } from "@/api/base44Client";
 
 function getVideoEmbed(url) {
   if (!url) return null;
@@ -197,21 +198,92 @@ function TestimonialsBlock({ data }) {
 }
 
 function ContactFormBlock({ data }) {
+  const [formConfig, setFormConfig] = useState(null);
+  const [facilities, setFacilities] = useState([]);
+
+  useEffect(() => {
+    if (data.form_id) {
+      base44.entities.FormConfig.filter({ id: data.form_id }).then(res => {
+        if (res && res.length > 0) setFormConfig(res[0]);
+      });
+    }
+    base44.entities.Facility.list("name", 100).then(setFacilities);
+  }, [data.form_id]);
+
+  if (!data.form_id) {
+    return (
+      <div className="max-w-3xl mx-auto px-6 py-10 text-center text-gray-400 text-sm">
+        [Contact Form — no form selected]
+      </div>
+    );
+  }
+
+  if (!formConfig) {
+    return <div className="max-w-3xl mx-auto px-6 py-10 text-center text-gray-300 text-sm">Loading form...</div>;
+  }
+
+  const ci = formConfig.contact_info || {};
+  const hasContactInfo = ci.phone || ci.email || ci.address || ci.hours;
+
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
-      {data.title && <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">{data.title}</h2>}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      {formConfig.title && <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">{formConfig.title}</h2>}
+      {formConfig.subtitle && <p className="text-center text-gray-500 mb-6 text-sm">{formConfig.subtitle}</p>}
+      <div className={`grid gap-10 ${hasContactInfo ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 max-w-xl mx-auto"}`}>
+        {hasContactInfo && (
+          <div className="space-y-3">
+            {ci.phone && <div className="flex items-center gap-3"><span className="text-xl">📞</span><span className="text-gray-700 text-sm">{ci.phone}</span></div>}
+            {ci.email && <div className="flex items-center gap-3"><span className="text-xl">✉️</span><span className="text-gray-700 text-sm">{ci.email}</span></div>}
+            {ci.address && <div className="flex items-center gap-3"><span className="text-xl">📍</span><span className="text-gray-700 text-sm">{ci.address}</span></div>}
+            {ci.hours && <div className="flex items-start gap-3"><span className="text-xl">🕐</span><span className="text-gray-700 text-sm whitespace-pre-line">{ci.hours}</span></div>}
+          </div>
+        )}
         <div className="space-y-3">
-          {data.phone && <div className="flex items-center gap-3"><span className="text-xl">📞</span><span className="text-gray-700 text-sm">{data.phone}</span></div>}
-          {data.email && <div className="flex items-center gap-3"><span className="text-xl">✉️</span><span className="text-gray-700 text-sm">{data.email}</span></div>}
-          {data.address && <div className="flex items-center gap-3"><span className="text-xl">📍</span><span className="text-gray-700 text-sm">{data.address}</span></div>}
-          {data.hours && <div className="flex items-start gap-3"><span className="text-xl">🕐</span><span className="text-gray-700 text-sm whitespace-pre-line">{data.hours}</span></div>}
-        </div>
-        <div className="space-y-3">
-          <input className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" placeholder="Your Name" readOnly />
-          <input className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" placeholder="Email" readOnly />
-          <textarea className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" rows={3} placeholder="Message" readOnly />
-          <button className="w-full py-2.5 bg-[#1B365D] text-white rounded-lg font-semibold text-sm opacity-70 cursor-default">Send Message</button>
+          {formConfig.show_facility_selector && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{formConfig.facility_selector_label || "Select a Location"}</label>
+              <select className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white" disabled>
+                <option>— Select a location —</option>
+                {facilities.map(f => <option key={f.id}>{f.name}</option>)}
+              </select>
+            </div>
+          )}
+          {(formConfig.fields || []).map((field, i) => (
+            <div key={i}>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {field.label}{field.required && <span className="text-red-500 ml-0.5">*</span>}
+              </label>
+              {field.type === "textarea" && (
+                <textarea className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm" rows={3} placeholder={field.placeholder} readOnly />
+              )}
+              {field.type === "dropdown" && (
+                <select className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white" disabled>
+                  <option>{field.placeholder || "Select..."}</option>
+                  {(field.options || []).map((opt, j) => <option key={j}>{opt}</option>)}
+                </select>
+              )}
+              {field.type === "checkbox" && (
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" disabled className="rounded" />
+                  <span className="text-sm text-gray-600">{field.placeholder || field.label}</span>
+                </div>
+              )}
+              {!["textarea", "dropdown", "checkbox"].includes(field.type) && (
+                <input
+                  type={field.type === "date" ? "date" : field.type === "number" ? "number" : field.type === "email" ? "email" : "text"}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"
+                  placeholder={field.placeholder}
+                  readOnly
+                />
+              )}
+            </div>
+          ))}
+          <button
+            className="w-full py-2.5 rounded-lg font-semibold text-sm opacity-70 cursor-default text-white"
+            style={{ backgroundColor: formConfig.submit_button_color || "#1B365D" }}
+          >
+            {formConfig.submit_button_text || "Send Message"}
+          </button>
         </div>
       </div>
     </div>
