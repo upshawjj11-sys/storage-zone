@@ -11,7 +11,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, Save, CheckSquare, Square, CalendarDays, MessageSquare, Image } from "lucide-react";
+import { Plus, Trash2, Save, CheckSquare, CalendarDays, MessageSquare, Image, Star, List, HelpCircle } from "lucide-react";
+import IconPicker from "../components/admin/IconPicker";
 
 export default function AdminBulkUpdate() {
   const queryClient = useQueryClient();
