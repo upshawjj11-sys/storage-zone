@@ -68,7 +68,7 @@ export default function AdminForms() {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <Button size="sm" variant="outline" onClick={() => navigate(createPageUrl("AdminFormEdit") + `&id=${form.id}`)}>
+                  <Button size="sm" variant="outline" onClick={() => navigate(createPageUrl("AdminFormEdit") + `?id=${form.id}`)}>
                     <Pencil className="w-4 h-4" />
                   </Button>
                   <Button size="sm" variant="ghost" className="text-red-400 hover:text-red-600"

@@ -40,7 +40,7 @@ export default function ContactFormBlockEditor({ data, update }) {
           {selectedForm.recipient_email && <p>Sends to: {selectedForm.recipient_email}</p>}
           <Button
             size="sm" variant="outline" className="gap-1 mt-2"
-            onClick={() => navigate(createPageUrl("AdminFormEdit") + `&id=${selectedForm.id}`)}
+            onClick={() => window.open(createPageUrl("AdminFormEdit") + `?id=${selectedForm.id}`, "_blank")}
           >
             <ExternalLink className="w-3 h-3" /> Edit this form
           </Button>
