@@ -306,23 +306,15 @@ function BlockPreview({ block }) {
           </div>
         </div>
       );
-    case "text": {
-      const sizeMap = { xs: "text-xs", sm: "text-sm", base: "text-base", lg: "text-lg", xl: "text-xl", "2xl": "text-2xl", "3xl": "text-3xl" };
-      const weightMap = { light: "font-light", normal: "font-normal", medium: "font-medium", semibold: "font-semibold", bold: "font-bold", extrabold: "font-extrabold" };
-      const alignMap = { left: "text-left", center: "text-center", right: "text-right" };
-      const lhMap = { tight: "leading-tight", normal: "leading-normal", relaxed: "leading-relaxed", loose: "leading-loose" };
-      const lsMap = { tighter: "tracking-tighter", tight: "tracking-tight", normal: "tracking-normal", wide: "tracking-wide", wider: "tracking-wider", widest: "tracking-widest" };
-      const indentMap = { none: "", sm: "pl-4", md: "pl-8", lg: "pl-12" };
-      const cls = [sizeMap[data.font_size], weightMap[data.font_weight], alignMap[data.text_align], lhMap[data.line_height], lsMap[data.letter_spacing], indentMap[data.indent], data.italic ? "italic" : "", data.underline ? "underline" : ""].filter(Boolean).join(" ");
+    case "text":
       return (
         <div className={`${maxWCls} mx-auto px-4 ${padCls}`} style={{ background: data.bg_color || "transparent" }}>
           {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
-          <div className={`prose max-w-none ${cls}`} style={{ color: data.text_color || "#374151" }}>
-            <ReactMarkdown>{data.content || "(No content)"}</ReactMarkdown>
+          <div className="prose max-w-none ql-snow">
+            <div className="ql-editor" dangerouslySetInnerHTML={{ __html: data.content || "<p>(No content)</p>" }} style={{ padding: 0 }} />
           </div>
         </div>
       );
-    }
     case "image": {
       const alignMap = { left: "mr-auto", center: "mx-auto", right: "ml-auto" };
       const radiusMap = { none: "rounded-none", sm: "rounded-sm", md: "rounded-md", lg: "rounded-lg", xl: "rounded-xl", full: "rounded-full" };
