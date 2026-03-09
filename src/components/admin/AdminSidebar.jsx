@@ -18,6 +18,7 @@ import {
   SlidersHorizontal,
   Layers,
   PanelTop,
+  ClipboardList,
 } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
@@ -26,6 +27,7 @@ const navItems = [
   { icon: Home, label: "Home Page", page: "AdminHomePage" },
   { icon: Building2, label: "Facilities", page: "AdminFacilities" },
   { icon: FileText, label: "Static Pages", page: "AdminPages" },
+  { icon: ClipboardList, label: "Contact Forms", page: "AdminForms" },
   { icon: MessageSquare, label: "Popups", page: "AdminPopups" },
   { icon: CalendarCheck, label: "Reservations", page: "AdminReservations" },
   { icon: Palette, label: "Branding Kit", page: "AdminBranding" },
