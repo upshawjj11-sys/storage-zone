@@ -13,21 +13,40 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 
-const blockTypes = [
-  { value: "hero", label: "Hero Banner" },
-  { value: "text", label: "Text / Rich Content" },
-  { value: "image", label: "Image" },
-  { value: "gallery", label: "Photo Gallery" },
-  { value: "video", label: "Video Embed" },
-  { value: "cta", label: "Call to Action" },
-  { value: "faq", label: "FAQ Accordion" },
-  { value: "table", label: "Table" },
-  { value: "two_column", label: "Two Columns" },
-  { value: "testimonials", label: "Testimonials" },
-  { value: "divider", label: "Divider / Spacer" },
+export const blockTypes = [
+  { value: "hero", label: "🎯 Hero Banner" },
+  { value: "text", label: "📝 Text / Rich Content" },
+  { value: "two_column", label: "⬛⬛ Two Columns" },
+  { value: "image", label: "🖼️ Image" },
+  { value: "gallery", label: "📸 Photo Gallery" },
+  { value: "video", label: "🎬 Video Embed" },
+  { value: "embed", label: "🔗 Custom Embed / HTML" },
+  { value: "cta", label: "🚀 Call to Action" },
+  { value: "features_grid", label: "✅ Features Grid" },
+  { value: "stats", label: "📊 Stats / Numbers" },
+  { value: "icon_cards", label: "🃏 Icon Cards" },
+  { value: "faq", label: "❓ FAQ Accordion" },
+  { value: "testimonials", label: "⭐ Testimonials / Reviews" },
+  { value: "table", label: "📋 Table" },
+  { value: "contact_form", label: "📬 Contact Form Info" },
+  { value: "divider", label: "➖ Divider / Spacer" },
 ];
 
-// ── Shared color picker row ──────────────────────────────────────────────────
+// ── Column content types ──────────────────────────────────────────────────────
+export const columnTypes = [
+  { value: "text", label: "Rich Text" },
+  { value: "image", label: "Image" },
+  { value: "video", label: "Video Embed" },
+  { value: "embed", label: "Custom Embed / HTML" },
+  { value: "features", label: "Features List" },
+  { value: "stats", label: "Stats / Numbers" },
+  { value: "cta", label: "Call to Action Box" },
+  { value: "reviews", label: "Reviews" },
+  { value: "icon_cards", label: "Icon Cards" },
+  { value: "faq", label: "FAQ" },
+];
+
+// ── Shared helpers ────────────────────────────────────────────────────────────
 function ColorRow({ label, value, defaultVal, onChange }) {
   return (
     <div className="flex items-center gap-2">
@@ -38,103 +57,23 @@ function ColorRow({ label, value, defaultVal, onChange }) {
   );
 }
 
-
-
-// ── Image settings panel ─────────────────────────────────────────────────────
-function ImageSettingsPanel({ data, onChange }) {
+function ImageUploadField({ value, onChange, label = "Image" }) {
   return (
-    <div className="p-4 bg-purple-50/50 border border-purple-100 rounded-xl space-y-3">
-      <p className="text-xs font-semibold text-purple-700 uppercase tracking-wider">Image Settings</p>
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <Label className="text-xs">Object Fit</Label>
-          <Select value={data.object_fit || "cover"} onValueChange={(v) => onChange({ object_fit: v })}>
-            <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="cover">Cover (fill area)</SelectItem>
-              <SelectItem value="contain">Contain (fit inside)</SelectItem>
-              <SelectItem value="fill">Stretch</SelectItem>
-              <SelectItem value="none">Original size</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label className="text-xs">Max Height</Label>
-          <Select value={data.max_height || "auto"} onValueChange={(v) => onChange({ max_height: v })}>
-            <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="auto">Auto</SelectItem>
-              <SelectItem value="200px">Small (200px)</SelectItem>
-              <SelectItem value="400px">Medium (400px)</SelectItem>
-              <SelectItem value="600px">Large (600px)</SelectItem>
-              <SelectItem value="800px">X-Large (800px)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label className="text-xs">Border Radius</Label>
-          <Select value={data.border_radius || "xl"} onValueChange={(v) => onChange({ border_radius: v })}>
-            <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">None</SelectItem>
-              <SelectItem value="sm">Small</SelectItem>
-              <SelectItem value="md">Medium</SelectItem>
-              <SelectItem value="lg">Large</SelectItem>
-              <SelectItem value="xl">X-Large</SelectItem>
-              <SelectItem value="full">Full (circle)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label className="text-xs">Alignment</Label>
-          <Select value={data.img_align || "center"} onValueChange={(v) => onChange({ img_align: v })}>
-            <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="left">Left</SelectItem>
-              <SelectItem value="center">Center</SelectItem>
-              <SelectItem value="right">Right</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label className="text-xs">Shadow</Label>
-          <Select value={data.shadow || "md"} onValueChange={(v) => onChange({ shadow: v })}>
-            <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">None</SelectItem>
-              <SelectItem value="sm">Small</SelectItem>
-              <SelectItem value="md">Medium</SelectItem>
-              <SelectItem value="lg">Large</SelectItem>
-              <SelectItem value="xl">X-Large</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label className="text-xs">Width</Label>
-          <Select value={data.img_width || "full"} onValueChange={(v) => onChange({ img_width: v })}>
-            <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="auto">Auto</SelectItem>
-              <SelectItem value="1/2">Half width</SelectItem>
-              <SelectItem value="2/3">Two-thirds</SelectItem>
-              <SelectItem value="3/4">Three-quarters</SelectItem>
-              <SelectItem value="full">Full width</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+    <div className="space-y-2">
+      <Label className="text-xs">{label}</Label>
+      <div className="flex gap-2 items-center">
+        <Input className="text-xs" placeholder="Paste image URL..." value={value || ""} onChange={(e) => onChange(e.target.value)} />
+        {value && <button onClick={() => onChange("")} className="text-red-400 hover:text-red-600 flex-shrink-0"><X className="w-4 h-4" /></button>}
       </div>
-      <div className="flex items-center gap-2">
-        <Switch checked={!!data.link_enabled} onCheckedChange={(v) => onChange({ link_enabled: v })} />
-        <Label className="text-xs">Make image clickable / linked</Label>
-      </div>
-      {data.link_enabled && (
-        <Input className="h-8 text-xs" placeholder="https://..." value={data.link_url || ""} onChange={(e) => onChange({ link_url: e.target.value })} />
-      )}
+      <label className="flex items-center gap-1 text-xs text-gray-500 cursor-pointer hover:text-gray-800 border rounded px-2 py-1 w-fit">
+        <Upload className="w-3 h-3" /> Upload
+        <input type="file" accept="image/*" className="hidden" onChange={async (e) => { const f = e.target.files[0]; if (!f) return; const { file_url } = await base44.integrations.Core.UploadFile({ file: f }); onChange(file_url); }} />
+      </label>
+      {value && <img src={value} alt="" className="w-full h-24 object-cover rounded-lg border" />}
     </div>
   );
 }
 
-// ── Section padding/bg panel ─────────────────────────────────────────────────
 function BlockStylePanel({ data, onChange }) {
   return (
     <div className="p-4 bg-gray-50 border rounded-xl space-y-3">
@@ -172,176 +111,136 @@ function BlockStylePanel({ data, onChange }) {
   );
 }
 
-// ── Live preview ─────────────────────────────────────────────────────────────
-function BlockPreview({ block }) {
-  const [openFaq, setOpenFaq] = useState(null);
-  const data = block.data || {};
-  const paddingMap = { none: "py-0", sm: "py-4", md: "py-8", lg: "py-12", xl: "py-16" };
-  const padCls = paddingMap[data.padding] || "py-8";
-  const maxWMap = { sm: "max-w-sm", "2xl": "max-w-2xl", "4xl": "max-w-4xl", "6xl": "max-w-6xl", full: "w-full" };
-  const maxWCls = maxWMap[data.max_width] || "max-w-4xl";
+// ── Column content editor (reused for both left/right) ────────────────────────
+function ColumnEditor({ prefix, data, onChange }) {
+  const type = data[`${prefix}_type`] || "text";
+  const upd = (patch) => onChange(patch);
 
-  switch (block.type) {
-    case "hero":
-      return (
-        <div className="relative py-12 md:py-16 overflow-hidden rounded-xl" style={{ background: data.bg_color || "#1B365D" }}>
-          {data.bg_image && (<><img src={data.bg_image} className="absolute inset-0 w-full h-full object-cover rounded-xl" alt="" /><div className="absolute inset-0 bg-black/50 rounded-xl" /></>)}
-          <div className="relative max-w-4xl mx-auto px-6 text-center text-white">
-            <h1 className="text-3xl md:text-4xl font-black mb-3">{data.title || "(No title)"}</h1>
-            {data.subtitle && <p className="text-lg text-white/80">{data.subtitle}</p>}
-          </div>
-        </div>
-      );
-    case "text":
-      return (
-        <div className={`${maxWCls} mx-auto px-4 ${padCls}`} style={{ background: data.bg_color || "transparent" }}>
-          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
-          <div className="prose max-w-none ql-snow">
-            <div className="ql-editor" dangerouslySetInnerHTML={{ __html: data.content || "<p>(No content)</p>" }} style={{ padding: 0 }} />
-          </div>
-        </div>
-      );
-    case "image": {
-      const alignMap = { left: "mr-auto", center: "mx-auto", right: "ml-auto" };
-      const radiusMap = { none: "rounded-none", sm: "rounded-sm", md: "rounded-md", lg: "rounded-lg", xl: "rounded-xl", full: "rounded-full" };
-      const shadowMap = { none: "", sm: "shadow-sm", md: "shadow-md", lg: "shadow-lg", xl: "shadow-xl" };
-      const widthMap = { auto: "w-auto", "1/2": "w-1/2", "2/3": "w-2/3", "3/4": "w-3/4", full: "w-full" };
-      return (
-        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
-          {data.url ? (
-            <img src={data.url} alt={data.alt || ""} style={{ maxHeight: data.max_height !== "auto" ? data.max_height : undefined, objectFit: data.object_fit || "cover" }}
-              className={`${alignMap[data.img_align] || "mx-auto"} ${radiusMap[data.border_radius] || "rounded-xl"} ${shadowMap[data.shadow] || "shadow"} ${widthMap[data.img_width] || "w-full"} block`}
-            />
-          ) : (
-            <div className="w-full h-40 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400"><Image className="w-8 h-8" /></div>
-          )}
-          {data.caption && <p className="text-center text-sm text-gray-500 mt-2 italic">{data.caption}</p>}
-        </div>
-      );
-    }
-    case "gallery": {
-      const cols = data.columns || 3;
-      return (
-        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
-          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
-          <div className={`grid grid-cols-${cols} gap-3`}>
-            {(data.images || []).map((url, i) => (
-              <img key={i} src={url} alt="" className="w-full h-40 object-cover rounded-xl" />
-            ))}
-            {(data.images || []).length === 0 && <div className="col-span-3 h-32 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-sm">No images yet</div>}
-          </div>
-        </div>
-      );
-    }
-    case "video":
-      return (
-        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
-          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
-          {data.embed_url ? (
-            <div className="aspect-video rounded-xl overflow-hidden">
-              <iframe src={data.embed_url} className="w-full h-full" allow="autoplay; encrypted-media" allowFullScreen title="video" />
-            </div>
-          ) : (
-            <div className="aspect-video bg-gray-100 rounded-xl flex items-center justify-center text-gray-400">Paste a video embed URL</div>
-          )}
-        </div>
-      );
-    case "faq":
-      return (
-        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
-          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
+  const renderTypeEditor = () => {
+    switch (type) {
+      case "text":
+        return <RichTextEditor value={data[`${prefix}_content`] || ""} onChange={(val) => upd({ [`${prefix}_content`]: val })} placeholder="Column content..." minHeight={150} />;
+      case "image":
+        return <ImageUploadField value={data[`${prefix}_image`]} onChange={(v) => upd({ [`${prefix}_image`]: v })} label="Image" />;
+      case "video":
+        return (
           <div className="space-y-2">
-            {(data.items || []).map((faq, j) => (
-              <div key={j} className="border rounded-xl overflow-hidden">
-                <button onClick={() => setOpenFaq(openFaq === j ? null : j)} className="w-full flex items-center justify-between p-4 text-left font-medium hover:bg-gray-50">
-                  {faq.question || "(No question)"}
-                  {openFaq === j ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
-                </button>
-                {openFaq === j && <div className="px-4 pb-4 text-sm text-gray-600">{faq.answer || "(No answer)"}</div>}
+            <Input className="text-xs" placeholder="https://www.youtube.com/embed/..." value={data[`${prefix}_embed_url`] || ""} onChange={(e) => upd({ [`${prefix}_embed_url`]: e.target.value })} />
+            <p className="text-xs text-gray-400">Use YouTube/Vimeo embed URLs</p>
+            {data[`${prefix}_embed_url`] && <div className="aspect-video rounded overflow-hidden"><iframe src={data[`${prefix}_embed_url`]} className="w-full h-full" allowFullScreen /></div>}
+          </div>
+        );
+      case "embed":
+        return (
+          <div className="space-y-2">
+            <Textarea rows={4} className="text-xs font-mono" placeholder="Paste HTML embed code here..." value={data[`${prefix}_embed_code`] || ""} onChange={(e) => upd({ [`${prefix}_embed_code`]: e.target.value })} />
+          </div>
+        );
+      case "features":
+        return (
+          <div className="space-y-2">
+            {(data[`${prefix}_features`] || []).map((f, i) => (
+              <div key={i} className="flex gap-2 items-center">
+                <Input className="text-xs h-7" value={f} onChange={(e) => { const arr = [...(data[`${prefix}_features`] || [])]; arr[i] = e.target.value; upd({ [`${prefix}_features`]: arr }); }} />
+                <button onClick={() => { const arr = (data[`${prefix}_features`] || []).filter((_, j) => j !== i); upd({ [`${prefix}_features`]: arr }); }} className="text-red-400"><X className="w-3 h-3" /></button>
               </div>
             ))}
+            <Button variant="outline" size="sm" onClick={() => upd({ [`${prefix}_features`]: [...(data[`${prefix}_features`] || []), ""] })}><Plus className="w-3 h-3 mr-1" /> Add Feature</Button>
           </div>
-        </div>
-      );
-    case "cta":
-      return (
-        <div className="py-10 rounded-xl" style={{ background: data.bg_color || "#1B365D" }}>
-          <div className="text-center px-6" style={{ color: data.text_color || "#ffffff" }}>
-            <h2 className="text-2xl font-bold mb-2">{data.title || "(No title)"}</h2>
-            {data.subtitle && <p className="opacity-70 mb-4">{data.subtitle}</p>}
-            {data.button_text && (
-              <span className="inline-block px-6 py-2 rounded-full font-semibold text-white" style={{ background: data.button_bg || "#E8792F" }}>{data.button_text}</span>
-            )}
-          </div>
-        </div>
-      );
-    case "table":
-      return (
-        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
-          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
-          <div className="overflow-x-auto rounded-xl border">
-            <table className="w-full text-sm">
-              {(data.headers || []).length > 0 && (
-                <thead style={{ background: data.header_bg || "#f9fafb" }}>
-                  <tr>{data.headers.map((h, k) => <th key={k} className="px-4 py-3 text-left font-semibold text-gray-700">{h || `Col ${k+1}`}</th>)}</tr>
-                </thead>
-              )}
-              <tbody>
-                {(data.rows || []).map((row, j) => (
-                  <tr key={j} className="border-t" style={{ background: j % 2 === 0 ? (data.row_even_bg || "#ffffff") : (data.row_odd_bg || "#f9fafb") }}>
-                    {row.map((cell, k) => <td key={k} className="px-4 py-3 text-gray-600">{cell}</td>)}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      );
-    case "two_column":
-      return (
-        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
-          <div className="grid grid-cols-2 gap-6" style={{ gridTemplateColumns: `${data.left_width || 50}% ${100 - (data.left_width || 50)}%` }}>
-            <div className="prose max-w-none ql-snow">
-              {data.left_title && <h3 className="font-bold text-lg">{data.left_title}</h3>}
-              <div className="ql-editor" style={{ padding: 0 }} dangerouslySetInnerHTML={{ __html: data.left_content || "<p>(Left column empty)</p>" }} />
-            </div>
-            <div className="prose max-w-none ql-snow">
-              {data.right_title && <h3 className="font-bold text-lg">{data.right_title}</h3>}
-              {data.right_image
-                ? <img src={data.right_image} className="w-full rounded-xl" alt="" />
-                : <div className="ql-editor" style={{ padding: 0 }} dangerouslySetInnerHTML={{ __html: data.right_content || "<p>(Right column empty)</p>" }} />
-              }
-            </div>
-          </div>
-        </div>
-      );
-    case "testimonials":
-      return (
-        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
-          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-6 text-center">{data.title}</h2>}
-          <div className={`grid grid-cols-${data.columns || 2} gap-4`}>
-            {(data.items || []).map((t, i) => (
-              <div key={i} className="p-4 rounded-xl border" style={{ background: data.card_bg || "#ffffff" }}>
-                <div className="flex gap-1 mb-2">{[...Array(t.rating || 5)].map((_, s) => <span key={s} className="text-yellow-400">★</span>)}</div>
-                <p className="text-sm text-gray-600 mb-3">"{t.text}"</p>
-                <p className="text-sm font-semibold">{t.name}</p>
+        );
+      case "stats":
+        return (
+          <div className="space-y-2">
+            {(data[`${prefix}_stats`] || []).map((s, i) => (
+              <div key={i} className="flex gap-2 items-center">
+                <Input className="text-xs h-7 w-20" placeholder="Value" value={s.value || ""} onChange={(e) => { const arr = [...(data[`${prefix}_stats`] || [])]; arr[i] = { ...arr[i], value: e.target.value }; upd({ [`${prefix}_stats`]: arr }); }} />
+                <Input className="text-xs h-7 flex-1" placeholder="Label" value={s.label || ""} onChange={(e) => { const arr = [...(data[`${prefix}_stats`] || [])]; arr[i] = { ...arr[i], label: e.target.value }; upd({ [`${prefix}_stats`]: arr }); }} />
+                <button onClick={() => { const arr = (data[`${prefix}_stats`] || []).filter((_, j) => j !== i); upd({ [`${prefix}_stats`]: arr }); }} className="text-red-400"><X className="w-3 h-3" /></button>
               </div>
             ))}
+            <Button variant="outline" size="sm" onClick={() => upd({ [`${prefix}_stats`]: [...(data[`${prefix}_stats`] || []), { value: "", label: "" }] })}><Plus className="w-3 h-3 mr-1" /> Add Stat</Button>
           </div>
-        </div>
-      );
-    case "divider":
-      return (
-        <div className={`${maxWCls} mx-auto px-4`} style={{ paddingTop: data.space_top || "2rem", paddingBottom: data.space_bottom || "2rem" }}>
-          {data.style !== "blank" && <hr style={{ borderColor: data.line_color || "#e5e7eb", borderWidth: data.line_thickness || 1 }} />}
-        </div>
-      );
-    default:
-      return null;
-  }
+        );
+      case "cta":
+        return (
+          <div className="space-y-2">
+            <Input className="text-xs h-7" placeholder="Heading" value={data[`${prefix}_cta_title`] || ""} onChange={(e) => upd({ [`${prefix}_cta_title`]: e.target.value })} />
+            <Input className="text-xs h-7" placeholder="Subtext" value={data[`${prefix}_cta_sub`] || ""} onChange={(e) => upd({ [`${prefix}_cta_sub`]: e.target.value })} />
+            <div className="flex gap-2">
+              <Input className="text-xs h-7" placeholder="Button text" value={data[`${prefix}_cta_btn`] || ""} onChange={(e) => upd({ [`${prefix}_cta_btn`]: e.target.value })} />
+              <Input className="text-xs h-7" placeholder="Button link" value={data[`${prefix}_cta_link`] || ""} onChange={(e) => upd({ [`${prefix}_cta_link`]: e.target.value })} />
+            </div>
+          </div>
+        );
+      case "reviews":
+        return (
+          <div className="space-y-2">
+            {(data[`${prefix}_reviews`] || []).map((r, i) => (
+              <div key={i} className="p-2 bg-white rounded border space-y-1">
+                <div className="flex gap-2">
+                  <Input className="text-xs h-7" placeholder="Name" value={r.name || ""} onChange={(e) => { const arr = [...(data[`${prefix}_reviews`] || [])]; arr[i] = { ...arr[i], name: e.target.value }; upd({ [`${prefix}_reviews`]: arr }); }} />
+                  <Input type="number" min={1} max={5} className="text-xs h-7 w-16" placeholder="★" value={r.rating || 5} onChange={(e) => { const arr = [...(data[`${prefix}_reviews`] || [])]; arr[i] = { ...arr[i], rating: parseInt(e.target.value) }; upd({ [`${prefix}_reviews`]: arr }); }} />
+                  <button onClick={() => { const arr = (data[`${prefix}_reviews`] || []).filter((_, j) => j !== i); upd({ [`${prefix}_reviews`]: arr }); }} className="text-red-400"><X className="w-3 h-3" /></button>
+                </div>
+                <Textarea rows={2} className="text-xs" placeholder="Review text" value={r.text || ""} onChange={(e) => { const arr = [...(data[`${prefix}_reviews`] || [])]; arr[i] = { ...arr[i], text: e.target.value }; upd({ [`${prefix}_reviews`]: arr }); }} />
+              </div>
+            ))}
+            <Button variant="outline" size="sm" onClick={() => upd({ [`${prefix}_reviews`]: [...(data[`${prefix}_reviews`] || []), { name: "", text: "", rating: 5 }] })}><Plus className="w-3 h-3 mr-1" /> Add Review</Button>
+          </div>
+        );
+      case "icon_cards":
+        return (
+          <div className="space-y-2">
+            {(data[`${prefix}_cards`] || []).map((c, i) => (
+              <div key={i} className="flex gap-2 items-start">
+                <Input className="text-xs h-7 w-12" placeholder="🏠" value={c.icon || ""} onChange={(e) => { const arr = [...(data[`${prefix}_cards`] || [])]; arr[i] = { ...arr[i], icon: e.target.value }; upd({ [`${prefix}_cards`]: arr }); }} />
+                <Input className="text-xs h-7 flex-1" placeholder="Title" value={c.title || ""} onChange={(e) => { const arr = [...(data[`${prefix}_cards`] || [])]; arr[i] = { ...arr[i], title: e.target.value }; upd({ [`${prefix}_cards`]: arr }); }} />
+                <Input className="text-xs h-7 flex-1" placeholder="Description" value={c.desc || ""} onChange={(e) => { const arr = [...(data[`${prefix}_cards`] || [])]; arr[i] = { ...arr[i], desc: e.target.value }; upd({ [`${prefix}_cards`]: arr }); }} />
+                <button onClick={() => { const arr = (data[`${prefix}_cards`] || []).filter((_, j) => j !== i); upd({ [`${prefix}_cards`]: arr }); }} className="text-red-400 mt-1"><X className="w-3 h-3" /></button>
+              </div>
+            ))}
+            <Button variant="outline" size="sm" onClick={() => upd({ [`${prefix}_cards`]: [...(data[`${prefix}_cards`] || []), { icon: "", title: "", desc: "" }] })}><Plus className="w-3 h-3 mr-1" /> Add Card</Button>
+          </div>
+        );
+      case "faq":
+        return (
+          <div className="space-y-2">
+            {(data[`${prefix}_faqs`] || []).map((f, i) => (
+              <div key={i} className="space-y-1 p-2 bg-white border rounded">
+                <div className="flex gap-2">
+                  <Input className="text-xs h-7 flex-1" placeholder="Question" value={f.question || ""} onChange={(e) => { const arr = [...(data[`${prefix}_faqs`] || [])]; arr[i] = { ...arr[i], question: e.target.value }; upd({ [`${prefix}_faqs`]: arr }); }} />
+                  <button onClick={() => { const arr = (data[`${prefix}_faqs`] || []).filter((_, j) => j !== i); upd({ [`${prefix}_faqs`]: arr }); }} className="text-red-400"><X className="w-3 h-3" /></button>
+                </div>
+                <Textarea rows={2} className="text-xs" placeholder="Answer" value={f.answer || ""} onChange={(e) => { const arr = [...(data[`${prefix}_faqs`] || [])]; arr[i] = { ...arr[i], answer: e.target.value }; upd({ [`${prefix}_faqs`]: arr }); }} />
+              </div>
+            ))}
+            <Button variant="outline" size="sm" onClick={() => upd({ [`${prefix}_faqs`]: [...(data[`${prefix}_faqs`] || []), { question: "", answer: "" }] })}><Plus className="w-3 h-3 mr-1" /> Add FAQ</Button>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="space-y-2 p-3 bg-gray-50 rounded-xl border">
+      <p className="text-xs font-semibold text-gray-500 capitalize">{prefix} Column</p>
+      <div><Label className="text-xs">Heading (optional)</Label><Input className="mt-1 text-sm h-8" value={data[`${prefix}_title`] || ""} onChange={(e) => upd({ [`${prefix}_title`]: e.target.value })} /></div>
+      <div>
+        <Label className="text-xs">Content Type</Label>
+        <Select value={type} onValueChange={(v) => upd({ [`${prefix}_type`]: v })}>
+          <SelectTrigger className="h-8 text-xs mt-1"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            {columnTypes.map((ct) => <SelectItem key={ct.value} value={ct.value}>{ct.label}</SelectItem>)}
+          </SelectContent>
+        </Select>
+      </div>
+      {renderTypeEditor()}
+    </div>
+  );
 }
 
-// ── Block editors ─────────────────────────────────────────────────────────────
+// ── Table editor ──────────────────────────────────────────────────────────────
 function TableEditor({ data, onChange }) {
   const headers = data.headers || ["Column 1", "Column 2"];
   const rows = data.rows || [];
@@ -399,7 +298,310 @@ function TableEditor({ data, onChange }) {
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────────────
+// ── Live block preview ────────────────────────────────────────────────────────
+export function BlockPreview({ block }) {
+  const [openFaq, setOpenFaq] = useState(null);
+  const data = block.data || {};
+  const paddingMap = { none: "py-0", sm: "py-4", md: "py-8", lg: "py-12", xl: "py-16" };
+  const padCls = paddingMap[data.padding] || "py-8";
+  const maxWMap = { sm: "max-w-sm", "2xl": "max-w-2xl", "4xl": "max-w-4xl", "6xl": "max-w-6xl", full: "w-full" };
+  const maxWCls = maxWMap[data.max_width] || "max-w-4xl";
+
+  // Render a column's content inline
+  const renderColContent = (prefix, colData) => {
+    const type = colData[`${prefix}_type`] || "text";
+    switch (type) {
+      case "text":
+        return <div className="prose max-w-none ql-snow"><div className="ql-editor" style={{ padding: 0 }} dangerouslySetInnerHTML={{ __html: colData[`${prefix}_content`] || "<p>(empty)</p>" }} /></div>;
+      case "image":
+        return colData[`${prefix}_image`] ? <img src={colData[`${prefix}_image`]} className="w-full rounded-xl" alt="" /> : <div className="h-32 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-sm">No image</div>;
+      case "video":
+        return colData[`${prefix}_embed_url`] ? <div className="aspect-video rounded-xl overflow-hidden"><iframe src={colData[`${prefix}_embed_url`]} className="w-full h-full" allowFullScreen /></div> : <div className="aspect-video bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-sm">No video URL</div>;
+      case "embed":
+        return colData[`${prefix}_embed_code`] ? <div dangerouslySetInnerHTML={{ __html: colData[`${prefix}_embed_code`] }} /> : <div className="h-20 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">No embed code</div>;
+      case "features":
+        return (
+          <ul className="space-y-2">
+            {(colData[`${prefix}_features`] || []).map((f, i) => (
+              <li key={i} className="flex items-center gap-2 text-sm"><span className="w-4 h-4 rounded-full bg-[#2A9D8F] text-white flex items-center justify-center text-xs flex-shrink-0">✓</span>{f}</li>
+            ))}
+          </ul>
+        );
+      case "stats":
+        return (
+          <div className="grid grid-cols-2 gap-3">
+            {(colData[`${prefix}_stats`] || []).map((s, i) => (
+              <div key={i} className="text-center p-3 bg-gray-50 rounded-xl">
+                <p className="text-2xl font-black text-[#1B365D]">{s.value}</p>
+                <p className="text-xs text-gray-500 mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        );
+      case "cta":
+        return (
+          <div className="p-4 rounded-xl text-center bg-[#1B365D] text-white">
+            <h3 className="font-bold mb-1">{colData[`${prefix}_cta_title`] || "CTA Title"}</h3>
+            <p className="text-sm opacity-70 mb-3">{colData[`${prefix}_cta_sub`]}</p>
+            {colData[`${prefix}_cta_btn`] && <span className="inline-block px-4 py-1.5 bg-[#E8792F] rounded-full text-sm font-semibold">{colData[`${prefix}_cta_btn`]}</span>}
+          </div>
+        );
+      case "reviews":
+        return (
+          <div className="space-y-3">
+            {(colData[`${prefix}_reviews`] || []).map((r, i) => (
+              <div key={i} className="p-3 rounded-xl bg-gray-50 border">
+                <div className="flex gap-1 mb-1">{[...Array(r.rating || 5)].map((_, s) => <span key={s} className="text-yellow-400 text-xs">★</span>)}</div>
+                <p className="text-xs text-gray-600">"{r.text}"</p>
+                <p className="text-xs font-semibold mt-1">{r.name}</p>
+              </div>
+            ))}
+          </div>
+        );
+      case "icon_cards":
+        return (
+          <div className="space-y-2">
+            {(colData[`${prefix}_cards`] || []).map((c, i) => (
+              <div key={i} className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                <span className="text-xl">{c.icon}</span>
+                <div><p className="font-semibold text-sm">{c.title}</p><p className="text-xs text-gray-500">{c.desc}</p></div>
+              </div>
+            ))}
+          </div>
+        );
+      case "faq":
+        return (
+          <div className="space-y-2">
+            {(colData[`${prefix}_faqs`] || []).map((f, i) => (
+              <div key={i} className="border rounded-lg overflow-hidden">
+                <div className="p-3 font-medium text-sm">{f.question}</div>
+                <div className="px-3 pb-3 text-xs text-gray-500">{f.answer}</div>
+              </div>
+            ))}
+          </div>
+        );
+      default: return null;
+    }
+  };
+
+  switch (block.type) {
+    case "hero":
+      return (
+        <div className="relative py-12 overflow-hidden rounded-xl" style={{ background: data.bg_color || "#1B365D" }}>
+          {data.bg_image && (<><img src={data.bg_image} className="absolute inset-0 w-full h-full object-cover rounded-xl" alt="" /><div className="absolute inset-0 bg-black/50 rounded-xl" /></>)}
+          <div className="relative text-center px-6 text-white">
+            <h1 className="text-3xl font-black mb-2">{data.title || "(No title)"}</h1>
+            {data.subtitle && <p className="text-lg opacity-80">{data.subtitle}</p>}
+            {data.cta_text && <span className="inline-block mt-4 px-6 py-2 rounded-full font-semibold text-sm" style={{ background: data.cta_bg || "#E8792F" }}>{data.cta_text}</span>}
+          </div>
+        </div>
+      );
+    case "text":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`} style={{ background: data.bg_color || "transparent" }}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
+          <div className="prose max-w-none ql-snow">
+            <div className="ql-editor" dangerouslySetInnerHTML={{ __html: data.content || "<p>(No content)</p>" }} style={{ padding: 0 }} />
+          </div>
+        </div>
+      );
+    case "image": {
+      const alignMap = { left: "mr-auto", center: "mx-auto", right: "ml-auto" };
+      const radiusMap = { none: "rounded-none", sm: "rounded-sm", md: "rounded-md", lg: "rounded-lg", xl: "rounded-xl", full: "rounded-full" };
+      const shadowMap = { none: "", sm: "shadow-sm", md: "shadow-md", lg: "shadow-lg", xl: "shadow-xl" };
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
+          {data.url ? <img src={data.url} alt={data.alt || ""} style={{ maxHeight: data.max_height !== "auto" ? data.max_height : undefined, objectFit: data.object_fit || "cover" }}
+            className={`${alignMap[data.img_align] || "mx-auto"} ${radiusMap[data.border_radius] || "rounded-xl"} ${shadowMap[data.shadow] || "shadow"} w-full block`} />
+            : <div className="w-full h-40 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400"><Image className="w-8 h-8" /></div>}
+          {data.caption && <p className="text-center text-sm text-gray-500 mt-2 italic">{data.caption}</p>}
+        </div>
+      );
+    }
+    case "gallery":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
+          <div className={`grid grid-cols-${data.columns || 3} gap-3`}>
+            {(data.images || []).map((url, i) => <img key={i} src={url} alt="" className={`w-full ${data.img_height || "h-40"} object-cover rounded-xl`} />)}
+            {(data.images || []).length === 0 && <div className="col-span-3 h-32 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-sm">No images yet</div>}
+          </div>
+        </div>
+      );
+    case "video":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
+          {data.embed_url ? <div className="aspect-video rounded-xl overflow-hidden"><iframe src={data.embed_url} className="w-full h-full" allowFullScreen title="video" /></div>
+            : <div className="aspect-video bg-gray-100 rounded-xl flex items-center justify-center text-gray-400">Paste a video embed URL</div>}
+        </div>
+      );
+    case "embed":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`} style={{ background: data.bg_color || "transparent" }}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
+          {data.embed_code ? <div dangerouslySetInnerHTML={{ __html: data.embed_code }} />
+            : <div className="h-24 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 text-sm">No embed code</div>}
+        </div>
+      );
+    case "features_grid":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`} style={{ background: data.bg_color || "transparent" }}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-2">{data.title}</h2>}
+          {data.subtitle && <p className="text-gray-500 mb-6">{data.subtitle}</p>}
+          <div className={`grid grid-cols-${data.columns || 2} gap-3`}>
+            {(data.items || []).map((item, i) => (
+              <div key={i} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: data.item_bg || "#F9FAFB" }}>
+                <span className="text-xl flex-shrink-0">{item.icon || "✓"}</span>
+                <div>
+                  <p className="font-semibold text-sm" style={{ color: data.item_title_color || "#1B365D" }}>{item.title}</p>
+                  {item.desc && <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    case "stats":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`} style={{ background: data.bg_color || "transparent" }}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-6 text-center">{data.title}</h2>}
+          <div className={`grid grid-cols-${data.columns || 3} gap-4`}>
+            {(data.items || []).map((item, i) => (
+              <div key={i} className="text-center p-4 rounded-2xl" style={{ background: data.card_bg || "#F9FAFB" }}>
+                <p className="text-4xl font-black" style={{ color: data.value_color || "#1B365D" }}>{item.value}</p>
+                <p className="text-sm mt-1" style={{ color: data.label_color || "#6B7280" }}>{item.label}</p>
+                {item.desc && <p className="text-xs text-gray-400 mt-1">{item.desc}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    case "icon_cards":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`} style={{ background: data.bg_color || "transparent" }}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-6">{data.title}</h2>}
+          <div className={`grid grid-cols-${data.columns || 3} gap-4`}>
+            {(data.items || []).map((item, i) => (
+              <div key={i} className="p-4 rounded-2xl border text-center" style={{ background: data.card_bg || "#ffffff" }}>
+                <span className="text-3xl">{item.icon}</span>
+                <p className="font-semibold mt-2 text-sm">{item.title}</p>
+                {item.desc && <p className="text-xs text-gray-500 mt-1">{item.desc}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    case "faq":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
+          <div className="space-y-2">
+            {(data.items || []).map((faq, j) => (
+              <div key={j} className="border rounded-xl overflow-hidden">
+                <button onClick={() => setOpenFaq(openFaq === j ? null : j)} className="w-full flex items-center justify-between p-4 text-left font-medium hover:bg-gray-50">
+                  {faq.question || "(No question)"}
+                  {openFaq === j ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </button>
+                {openFaq === j && <div className="px-4 pb-4 text-sm text-gray-600">{faq.answer}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    case "cta":
+      return (
+        <div className="py-10 rounded-xl" style={{ background: data.bg_color || "#1B365D" }}>
+          <div className="text-center px-6" style={{ color: data.text_color || "#ffffff" }}>
+            <h2 className="text-2xl font-bold mb-2">{data.title || "(No title)"}</h2>
+            {data.subtitle && <p className="opacity-70 mb-4">{data.subtitle}</p>}
+            {data.button_text && <span className="inline-block px-6 py-2 rounded-full font-semibold text-white" style={{ background: data.button_bg || "#E8792F" }}>{data.button_text}</span>}
+          </div>
+        </div>
+      );
+    case "testimonials":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-6 text-center">{data.title}</h2>}
+          <div className={`grid grid-cols-${data.columns || 2} gap-4`}>
+            {(data.items || []).map((t, i) => (
+              <div key={i} className="p-4 rounded-xl border" style={{ background: data.card_bg || "#ffffff" }}>
+                <div className="flex gap-1 mb-2">{[...Array(t.rating || 5)].map((_, s) => <span key={s} className="text-yellow-400">★</span>)}</div>
+                <p className="text-sm text-gray-600 mb-3">"{t.text}"</p>
+                <p className="text-sm font-semibold">{t.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    case "table":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
+          <div className="overflow-x-auto rounded-xl border">
+            <table className="w-full text-sm">
+              {(data.headers || []).length > 0 && (
+                <thead style={{ background: data.header_bg || "#f9fafb" }}>
+                  <tr>{data.headers.map((h, k) => <th key={k} className="px-4 py-3 text-left font-semibold text-gray-700">{h}</th>)}</tr>
+                </thead>
+              )}
+              <tbody>
+                {(data.rows || []).map((row, j) => (
+                  <tr key={j} className="border-t" style={{ background: j % 2 === 0 ? (data.row_even_bg || "#fff") : (data.row_odd_bg || "#f9fafb") }}>
+                    {row.map((cell, k) => <td key={k} className="px-4 py-3 text-gray-600">{cell}</td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
+    case "two_column":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
+          <div className="grid gap-6" style={{ gridTemplateColumns: `${data.left_width || 50}% ${100 - (data.left_width || 50)}%` }}>
+            <div>
+              {data.left_title && <h3 className="font-bold text-lg mb-3">{data.left_title}</h3>}
+              {renderColContent("left", data)}
+            </div>
+            <div>
+              {data.right_title && <h3 className="font-bold text-lg mb-3">{data.right_title}</h3>}
+              {renderColContent("right", data)}
+            </div>
+          </div>
+        </div>
+      );
+    case "contact_form":
+      return (
+        <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
+          {data.title && <h2 className="text-2xl font-bold text-[#1B365D] mb-4">{data.title}</h2>}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              {data.phone && <div className="flex gap-3 items-center"><span>📞</span><span>{data.phone}</span></div>}
+              {data.email && <div className="flex gap-3 items-center"><span>✉️</span><span>{data.email}</span></div>}
+              {data.address && <div className="flex gap-3 items-start"><span>📍</span><span>{data.address}</span></div>}
+              {data.hours && <div className="flex gap-3 items-start"><span>🕐</span><span className="text-sm whitespace-pre-line">{data.hours}</span></div>}
+            </div>
+            <div className="space-y-2">
+              <div className="h-8 rounded bg-gray-100 border px-3 flex items-center text-xs text-gray-400">Name</div>
+              <div className="h-8 rounded bg-gray-100 border px-3 flex items-center text-xs text-gray-400">Email</div>
+              <div className="h-16 rounded bg-gray-100 border px-3 py-2 text-xs text-gray-400">Message</div>
+              <div className="h-9 rounded-full bg-[#E8792F] text-white flex items-center justify-center text-sm font-semibold">{data.button_text || "Send Message"}</div>
+            </div>
+          </div>
+        </div>
+      );
+    case "divider":
+      return (
+        <div className={`${maxWCls} mx-auto px-4`} style={{ paddingTop: data.space_top || "2rem", paddingBottom: data.space_bottom || "2rem" }}>
+          {data.style !== "blank" && <hr style={{ borderColor: data.line_color || "#e5e7eb", borderWidth: data.line_thickness || 1 }} />}
+        </div>
+      );
+    default: return null;
+  }
+}
+
+// ── Main page editor ──────────────────────────────────────────────────────────
 export default function AdminPageEdit() {
   const urlParams = new URLSearchParams(window.location.search);
   const pageId = urlParams.get("id");
@@ -429,19 +631,25 @@ export default function AdminPageEdit() {
     const data = { ...form };
     delete data.id; delete data.created_date; delete data.updated_date; delete data.created_by;
     if (!data.slug) data.slug = data.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-    if (pageId) { await base44.entities.StaticPage.update(pageId, data); }
-    else { await base44.entities.StaticPage.create(data); }
+    if (pageId) await base44.entities.StaticPage.update(pageId, data);
+    else await base44.entities.StaticPage.create(data);
     setSaving(false);
     navigate(createPageUrl("AdminPages"));
   };
 
   const addBlock = (type) => {
-    const newBlock = { type, data: {}, order: form.content_blocks.length };
-    if (type === "faq") newBlock.data = { title: "FAQ", items: [{ question: "", answer: "" }] };
-    if (type === "table") newBlock.data = { title: "", headers: ["Column 1", "Column 2"], rows: [["", ""]] };
-    if (type === "gallery") newBlock.data = { images: [], columns: 3 };
-    if (type === "testimonials") newBlock.data = { items: [], columns: 2, card_bg: "#ffffff" };
-    if (type === "two_column") newBlock.data = { left_content: "", right_content: "", left_width: 50 };
+    const defaults = {
+      faq: { title: "FAQ", items: [{ question: "", answer: "" }] },
+      table: { title: "", headers: ["Column 1", "Column 2"], rows: [["", ""]] },
+      gallery: { images: [], columns: 3 },
+      testimonials: { items: [], columns: 2, card_bg: "#ffffff" },
+      two_column: { left_content: "", left_type: "text", right_content: "", right_type: "text", left_width: 50 },
+      features_grid: { items: [], columns: 2 },
+      stats: { items: [], columns: 3 },
+      icon_cards: { items: [], columns: 3 },
+      contact_form: { button_text: "Send Message" },
+    };
+    const newBlock = { type, data: defaults[type] || {}, order: form.content_blocks.length };
     update("content_blocks", [...form.content_blocks, newBlock]);
     setExpandedBlock(form.content_blocks.length);
   };
@@ -484,20 +692,7 @@ export default function AdminPageEdit() {
               <ColorRow label="Text Color" value={data.text_color} defaultVal="#ffffff" onChange={(v) => upd({ text_color: v })} />
               <ColorRow label="Button BG" value={data.cta_bg} defaultVal="#E8792F" onChange={(v) => upd({ cta_bg: v })} />
             </div>
-            <div>
-              <Label>Background Image</Label>
-              <div className="space-y-2 mt-1">
-                <div className="flex gap-2 items-center">
-                  <Input placeholder="Paste image URL..." value={data.bg_image || ""} onChange={(e) => upd({ bg_image: e.target.value })} />
-                  {data.bg_image && <button onClick={() => upd({ bg_image: "" })} className="text-red-400 hover:text-red-600 flex-shrink-0"><X className="w-4 h-4" /></button>}
-                </div>
-                <label className="flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit text-sm text-gray-600">
-                  <Upload className="w-4 h-4" /> Upload Image
-                  <input type="file" accept="image/*" className="hidden" onChange={async (e) => { const file = e.target.files[0]; if (!file) return; const { file_url } = await base44.integrations.Core.UploadFile({ file }); upd({ bg_image: file_url }); }} />
-                </label>
-                {data.bg_image && <img src={data.bg_image} alt="" className="w-full h-28 object-cover rounded-lg border" />}
-              </div>
-            </div>
+            <ImageUploadField value={data.bg_image} onChange={(v) => upd({ bg_image: v })} label="Background Image" />
           </div>
         );
 
@@ -505,15 +700,7 @@ export default function AdminPageEdit() {
         return (
           <div className="space-y-4">
             <div><Label>Section Title (optional)</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
-            <div>
-              <Label className="mb-2 block">Content</Label>
-              <RichTextEditor
-                value={data.content || ""}
-                onChange={(val) => upd({ content: val })}
-                placeholder="Start typing your content..."
-                minHeight={250}
-              />
-            </div>
+            <RichTextEditor value={data.content || ""} onChange={(val) => upd({ content: val })} placeholder="Start typing..." minHeight={250} />
             <BlockStylePanel data={data} onChange={upd} />
           </div>
         );
@@ -521,25 +708,11 @@ export default function AdminPageEdit() {
       case "image":
         return (
           <div className="space-y-4">
-            <div>
-              <Label>Image</Label>
-              <div className="space-y-2 mt-1">
-                <div className="flex gap-2 items-center">
-                  <Input placeholder="Paste image URL..." value={data.url || ""} onChange={(e) => upd({ url: e.target.value })} />
-                  {data.url && <button onClick={() => upd({ url: "" })} className="text-red-400 hover:text-red-600 flex-shrink-0"><X className="w-4 h-4" /></button>}
-                </div>
-                <label className="flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer hover:bg-gray-50 transition w-fit text-sm text-gray-600">
-                  <Upload className="w-4 h-4" /> Upload Image
-                  <input type="file" accept="image/*" className="hidden" onChange={async (e) => { const file = e.target.files[0]; if (!file) return; const { file_url } = await base44.integrations.Core.UploadFile({ file }); upd({ url: file_url }); }} />
-                </label>
-              </div>
-            </div>
-            {data.url && <img src={data.url} alt="" className="w-full h-40 object-cover rounded-xl" />}
+            <ImageUploadField value={data.url} onChange={(v) => upd({ url: v })} label="Image" />
             <div className="grid grid-cols-2 gap-3">
-              <div><Label>Alt Text</Label><Input value={data.alt || ""} onChange={(e) => upd({ alt: e.target.value })} /></div>
-              <div><Label>Caption</Label><Input value={data.caption || ""} onChange={(e) => upd({ caption: e.target.value })} /></div>
+              <div><Label className="text-xs">Alt Text</Label><Input className="text-xs" value={data.alt || ""} onChange={(e) => upd({ alt: e.target.value })} /></div>
+              <div><Label className="text-xs">Caption</Label><Input className="text-xs" value={data.caption || ""} onChange={(e) => upd({ caption: e.target.value })} /></div>
             </div>
-            <ImageSettingsPanel data={data} onChange={upd} />
             <BlockStylePanel data={data} onChange={upd} />
           </div>
         );
@@ -547,29 +720,12 @@ export default function AdminPageEdit() {
       case "gallery":
         return (
           <div className="space-y-4">
-            <div><Label>Section Title (optional)</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
+            <div><Label>Section Title</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
             <div className="grid grid-cols-2 gap-3">
-              <div>
-                <Label>Columns</Label>
+              <div><Label className="text-xs">Columns</Label>
                 <Select value={String(data.columns || 3)} onValueChange={(v) => upd({ columns: parseInt(v) })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2">2 Columns</SelectItem>
-                    <SelectItem value="3">3 Columns</SelectItem>
-                    <SelectItem value="4">4 Columns</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Image Height</Label>
-                <Select value={data.img_height || "h-40"} onValueChange={(v) => upd({ img_height: v })}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="h-24">Small (96px)</SelectItem>
-                    <SelectItem value="h-40">Medium (160px)</SelectItem>
-                    <SelectItem value="h-56">Large (224px)</SelectItem>
-                    <SelectItem value="h-72">X-Large (288px)</SelectItem>
-                  </SelectContent>
+                  <SelectContent><SelectItem value="2">2</SelectItem><SelectItem value="3">3</SelectItem><SelectItem value="4">4</SelectItem></SelectContent>
                 </Select>
               </div>
             </div>
@@ -579,13 +735,12 @@ export default function AdminPageEdit() {
                 {(data.images || []).map((url, i) => (
                   <div key={i} className="relative group">
                     <img src={url} alt="" className="w-full h-20 object-cover rounded-lg" />
-                    <button onClick={() => upd({ images: (data.images || []).filter((_, j) => j !== i) })}
-                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition">×</button>
+                    <button onClick={() => upd({ images: (data.images || []).filter((_, j) => j !== i) })} className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100">×</button>
                   </div>
                 ))}
-                <label className="h-20 border-2 border-dashed border-gray-200 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition text-gray-400 text-xs gap-1">
-                  <Upload className="w-4 h-4" /> Add Photo
-                  <input type="file" accept="image/*" className="hidden" onChange={async (e) => { const file = e.target.files[0]; if (!file) return; const { file_url } = await base44.integrations.Core.UploadFile({ file }); upd({ images: [...(data.images || []), file_url] }); }} />
+                <label className="h-20 border-2 border-dashed border-gray-200 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 text-gray-400 text-xs gap-1">
+                  <Upload className="w-4 h-4" /> Add
+                  <input type="file" accept="image/*" className="hidden" onChange={async (e) => { const f = e.target.files[0]; if (!f) return; const { file_url } = await base44.integrations.Core.UploadFile({ file: f }); upd({ images: [...(data.images || []), file_url] }); }} />
                 </label>
               </div>
             </div>
@@ -596,23 +751,115 @@ export default function AdminPageEdit() {
       case "video":
         return (
           <div className="space-y-4">
-            <div><Label>Section Title (optional)</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
+            <div><Label>Section Title</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
             <div>
               <Label>Video Embed URL</Label>
               <Input className="mt-1" placeholder="https://www.youtube.com/embed/VIDEO_ID" value={data.embed_url || ""} onChange={(e) => upd({ embed_url: e.target.value })} />
               <p className="text-xs text-gray-400 mt-1">Use the embed URL format: youtube.com/embed/... or player.vimeo.com/video/...</p>
             </div>
+            <BlockStylePanel data={data} onChange={upd} />
+          </div>
+        );
+
+      case "embed":
+        return (
+          <div className="space-y-4">
+            <div><Label>Section Title (optional)</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
             <div>
-              <Label>Aspect Ratio</Label>
-              <Select value={data.aspect || "16/9"} onValueChange={(v) => upd({ aspect: v })}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="16/9">16:9 (Widescreen)</SelectItem>
-                  <SelectItem value="4/3">4:3 (Standard)</SelectItem>
-                  <SelectItem value="1/1">1:1 (Square)</SelectItem>
-                  <SelectItem value="9/16">9:16 (Vertical)</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label>HTML / Embed Code</Label>
+              <Textarea className="mt-1 font-mono text-xs" rows={6} placeholder="Paste any HTML, iframe, or embed code here..." value={data.embed_code || ""} onChange={(e) => upd({ embed_code: e.target.value })} />
+              <p className="text-xs text-gray-400 mt-1">Works with Google Maps, Calendly, Typeform, social posts, booking widgets, etc.</p>
+            </div>
+            <BlockStylePanel data={data} onChange={upd} />
+          </div>
+        );
+
+      case "features_grid":
+        return (
+          <div className="space-y-4">
+            <div><Label>Section Title</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
+            <div><Label>Subtitle</Label><Input value={data.subtitle || ""} onChange={(e) => upd({ subtitle: e.target.value })} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><Label className="text-xs">Columns</Label>
+                <Select value={String(data.columns || 2)} onValueChange={(v) => upd({ columns: parseInt(v) })}>
+                  <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
+                  <SelectContent><SelectItem value="1">1</SelectItem><SelectItem value="2">2</SelectItem><SelectItem value="3">3</SelectItem><SelectItem value="4">4</SelectItem></SelectContent>
+                </Select>
+              </div>
+              <ColorRow label="Item BG" value={data.item_bg} defaultVal="#F9FAFB" onChange={(v) => upd({ item_bg: v })} />
+            </div>
+            <div className="space-y-2">
+              {(data.items || []).map((item, j) => (
+                <div key={j} className="flex gap-2 items-center">
+                  <Input className="w-12 text-center text-xs h-8" placeholder="✓" value={item.icon || ""} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], icon: e.target.value }; upd({ items }); }} />
+                  <Input className="flex-1 text-xs h-8" placeholder="Feature title" value={item.title || ""} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], title: e.target.value }; upd({ items }); }} />
+                  <Input className="flex-1 text-xs h-8" placeholder="Description (optional)" value={item.desc || ""} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], desc: e.target.value }; upd({ items }); }} />
+                  <button onClick={() => { const items = (data.items || []).filter((_, i) => i !== j); upd({ items }); }} className="text-red-400"><Trash2 className="w-3 h-3" /></button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => upd({ items: [...(data.items || []), { icon: "", title: "", desc: "" }] })}>
+                <Plus className="w-3 h-3 mr-1" /> Add Item
+              </Button>
+            </div>
+            <BlockStylePanel data={data} onChange={upd} />
+          </div>
+        );
+
+      case "stats":
+        return (
+          <div className="space-y-4">
+            <div><Label>Section Title</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><Label className="text-xs">Columns</Label>
+                <Select value={String(data.columns || 3)} onValueChange={(v) => upd({ columns: parseInt(v) })}>
+                  <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
+                  <SelectContent><SelectItem value="2">2</SelectItem><SelectItem value="3">3</SelectItem><SelectItem value="4">4</SelectItem></SelectContent>
+                </Select>
+              </div>
+              <ColorRow label="Card BG" value={data.card_bg} defaultVal="#F9FAFB" onChange={(v) => upd({ card_bg: v })} />
+            </div>
+            <div className="space-y-2">
+              {(data.items || []).map((item, j) => (
+                <div key={j} className="flex gap-2 items-center">
+                  <Input className="w-24 text-xs h-8 font-bold" placeholder="100+" value={item.value || ""} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], value: e.target.value }; upd({ items }); }} />
+                  <Input className="flex-1 text-xs h-8" placeholder="Label" value={item.label || ""} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], label: e.target.value }; upd({ items }); }} />
+                  <Input className="flex-1 text-xs h-8" placeholder="Description" value={item.desc || ""} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], desc: e.target.value }; upd({ items }); }} />
+                  <button onClick={() => { const items = (data.items || []).filter((_, i) => i !== j); upd({ items }); }} className="text-red-400"><Trash2 className="w-3 h-3" /></button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => upd({ items: [...(data.items || []), { value: "", label: "", desc: "" }] })}>
+                <Plus className="w-3 h-3 mr-1" /> Add Stat
+              </Button>
+            </div>
+            <BlockStylePanel data={data} onChange={upd} />
+          </div>
+        );
+
+      case "icon_cards":
+        return (
+          <div className="space-y-4">
+            <div><Label>Section Title</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><Label className="text-xs">Columns</Label>
+                <Select value={String(data.columns || 3)} onValueChange={(v) => upd({ columns: parseInt(v) })}>
+                  <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
+                  <SelectContent><SelectItem value="2">2</SelectItem><SelectItem value="3">3</SelectItem><SelectItem value="4">4</SelectItem></SelectContent>
+                </Select>
+              </div>
+              <ColorRow label="Card BG" value={data.card_bg} defaultVal="#ffffff" onChange={(v) => upd({ card_bg: v })} />
+            </div>
+            <div className="space-y-2">
+              {(data.items || []).map((item, j) => (
+                <div key={j} className="flex gap-2 items-start">
+                  <Input className="w-12 text-center text-lg h-8" placeholder="🏠" value={item.icon || ""} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], icon: e.target.value }; upd({ items }); }} />
+                  <Input className="flex-1 text-xs h-8" placeholder="Card title" value={item.title || ""} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], title: e.target.value }; upd({ items }); }} />
+                  <Input className="flex-1 text-xs h-8" placeholder="Description" value={item.desc || ""} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], desc: e.target.value }; upd({ items }); }} />
+                  <button onClick={() => { const items = (data.items || []).filter((_, i) => i !== j); upd({ items }); }} className="text-red-400 mt-1.5"><Trash2 className="w-3 h-3" /></button>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" onClick={() => upd({ items: [...(data.items || []), { icon: "", title: "", desc: "" }] })}>
+                <Plus className="w-3 h-3 mr-1" /> Add Card
+              </Button>
             </div>
             <BlockStylePanel data={data} onChange={upd} />
           </div>
@@ -640,10 +887,6 @@ export default function AdminPageEdit() {
         return (
           <div className="space-y-3">
             <div><Label>Section Title</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
-            <div className="grid grid-cols-2 gap-3">
-              <ColorRow label="Border Color" value={data.border_color} defaultVal="#e5e7eb" onChange={(v) => upd({ border_color: v })} />
-              <ColorRow label="Answer Text" value={data.answer_color} defaultVal="#4b5563" onChange={(v) => upd({ answer_color: v })} />
-            </div>
             {(data.items || []).map((item, j) => (
               <div key={j} className="p-3 bg-gray-50 rounded-lg space-y-2">
                 <div className="flex items-center justify-between">
@@ -654,20 +897,13 @@ export default function AdminPageEdit() {
                 <Textarea rows={2} placeholder="Answer" value={item.answer} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], answer: e.target.value }; upd({ items }); }} />
               </div>
             ))}
-            <Button variant="outline" size="sm" onClick={() => upd({ items: [...(data.items || []), { question: "", answer: "" }] })}>
-              <Plus className="w-3 h-3 mr-1" /> Add Item
-            </Button>
+            <Button variant="outline" size="sm" onClick={() => upd({ items: [...(data.items || []), { question: "", answer: "" }] })}><Plus className="w-3 h-3 mr-1" /> Add Item</Button>
             <BlockStylePanel data={data} onChange={upd} />
           </div>
         );
 
       case "table":
-        return (
-          <div className="space-y-4">
-            <TableEditor data={data} onChange={upd} />
-            <BlockStylePanel data={data} onChange={upd} />
-          </div>
-        );
+        return <div className="space-y-4"><TableEditor data={data} onChange={upd} /><BlockStylePanel data={data} onChange={upd} /></div>;
 
       case "two_column":
         return (
@@ -680,37 +916,8 @@ export default function AdminPageEdit() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2 p-3 bg-gray-50 rounded-xl border">
-                <p className="text-xs font-semibold text-gray-500">Left Column</p>
-                <div><Label className="text-xs">Heading</Label><Input className="mt-1 text-sm h-8" value={data.left_title || ""} onChange={(e) => upd({ left_title: e.target.value })} /></div>
-                <RichTextEditor value={data.left_content || ""} onChange={(val) => upd({ left_content: val })} placeholder="Left column content..." minHeight={150} />
-              </div>
-              <div className="space-y-2 p-3 bg-gray-50 rounded-xl border">
-                <p className="text-xs font-semibold text-gray-500">Right Column</p>
-                <div><Label className="text-xs">Heading</Label><Input className="mt-1 text-sm h-8" value={data.right_title || ""} onChange={(e) => upd({ right_title: e.target.value })} /></div>
-                <div>
-                  <Label className="text-xs">Content Type</Label>
-                  <Select value={data.right_type || "text"} onValueChange={(v) => upd({ right_type: v })}>
-                    <SelectTrigger className="h-8 text-xs mt-1"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="text">Text / Markdown</SelectItem>
-                      <SelectItem value="image">Image</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                {(data.right_type || "text") === "text" ? (
-                  <RichTextEditor value={data.right_content || ""} onChange={(val) => upd({ right_content: val })} placeholder="Right column content..." minHeight={150} />
-                ) : (
-                  <div className="space-y-2">
-                    <Input className="text-xs" placeholder="Image URL" value={data.right_image || ""} onChange={(e) => upd({ right_image: e.target.value })} />
-                    <label className="flex items-center gap-1 text-xs text-gray-500 cursor-pointer hover:text-gray-800">
-                      <Upload className="w-3 h-3" /> Upload
-                      <input type="file" accept="image/*" className="hidden" onChange={async (e) => { const file = e.target.files[0]; if (!file) return; const { file_url } = await base44.integrations.Core.UploadFile({ file }); upd({ right_image: file_url }); }} />
-                    </label>
-                    {data.right_image && <img src={data.right_image} alt="" className="w-full h-24 object-cover rounded-lg" />}
-                  </div>
-                )}
-              </div>
+              <ColumnEditor prefix="left" data={data} onChange={upd} />
+              <ColumnEditor prefix="right" data={data} onChange={upd} />
             </div>
             <BlockStylePanel data={data} onChange={upd} />
           </div>
@@ -725,11 +932,7 @@ export default function AdminPageEdit() {
                 <Label>Columns</Label>
                 <Select value={String(data.columns || 2)} onValueChange={(v) => upd({ columns: parseInt(v) })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">1 column</SelectItem>
-                    <SelectItem value="2">2 columns</SelectItem>
-                    <SelectItem value="3">3 columns</SelectItem>
-                  </SelectContent>
+                  <SelectContent><SelectItem value="1">1</SelectItem><SelectItem value="2">2</SelectItem><SelectItem value="3">3</SelectItem></SelectContent>
                 </Select>
               </div>
               <ColorRow label="Card BG" value={data.card_bg} defaultVal="#ffffff" onChange={(v) => upd({ card_bg: v })} />
@@ -747,9 +950,22 @@ export default function AdminPageEdit() {
                 <Textarea rows={2} placeholder="Review text" value={item.text || ""} onChange={(e) => { const items = [...(data.items || [])]; items[j] = { ...items[j], text: e.target.value }; upd({ items }); }} />
               </div>
             ))}
-            <Button variant="outline" size="sm" onClick={() => upd({ items: [...(data.items || []), { name: "", text: "", rating: 5 }] })}>
-              <Plus className="w-3 h-3 mr-1" /> Add Review
-            </Button>
+            <Button variant="outline" size="sm" onClick={() => upd({ items: [...(data.items || []), { name: "", text: "", rating: 5 }] })}><Plus className="w-3 h-3 mr-1" /> Add Review</Button>
+            <BlockStylePanel data={data} onChange={upd} />
+          </div>
+        );
+
+      case "contact_form":
+        return (
+          <div className="space-y-4">
+            <div><Label>Section Title</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div><Label className="text-xs">Phone</Label><Input className="text-xs" value={data.phone || ""} onChange={(e) => upd({ phone: e.target.value })} /></div>
+              <div><Label className="text-xs">Email</Label><Input className="text-xs" value={data.email || ""} onChange={(e) => upd({ email: e.target.value })} /></div>
+            </div>
+            <div><Label className="text-xs">Address</Label><Input className="text-xs" value={data.address || ""} onChange={(e) => upd({ address: e.target.value })} /></div>
+            <div><Label className="text-xs">Hours (text)</Label><Textarea rows={3} className="text-xs" value={data.hours || ""} onChange={(e) => upd({ hours: e.target.value })} /></div>
+            <div><Label className="text-xs">Button Text</Label><Input className="text-xs" value={data.button_text || "Send Message"} onChange={(e) => upd({ button_text: e.target.value })} /></div>
             <BlockStylePanel data={data} onChange={upd} />
           </div>
         );
@@ -764,60 +980,29 @@ export default function AdminPageEdit() {
                 <SelectContent>
                   <SelectItem value="line">Solid Line</SelectItem>
                   <SelectItem value="dashed">Dashed Line</SelectItem>
-                  <SelectItem value="dotted">Dotted Line</SelectItem>
                   <SelectItem value="blank">Blank Space Only</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div>
-                <Label className="text-xs">Space Above</Label>
+              <div><Label className="text-xs">Space Above</Label>
                 <Select value={data.space_top || "2rem"} onValueChange={(v) => upd({ space_top: v })}>
                   <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="0">None</SelectItem>
-                    <SelectItem value="1rem">Small (1rem)</SelectItem>
-                    <SelectItem value="2rem">Medium (2rem)</SelectItem>
-                    <SelectItem value="4rem">Large (4rem)</SelectItem>
-                    <SelectItem value="6rem">X-Large (6rem)</SelectItem>
-                  </SelectContent>
+                  <SelectContent><SelectItem value="0">None</SelectItem><SelectItem value="1rem">Small</SelectItem><SelectItem value="2rem">Medium</SelectItem><SelectItem value="4rem">Large</SelectItem><SelectItem value="6rem">X-Large</SelectItem></SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label className="text-xs">Space Below</Label>
+              <div><Label className="text-xs">Space Below</Label>
                 <Select value={data.space_bottom || "2rem"} onValueChange={(v) => upd({ space_bottom: v })}>
                   <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="0">None</SelectItem>
-                    <SelectItem value="1rem">Small (1rem)</SelectItem>
-                    <SelectItem value="2rem">Medium (2rem)</SelectItem>
-                    <SelectItem value="4rem">Large (4rem)</SelectItem>
-                    <SelectItem value="6rem">X-Large (6rem)</SelectItem>
-                  </SelectContent>
+                  <SelectContent><SelectItem value="0">None</SelectItem><SelectItem value="1rem">Small</SelectItem><SelectItem value="2rem">Medium</SelectItem><SelectItem value="4rem">Large</SelectItem><SelectItem value="6rem">X-Large</SelectItem></SelectContent>
                 </Select>
               </div>
             </div>
-            {data.style !== "blank" && (
-              <div className="grid grid-cols-2 gap-3">
-                <ColorRow label="Line Color" value={data.line_color} defaultVal="#e5e7eb" onChange={(v) => upd({ line_color: v })} />
-                <div>
-                  <Label className="text-xs">Thickness</Label>
-                  <Select value={String(data.line_thickness || 1)} onValueChange={(v) => upd({ line_thickness: parseInt(v) })}>
-                    <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">1px</SelectItem>
-                      <SelectItem value="2">2px</SelectItem>
-                      <SelectItem value="4">4px</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            )}
+            {data.style !== "blank" && <ColorRow label="Line Color" value={data.line_color} defaultVal="#e5e7eb" onChange={(v) => upd({ line_color: v })} />}
           </div>
         );
 
-      default:
-        return null;
+      default: return null;
     }
   };
 
@@ -825,7 +1010,6 @@ export default function AdminPageEdit() {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      {/* Top bar */}
       <div className="flex items-center gap-3 px-6 py-4 border-b bg-white flex-shrink-0">
         <Button variant="ghost" size="icon" onClick={() => navigate(createPageUrl("AdminPages"))}>
           <ArrowLeft className="w-5 h-5" />
@@ -847,11 +1031,8 @@ export default function AdminPageEdit() {
         </Button>
       </div>
 
-      {/* Body */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Editor */}
         <div className={`overflow-y-auto p-6 space-y-6 ${showPreview ? "w-1/2 border-r" : "w-full max-w-5xl mx-auto"}`}>
-          {/* Page settings */}
           <Card>
             <CardContent className="p-6 space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
@@ -863,10 +1044,7 @@ export default function AdminPageEdit() {
                   <Label>Status</Label>
                   <Select value={form.status} onValueChange={(v) => update("status", v)}>
                     <SelectTrigger className="w-36"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="draft">Draft</SelectItem>
-                      <SelectItem value="published">Published</SelectItem>
-                    </SelectContent>
+                    <SelectContent><SelectItem value="draft">Draft</SelectItem><SelectItem value="published">Published</SelectItem></SelectContent>
                   </Select>
                 </div>
                 <div className="flex items-center gap-2 pt-6">
@@ -881,19 +1059,16 @@ export default function AdminPageEdit() {
             </CardContent>
           </Card>
 
-          {/* Content blocks */}
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>Content Blocks</CardTitle>
                 <Select onValueChange={addBlock}>
-                  <SelectTrigger className="w-52">
+                  <SelectTrigger className="w-56">
                     <SelectValue placeholder="+ Add a block..." />
                   </SelectTrigger>
                   <SelectContent>
-                    {blockTypes.map((t) => (
-                      <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-                    ))}
+                    {blockTypes.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -931,7 +1106,6 @@ export default function AdminPageEdit() {
           </Card>
         </div>
 
-        {/* Preview panel */}
         {showPreview && (
           <div className="w-1/2 overflow-y-auto bg-white">
             <div className="sticky top-0 bg-gray-100 border-b px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
