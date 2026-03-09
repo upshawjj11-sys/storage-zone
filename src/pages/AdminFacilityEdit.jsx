@@ -4,7 +4,7 @@ import { createPageUrl } from "@/utils";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import {
-  ArrowLeft, Save, Plus, Trash2, Upload, X, GripVertical, Globe
+  ArrowLeft, Save, Plus, Trash2, Upload, X, GripVertical, Globe, Eye, EyeOff
 } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import HoursEditor from "../components/admin/HoursEditor";
