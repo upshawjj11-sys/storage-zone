@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import RichTextEditor from "../components/admin/RichTextEditor";
+import StaticPagePreview from "../components/admin/StaticPagePreview";
+import { Columns } from "lucide-react";
 
 const BLOCK_TYPES = [
   { value: "hero", label: "Hero Banner" },
