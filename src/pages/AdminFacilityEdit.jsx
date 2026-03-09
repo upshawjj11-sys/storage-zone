@@ -529,16 +529,36 @@ export default function AdminFacilityEdit() {
                   <Plus className="w-4 h-4" />
                 </Button>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {form.features.map((f, i) => (
-                  <span key={i} className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1.5 text-sm">
-                    {f}
-                    <button onClick={() => update("features", form.features.filter((_, j) => j !== i))}>
-                      <X className="w-3 h-3 text-gray-400 hover:text-red-500" />
-                    </button>
-                  </span>
-                ))}
-              </div>
+              <DragDropContext onDragEnd={(result) => {
+                if (!result.destination) return;
+                const items = Array.from(form.features);
+                const [moved] = items.splice(result.source.index, 1);
+                items.splice(result.destination.index, 0, moved);
+                update("features", items);
+              }}>
+                <Droppable droppableId="features-list">
+                  {(provided) => (
+                    <div className="space-y-2" {...provided.droppableProps} ref={provided.innerRef}>
+                      {form.features.map((f, i) => (
+                        <Draggable key={i} draggableId={`feature-${i}`} index={i}>
+                          {(provided) => (
+                            <div ref={provided.innerRef} {...provided.draggableProps} className="flex items-center gap-2 bg-gray-50 border rounded-lg px-3 py-2">
+                              <div {...provided.dragHandleProps} className="text-gray-300 cursor-grab flex-shrink-0">
+                                <GripVertical className="w-4 h-4" />
+                              </div>
+                              <span className="flex-1 text-sm text-gray-800">{f}</span>
+                              <button onClick={() => update("features", form.features.filter((_, j) => j !== i))}>
+                                <X className="w-3.5 h-3.5 text-gray-400 hover:text-red-500" />
+                              </button>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
             </CardContent>
           </Card>
         </TabsContent>
