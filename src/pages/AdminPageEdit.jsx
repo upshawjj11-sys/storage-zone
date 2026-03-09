@@ -300,14 +300,17 @@ function BlockPreview({ block }) {
     case "two_column":
       return (
         <div className={`${maxWCls} mx-auto px-4 ${padCls}`}>
-          <div className={`grid grid-cols-2 gap-6`} style={{ gridTemplateColumns: `${data.left_width || 50}% ${100 - (data.left_width || 50)}%` }}>
-            <div className="prose max-w-none">
+          <div className="grid grid-cols-2 gap-6" style={{ gridTemplateColumns: `${data.left_width || 50}% ${100 - (data.left_width || 50)}%` }}>
+            <div className="prose max-w-none ql-snow">
               {data.left_title && <h3 className="font-bold text-lg">{data.left_title}</h3>}
-              <ReactMarkdown>{data.left_content || "(Left column empty)"}</ReactMarkdown>
+              <div className="ql-editor" style={{ padding: 0 }} dangerouslySetInnerHTML={{ __html: data.left_content || "<p>(Left column empty)</p>" }} />
             </div>
-            <div className="prose max-w-none">
+            <div className="prose max-w-none ql-snow">
               {data.right_title && <h3 className="font-bold text-lg">{data.right_title}</h3>}
-              {data.right_image ? <img src={data.right_image} className="w-full rounded-xl" alt="" /> : <ReactMarkdown>{data.right_content || "(Right column empty)"}</ReactMarkdown>}
+              {data.right_image
+                ? <img src={data.right_image} className="w-full rounded-xl" alt="" />
+                : <div className="ql-editor" style={{ padding: 0 }} dangerouslySetInnerHTML={{ __html: data.right_content || "<p>(Right column empty)</p>" }} />
+              }
             </div>
           </div>
         </div>
