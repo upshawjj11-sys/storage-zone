@@ -126,31 +126,32 @@ export default function AdminFacilityEdit() {
     update("banner_image", file_url);
   };
 
+  const previewUrl = getFacilityPreviewUrl();
+
   return (
-    <div className="p-6 md:p-8 max-w-5xl mx-auto">
-      <div className="flex items-center gap-4 mb-8">
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* Top bar */}
+      <div className="flex items-center gap-3 px-6 py-4 border-b bg-white flex-shrink-0">
         <Button variant="ghost" size="icon" onClick={() => navigate(createPageUrl("AdminFacilities"))}>
           <ArrowLeft className="w-5 h-5" />
         </Button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-xl font-bold text-gray-900">
             {facilityId ? "Edit Facility" : "New Facility"}
           </h1>
         </div>
-        {form.slug && (
-          <>
-            <Button
-              variant="outline"
-              className="rounded-full gap-2 border-green-300 text-green-700 hover:bg-green-50"
-              onClick={() => {
-                const state = (form.state || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-                const city = (form.city || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-                window.open(`/locations/${state}/${city}/${form.slug}/`, "_blank");
-              }}
-            >
+        {previewUrl && (
+          <a href={previewUrl} target="_blank" rel="noopener noreferrer">
+            <Button variant="outline" className="rounded-full gap-2 border-green-300 text-green-700 hover:bg-green-50">
               <Globe className="w-4 h-4" /> Live
             </Button>
-          </>
+          </a>
+        )}
+        {previewUrl && (
+          <Button variant="outline" className="rounded-full gap-2" onClick={() => setShowPreview(!showPreview)}>
+            {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            {showPreview ? "Hide Preview" : "Preview"}
+          </Button>
         )}
         <Button onClick={handleSave} disabled={saving} className="rounded-full gap-2" style={{ background: "#E8792F" }}>
           <Save className="w-4 h-4" />
@@ -158,6 +159,9 @@ export default function AdminFacilityEdit() {
         </Button>
       </div>
 
+      {/* Body */}
+      <div className="flex flex-1 overflow-hidden">
+        <div className={`overflow-y-auto p-6 md:p-8 ${showPreview ? "w-1/2" : "w-full max-w-5xl mx-auto"}`}>
       <Tabs defaultValue="general" className="space-y-6">
         <TabsList className="bg-gray-100 p-1 rounded-xl">
           <TabsTrigger value="general">General</TabsTrigger>
