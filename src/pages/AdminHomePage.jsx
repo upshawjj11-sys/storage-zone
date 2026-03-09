@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { Save, Upload, Plus, Trash2, GripVertical, ChevronDown, ChevronUp, Globe } from "lucide-react";
+import { Save, Upload, Plus, Trash2, GripVertical, ChevronDown, ChevronUp, Globe, Eye, EyeOff } from "lucide-react";
 import IconPicker from "../components/admin/IconPicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
