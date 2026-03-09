@@ -546,7 +546,6 @@ export default function AdminPageEdit() {
           <StaticPagePreview form={form} />
         </div>
       )}
-      </div>
     </div>
   );
 }
