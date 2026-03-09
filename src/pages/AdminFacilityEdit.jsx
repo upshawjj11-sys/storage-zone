@@ -923,6 +923,7 @@ export default function AdminFacilityEdit() {
           </Card>
         </TabsContent>
       </Tabs>
+        </div>{/* end tabs wrapper */}
         </div>{/* end scrollable editor */}
 
         {/* Preview panel */}
