@@ -107,9 +107,7 @@ export default function AdminFacilityEdit() {
   };
 
   const getFacilityPreviewUrl = () => {
-    const state = (form.state || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-    const city = (form.city || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-    return form.slug ? `/locations/${state}/${city}/${form.slug}/` : null;
+    return facilityId ? `${createPageUrl("FacilityPage")}?id=${facilityId}` : null;
   };
 
   const handlePhotoUpload = async (e) => {

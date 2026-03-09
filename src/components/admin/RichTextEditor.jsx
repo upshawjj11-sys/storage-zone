@@ -1,5 +1,6 @@
-import React, { useRef } from "react";
+import React from "react";
 import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 // react-quill CSS is already globally imported per platform setup
 const FONTS = ["", "Arial", "Georgia", "Tahoma", "Trebuchet MS", "Verdana", "Courier New", "Times New Roman"];
