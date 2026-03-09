@@ -35,6 +35,8 @@ export default function AdminFacilityEdit() {
   const facilityId = urlParams.get("id");
   const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewKey, setPreviewKey] = useState(0);
   const [form, setForm] = useState({
     name: "", slug: "", address: "", city: "", state: "", zip: "",
     phone: "", email: "", about: "", status: "active",
