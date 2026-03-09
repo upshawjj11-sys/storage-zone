@@ -625,11 +625,14 @@ export default function AdminPageEdit() {
           <div className="space-y-4">
             <div><Label>Section Title (optional)</Label><Input value={data.title || ""} onChange={(e) => upd({ title: e.target.value })} /></div>
             <div>
-              <Label>Content <span className="text-gray-400 font-normal text-xs">(Markdown supported)</span></Label>
-              <Textarea rows={8} value={data.content || ""} onChange={(e) => upd({ content: e.target.value })} className="mt-1 font-mono text-sm" />
-              <p className="text-xs text-gray-400 mt-1">Tip: Use **bold**, *italic*, # Heading, - bullet, 1. numbered, &gt; blockquote</p>
+              <Label className="mb-2 block">Content</Label>
+              <RichTextEditor
+                value={data.content || ""}
+                onChange={(val) => upd({ content: val })}
+                placeholder="Start typing your content..."
+                minHeight={250}
+              />
             </div>
-            <TypographyPanel data={data} onChange={upd} />
             <BlockStylePanel data={data} onChange={upd} />
           </div>
         );
