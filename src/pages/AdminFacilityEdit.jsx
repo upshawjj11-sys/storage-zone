@@ -923,6 +923,19 @@ export default function AdminFacilityEdit() {
           </Card>
         </TabsContent>
       </Tabs>
+        </div>{/* end scrollable editor */}
+
+        {/* Preview panel */}
+        {showPreview && previewUrl && (
+          <div className="w-1/2 overflow-hidden flex flex-col border-l">
+            <div className="bg-gray-100 border-b px-4 py-2 flex items-center justify-between flex-shrink-0">
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Live Preview — {form.name}</span>
+              <button onClick={() => setPreviewKey(k => k + 1)} className="text-xs text-[#1B365D] hover:underline">↺ Refresh</button>
+            </div>
+            <iframe key={previewKey} src={previewUrl} className="flex-1 w-full border-0" title="Facility Preview" />
+          </div>
+        )}
+      </div>{/* end body flex */}
     </div>
   );
 }
