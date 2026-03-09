@@ -541,6 +541,12 @@ export default function AdminPageEdit() {
           </Card>
         </div>
       </div>
+      {showPreview && (
+        <div className="w-1/2 overflow-hidden">
+          <StaticPagePreview form={form} />
+        </div>
+      )}
+      </div>
     </div>
   );
 }
