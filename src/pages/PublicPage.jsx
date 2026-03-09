@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import ReactMarkdown from "react-markdown";
 
 export default function PublicPage() {
   const urlParams = new URLSearchParams(window.location.search);
