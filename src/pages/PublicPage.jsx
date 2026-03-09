@@ -239,17 +239,11 @@ function ContactFormBlock({ data }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formConfig?.recipient_email) {
-      const body = Object.entries(fieldValues).map(([k, v]) => {
-        const field = formConfig.fields.find(f => f.id === k);
-        return `${field?.label || k}: ${v}`;
-      }).join("\n");
-      await base44.integrations.Core.SendEmail({
-        to: formConfig.recipient_email,
-        subject: `New form submission: ${formConfig.title || formConfig.name}`,
-        body,
-      });
-    }
+    await base44.functions.invoke('submitContactForm', {
+      form_id: data.form_id,
+      field_values: fieldValues,
+      facility: fieldValues["__facility__"] || null,
+    });
     setSubmitted(true);
   };
 
