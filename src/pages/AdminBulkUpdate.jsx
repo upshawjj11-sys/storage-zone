@@ -319,6 +319,192 @@ export default function AdminBulkUpdate() {
           </Card>
         </TabsContent>
 
+        {/* Features */}
+        <TabsContent value="features">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Add Features to Facilities</CardTitle>
+              <p className="text-xs text-gray-400">These features will be appended (merged) into each selected facility's feature list.</p>
+            </CardHeader>
+            <CardContent className="p-6 pt-0 space-y-3">
+              {bulkFeatures.map((f, i) => (
+                <div key={i} className="flex gap-2">
+                  <Input
+                    value={f}
+                    placeholder="e.g. Climate Controlled"
+                    onChange={(e) => { const next = [...bulkFeatures]; next[i] = e.target.value; setBulkFeatures(next); }}
+                  />
+                  {bulkFeatures.length > 1 && (
+                    <Button variant="ghost" size="icon" className="text-red-500 flex-shrink-0" onClick={() => setBulkFeatures(bulkFeatures.filter((_, j) => j !== i))}>
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+              <Button variant="outline" size="sm" className="gap-1" onClick={() => setBulkFeatures([...bulkFeatures, ""])}>
+                <Plus className="w-3.5 h-3.5" /> Add Another
+              </Button>
+              <div className="pt-2">
+                <Button
+                  disabled={!selectedIds.length || featuresSaving}
+                  style={{ background: "#E8792F" }}
+                  className="gap-2"
+                  onClick={saveFeatures}
+                >
+                  <Save className="w-4 h-4" />
+                  {featuresSaving ? "Saving..." : featuresSaved ? "Saved!" : `Add to ${selectedIds.length} Facilit${selectedIds.length !== 1 ? "ies" : "y"}`}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* FAQs */}
+        <TabsContent value="faqs">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Add FAQs to Facilities</CardTitle>
+              <p className="text-xs text-gray-400">These FAQs will be appended to each selected facility's FAQ list.</p>
+            </CardHeader>
+            <CardContent className="p-6 pt-0 space-y-4">
+              {bulkFaqs.map((faq, i) => (
+                <div key={i} className="p-4 bg-gray-50 rounded-xl border space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-600">FAQ #{i + 1}</span>
+                    {bulkFaqs.length > 1 && (
+                      <Button variant="ghost" size="icon" className="text-red-500 w-7 h-7" onClick={() => setBulkFaqs(bulkFaqs.filter((_, j) => j !== i))}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                  <div>
+                    <Label className="text-xs">Question</Label>
+                    <Input className="mt-1" value={faq.question} placeholder="e.g. Do you offer climate-controlled units?" onChange={(e) => { const next = [...bulkFaqs]; next[i] = { ...next[i], question: e.target.value }; setBulkFaqs(next); }} />
+                  </div>
+                  <div>
+                    <Label className="text-xs">Answer</Label>
+                    <textarea
+                      className="mt-1 w-full border rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-gray-300"
+                      rows={3}
+                      value={faq.answer}
+                      placeholder="Enter the answer..."
+                      onChange={(e) => { const next = [...bulkFaqs]; next[i] = { ...next[i], answer: e.target.value }; setBulkFaqs(next); }}
+                    />
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" size="sm" className="gap-1" onClick={() => setBulkFaqs([...bulkFaqs, { question: "", answer: "" }])}>
+                <Plus className="w-3.5 h-3.5" /> Add Another FAQ
+              </Button>
+              <div>
+                <Button
+                  disabled={!selectedIds.length || faqsSaving}
+                  style={{ background: "#E8792F" }}
+                  className="gap-2"
+                  onClick={saveFaqs}
+                >
+                  <Save className="w-4 h-4" />
+                  {faqsSaving ? "Saving..." : faqsSaved ? "Saved!" : `Add to ${selectedIds.length} Facilit${selectedIds.length !== 1 ? "ies" : "y"}`}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Pillars */}
+        <TabsContent value="pillars">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Bulk Update Pillars</CardTitle>
+              <p className="text-xs text-gray-400">Set or append pillars (icon + text highlights) across selected facilities.</p>
+            </CardHeader>
+            <CardContent className="p-6 pt-0 space-y-4">
+              {/* Mode */}
+              <div className="flex gap-3">
+                {["replace", "append"].map((mode) => (
+                  <button
+                    key={mode}
+                    onClick={() => setPillarsMode(mode)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium border transition ${pillarsMode === mode ? "bg-[#1B365D] text-white border-[#1B365D]" : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"}`}
+                  >
+                    {mode === "replace" ? "Replace All Pillars" : "Append to Existing"}
+                  </button>
+                ))}
+              </div>
+
+              {/* Bar background color */}
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                <p className="text-sm font-medium text-gray-700 flex-1">Bar Background Color</p>
+                <input type="color" value={pillarsBgColor} onChange={(e) => setPillarsBgColor(e.target.value)} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                <Input className="w-24 h-8 text-xs font-mono" value={pillarsBgColor} onChange={(e) => setPillarsBgColor(e.target.value)} />
+              </div>
+
+              {/* Pillar items */}
+              <div className="space-y-3">
+                {bulkPillars.map((p, i) => {
+                  const upd = (patch) => { const next = [...bulkPillars]; next[i] = { ...next[i], ...patch }; setBulkPillars(next); };
+                  return (
+                    <div key={i} className="p-4 bg-gray-50 rounded-xl border space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold text-gray-500 uppercase">Pillar {i + 1}</span>
+                        {bulkPillars.length > 1 && (
+                          <Button variant="ghost" size="icon" className="text-red-400 w-7 h-7" onClick={() => setBulkPillars(bulkPillars.filter((_, j) => j !== i))}>
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <Label className="text-xs">Icon</Label>
+                          <div className="mt-1"><IconPicker value={p.icon} onChange={(v) => upd({ icon: v })} /></div>
+                        </div>
+                        <div>
+                          <Label className="text-xs">Main Text</Label>
+                          <Input className="mt-1 h-8 text-sm" value={p.text} placeholder="e.g. 24/7 Access" onChange={(e) => upd({ text: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Sub-label (optional)</Label>
+                          <Input className="mt-1 h-8 text-sm" value={p.label || ""} placeholder="e.g. Gate Code Required" onChange={(e) => upd({ label: e.target.value })} />
+                        </div>
+                        <div className="flex gap-3 items-end">
+                          <div>
+                            <Label className="text-xs">Icon Color</Label>
+                            <div className="flex items-center gap-1 mt-1">
+                              <input type="color" value={p.icon_color || "#E8792F"} onChange={(e) => upd({ icon_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                              <Input className="w-20 h-8 text-xs font-mono" value={p.icon_color || "#E8792F"} onChange={(e) => upd({ icon_color: e.target.value })} />
+                            </div>
+                          </div>
+                          <div>
+                            <Label className="text-xs">Text Color</Label>
+                            <div className="flex items-center gap-1 mt-1">
+                              <input type="color" value={p.text_color || "#ffffff"} onChange={(e) => upd({ text_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                              <Input className="w-20 h-8 text-xs font-mono" value={p.text_color || "#ffffff"} onChange={(e) => upd({ text_color: e.target.value })} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <Button variant="outline" size="sm" className="gap-1" disabled={bulkPillars.length >= 5} onClick={() => setBulkPillars([...bulkPillars, { icon: "Check", text: "", label: "", icon_color: "#E8792F", text_color: "#ffffff" }])}>
+                <Plus className="w-3.5 h-3.5" /> Add Pillar
+              </Button>
+              <div>
+                <Button
+                  disabled={!selectedIds.length || pillarsSaving}
+                  style={{ background: "#E8792F" }}
+                  className="gap-2"
+                  onClick={savePillars}
+                >
+                  <Save className="w-4 h-4" />
+                  {pillarsSaving ? "Saving..." : pillarsSaved ? "Saved!" : `Apply to ${selectedIds.length} Facilit${selectedIds.length !== 1 ? "ies" : "y"}`}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Banner Text */}
         <TabsContent value="banner">
           <Card>
