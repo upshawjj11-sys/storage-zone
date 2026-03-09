@@ -782,7 +782,6 @@ export default function AdminHomePage() {
             )}
           </CardContent>
         </Card>
-        </div>{/* end space-y-6 content */}
         </div>{/* end scrollable editor */}
 
         {/* Preview panel */}
