@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 
@@ -209,28 +209,151 @@ function TestimonialsBlock({ data }) {
 }
 
 function ContactFormBlock({ data }) {
+  const [formConfig, setFormConfig] = useState(null);
+  const [facilities, setFacilities] = useState([]);
   const [submitted, setSubmitted] = useState(false);
-  const [formState, setFormState] = useState({ name: "", email: "", phone: "", message: "" });
+  const [fieldValues, setFieldValues] = useState({});
+  const [visibleFields, setVisibleFields] = useState({});
+
+  useEffect(() => {
+    if (data.form_id) {
+      base44.entities.FormConfig.filter({ id: data.form_id }).then(res => {
+        if (res && res.length > 0) setFormConfig(res[0]);
+      });
+    }
+    base44.entities.Facility.list("name", 100).then(setFacilities);
+  }, [data.form_id]);
+
+  useEffect(() => {
+    if (!formConfig) return;
+    const visible = {};
+    (formConfig.fields || []).forEach(field => {
+      if (!field.condition_field) {
+        visible[field.id] = true;
+      } else {
+        visible[field.id] = fieldValues[field.condition_field] === field.condition_value;
+      }
+    });
+    setVisibleFields(visible);
+  }, [formConfig, fieldValues]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (formConfig?.recipient_email) {
+      const body = Object.entries(fieldValues).map(([k, v]) => {
+        const field = formConfig.fields.find(f => f.id === k);
+        return `${field?.label || k}: ${v}`;
+      }).join("\n");
+      await base44.integrations.Core.SendEmail({
+        to: formConfig.recipient_email,
+        subject: `New form submission: ${formConfig.title || formConfig.name}`,
+        body,
+      });
+    }
+    setSubmitted(true);
+  };
+
+  if (!data.form_id || !formConfig) {
+    return (
+      <div className="max-w-5xl mx-auto px-6 py-12 text-center text-gray-400 text-sm">
+        {!data.form_id ? "[Contact Form — no form configured]" : "Loading form..."}
+      </div>
+    );
+  }
+
+  const ci = formConfig.contact_info || {};
+  const hasContactInfo = ci.phone || ci.email || ci.address || ci.hours;
+
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
-      {data.title && <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">{data.title}</h2>}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div className="space-y-4">
-          {data.phone && <div className="flex items-center gap-3"><span className="text-2xl">📞</span><span className="text-gray-700">{data.phone}</span></div>}
-          {data.email && <div className="flex items-center gap-3"><span className="text-2xl">✉️</span><span className="text-gray-700">{data.email}</span></div>}
-          {data.address && <div className="flex items-center gap-3"><span className="text-2xl">📍</span><span className="text-gray-700">{data.address}</span></div>}
-          {data.hours && <div className="flex items-start gap-3"><span className="text-2xl">🕐</span><span className="text-gray-700 whitespace-pre-line">{data.hours}</span></div>}
-        </div>
+      {formConfig.title && <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">{formConfig.title}</h2>}
+      {formConfig.subtitle && <p className="text-center text-gray-500 mb-8">{formConfig.subtitle}</p>}
+      <div className={`grid gap-12 ${hasContactInfo ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 max-w-xl mx-auto"}`}>
+        {hasContactInfo && (
+          <div className="space-y-4">
+            {ci.phone && <div className="flex items-center gap-3"><span className="text-2xl">📞</span><span className="text-gray-700">{ci.phone}</span></div>}
+            {ci.email && <div className="flex items-center gap-3"><span className="text-2xl">✉️</span><span className="text-gray-700">{ci.email}</span></div>}
+            {ci.address && <div className="flex items-center gap-3"><span className="text-2xl">📍</span><span className="text-gray-700">{ci.address}</span></div>}
+            {ci.hours && <div className="flex items-start gap-3"><span className="text-2xl">🕐</span><span className="text-gray-700 whitespace-pre-line">{ci.hours}</span></div>}
+          </div>
+        )}
         <div>
           {submitted ? (
-            <div className="text-center py-8 text-green-600 font-semibold">Thank you! We'll be in touch soon.</div>
+            <div className="text-center py-8 text-green-600 font-semibold text-lg">
+              {formConfig.success_message || "Thank you! We'll be in touch shortly."}
+            </div>
           ) : (
-            <form className="space-y-4" onSubmit={e => { e.preventDefault(); setSubmitted(true); }}>
-              <input className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B365D]" placeholder="Your Name" value={formState.name} onChange={e => setFormState(s => ({ ...s, name: e.target.value }))} required />
-              <input className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B365D]" type="email" placeholder="Email" value={formState.email} onChange={e => setFormState(s => ({ ...s, email: e.target.value }))} required />
-              <input className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B365D]" placeholder="Phone (optional)" value={formState.phone} onChange={e => setFormState(s => ({ ...s, phone: e.target.value }))} />
-              <textarea className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B365D]" rows={4} placeholder="Message" value={formState.message} onChange={e => setFormState(s => ({ ...s, message: e.target.value }))} required />
-              <button type="submit" className="w-full py-3 bg-[#1B365D] text-white rounded-lg font-semibold hover:opacity-90 transition">Send Message</button>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              {formConfig.show_facility_selector && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{formConfig.facility_selector_label || "Select a Location"}</label>
+                  <select
+                    className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B365D]"
+                    value={fieldValues["__facility__"] || ""}
+                    onChange={e => setFieldValues(v => ({ ...v, __facility__: e.target.value }))}
+                  >
+                    <option value="">— Select a location —</option>
+                    {facilities.map(f => <option key={f.id} value={f.name}>{f.name}</option>)}
+                  </select>
+                </div>
+              )}
+              {(formConfig.fields || []).filter(field => visibleFields[field.id]).map((field) => (
+                <div key={field.id}>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {field.label}{field.required && <span className="text-red-500 ml-0.5">*</span>}
+                  </label>
+                  {field.type === "textarea" && (
+                    <textarea
+                      className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B365D]"
+                      rows={4}
+                      placeholder={field.placeholder}
+                      required={field.required}
+                      value={fieldValues[field.id] || ""}
+                      onChange={e => setFieldValues(v => ({ ...v, [field.id]: e.target.value }))}
+                    />
+                  )}
+                  {field.type === "dropdown" && (
+                    <select
+                      className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B365D]"
+                      required={field.required}
+                      value={fieldValues[field.id] || ""}
+                      onChange={e => setFieldValues(v => ({ ...v, [field.id]: e.target.value }))}
+                    >
+                      <option value="">{field.placeholder || "Select..."}</option>
+                      {(field.options || []).map((opt, j) => <option key={j} value={opt}>{opt}</option>)}
+                    </select>
+                  )}
+                  {field.type === "checkbox" && (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        className="rounded"
+                        required={field.required}
+                        checked={!!fieldValues[field.id]}
+                        onChange={e => setFieldValues(v => ({ ...v, [field.id]: e.target.checked }))}
+                      />
+                      <span className="text-sm text-gray-600">{field.placeholder || field.label}</span>
+                    </div>
+                  )}
+                  {!["textarea", "dropdown", "checkbox"].includes(field.type) && (
+                    <input
+                      type={field.type === "date" ? "date" : field.type === "number" ? "number" : field.type === "email" ? "email" : field.type === "phone" ? "tel" : "text"}
+                      className="w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B365D]"
+                      placeholder={field.placeholder}
+                      required={field.required}
+                      value={fieldValues[field.id] || ""}
+                      onChange={e => setFieldValues(v => ({ ...v, [field.id]: e.target.value }))}
+                    />
+                  )}
+                </div>
+              ))}
+              <button
+                type="submit"
+                className="w-full py-3 rounded-lg font-semibold hover:opacity-90 transition text-white"
+                style={{ backgroundColor: formConfig.submit_button_color || "#1B365D" }}
+              >
+                {formConfig.submit_button_text || "Send Message"}
+              </button>
             </form>
           )}
         </div>
