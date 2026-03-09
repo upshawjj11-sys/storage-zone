@@ -12,7 +12,6 @@ import RichTextEditor from "../components/admin/RichTextEditor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import ReactMarkdown from "react-markdown";
 
 const blockTypes = [
   { value: "hero", label: "Hero Banner" },
