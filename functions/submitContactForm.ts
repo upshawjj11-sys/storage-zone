@@ -29,10 +29,12 @@ Deno.serve(async (req) => {
       }
     });
 
-    await base44.asServiceRole.integrations.Core.SendEmail({
+    const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
       to: formConfig.recipient_email,
       subject: `New form submission: ${formConfig.title || formConfig.name}`,
-      body: lines.join('\n'),
+      text: lines.join('\n'),
     });
 
     return Response.json({ ok: true });
