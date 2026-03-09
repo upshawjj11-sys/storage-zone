@@ -595,24 +595,35 @@ export default function AdminHomePage() {
     refetch();
   };
 
+  const handleSaveAndRefreshPreview = async () => {
+    await handleSave();
+    setPreviewKey(k => k + 1);
+  };
+
   return (
-    <div className="p-6 md:p-8 max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Home Page Editor</h1>
-          <p className="text-gray-500 mt-1">Customize every section of your home page.</p>
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* Top bar */}
+      <div className="flex items-center gap-3 px-6 py-4 border-b bg-white flex-shrink-0">
+        <div className="flex-1">
+          <h1 className="text-xl font-bold text-gray-900">Home Page Editor</h1>
         </div>
         <a href="/" target="_blank" rel="noopener noreferrer">
           <Button variant="outline" className="rounded-full gap-2 border-green-300 text-green-700 hover:bg-green-50">
             <Globe className="w-4 h-4" /> Live
           </Button>
         </a>
-        <Button onClick={handleSave} disabled={saving} className="rounded-full gap-2" style={{ background: "#E8792F" }}>
+        <Button variant="outline" className="rounded-full gap-2" onClick={() => setShowPreview(!showPreview)}>
+          {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          {showPreview ? "Hide Preview" : "Preview"}
+        </Button>
+        <Button onClick={handleSaveAndRefreshPreview} disabled={saving} className="rounded-full gap-2" style={{ background: "#E8792F" }}>
           <Save className="w-4 h-4" /> {saving ? "Saving..." : "Save Changes"}
         </Button>
       </div>
 
-      <div className="space-y-6">
+      {/* Body */}
+      <div className="flex flex-1 overflow-hidden">
+        <div className={`overflow-y-auto p-6 space-y-6 ${showPreview ? "w-1/2 border-r" : "w-full max-w-4xl mx-auto"}`}>
         {/* Hero */}
         <Card>
           <CardHeader><CardTitle>Hero Section</CardTitle></CardHeader>
