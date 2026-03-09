@@ -4,6 +4,8 @@ import { createPageUrl } from "@/utils";
 import { Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FacilityPage from "../pages/FacilityPage";
+import Navbar from "../components/public/Navbar";
+import Footer from "../components/public/Footer";
 
 function isFacilityPath() {
   const parts = window.location.pathname.replace(/\/$/, "").split("/").filter(Boolean);
@@ -12,7 +14,13 @@ function isFacilityPath() {
 
 export default function PageNotFound() {
   if (isFacilityPath()) {
-    return <FacilityPage />;
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1"><FacilityPage /></main>
+        <Footer />
+      </div>
+    );
   }
 
   return (
