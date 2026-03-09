@@ -102,7 +102,14 @@ export default function AdminFacilityEdit() {
       await base44.entities.Facility.create(data);
     }
     setSaving(false);
+    setPreviewKey(k => k + 1);
     navigate(createPageUrl("AdminFacilities"));
+  };
+
+  const getFacilityPreviewUrl = () => {
+    const state = (form.state || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+    const city = (form.city || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+    return form.slug ? `/locations/${state}/${city}/${form.slug}/` : null;
   };
 
   const handlePhotoUpload = async (e) => {
