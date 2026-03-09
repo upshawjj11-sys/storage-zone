@@ -19,6 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import FacilityPreview from "../components/admin/FacilityPreview";
 
 const defaultHours = [
   { day: "Monday", open: "9:00 AM", close: "6:00 PM", closed: false },
