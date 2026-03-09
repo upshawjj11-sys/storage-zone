@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import RichTextEditor from "../components/admin/RichTextEditor";
 import StaticPagePreview from "../components/admin/StaticPagePreview";
+import ContactFormBlockEditor from "../components/admin/ContactFormBlockEditor";
 import { Columns } from "lucide-react";
 
 const BLOCK_TYPES = [
@@ -49,7 +50,7 @@ function defaultBlockData(type) {
     case "video": return { url: "", title: "" };
     case "gallery": return { images: [], cols: 3 };
     case "testimonials": return { title: "What Our Customers Say", items: [{ name: "Customer Name", text: "Great service!", rating: 5 }] };
-    case "contact_form": return { title: "Contact Us", phone: "", email: "", address: "", hours: "" };
+    case "contact_form": return { form_id: "" };
     case "embed": return { code: "", height: "400px" };
     default: return {};
   }
@@ -303,15 +304,7 @@ function BlockEditor({ block, onChange, onDelete }) {
           </div>
         );
       case "contact_form":
-        return (
-          <div className="space-y-3">
-            <div><Label>Section Title</Label><Input value={data.title || ""} onChange={e => update("title", e.target.value)} /></div>
-            <div><Label>Phone</Label><Input value={data.phone || ""} onChange={e => update("phone", e.target.value)} /></div>
-            <div><Label>Email</Label><Input value={data.email || ""} onChange={e => update("email", e.target.value)} /></div>
-            <div><Label>Address</Label><Input value={data.address || ""} onChange={e => update("address", e.target.value)} /></div>
-            <div><Label>Hours</Label><Textarea value={data.hours || ""} rows={3} onChange={e => update("hours", e.target.value)} /></div>
-          </div>
-        );
+        return <ContactFormBlockEditor data={data} update={update} />;
       case "embed":
         return (
           <div className="space-y-3">
