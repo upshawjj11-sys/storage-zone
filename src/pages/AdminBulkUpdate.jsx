@@ -224,8 +224,11 @@ export default function AdminBulkUpdate() {
 
       {/* Actions */}
       <Tabs defaultValue="holiday">
-        <TabsList className="bg-gray-100 p-1 rounded-xl mb-6">
+        <TabsList className="bg-gray-100 p-1 rounded-xl mb-6 flex-wrap h-auto gap-1">
           <TabsTrigger value="holiday" className="gap-2"><CalendarDays className="w-4 h-4" /> Holiday Hours</TabsTrigger>
+          <TabsTrigger value="features" className="gap-2"><List className="w-4 h-4" /> Features</TabsTrigger>
+          <TabsTrigger value="faqs" className="gap-2"><HelpCircle className="w-4 h-4" /> FAQs</TabsTrigger>
+          <TabsTrigger value="pillars" className="gap-2"><Star className="w-4 h-4" /> Pillars</TabsTrigger>
           <TabsTrigger value="banner" className="gap-2"><Image className="w-4 h-4" /> Banner Text</TabsTrigger>
           <TabsTrigger value="popup" className="gap-2"><MessageSquare className="w-4 h-4" /> Popups</TabsTrigger>
         </TabsList>
