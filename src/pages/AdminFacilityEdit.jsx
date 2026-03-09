@@ -146,12 +146,10 @@ export default function AdminFacilityEdit() {
             </Button>
           </a>
         )}
-        {previewUrl && (
-          <Button variant="outline" className="rounded-full gap-2" onClick={() => setShowPreview(!showPreview)}>
-            {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            {showPreview ? "Hide Preview" : "Preview"}
-          </Button>
-        )}
+        <Button variant="outline" className="rounded-full gap-2" onClick={() => setShowPreview(!showPreview)}>
+          {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          {showPreview ? "Hide Preview" : "Preview"}
+        </Button>
         <Button onClick={handleSave} disabled={saving} className="rounded-full gap-2" style={{ background: "#E8792F" }}>
           <Save className="w-4 h-4" />
           {saving ? "Saving..." : "Save"}
