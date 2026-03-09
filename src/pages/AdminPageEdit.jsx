@@ -683,7 +683,7 @@ export default function AdminPageEdit() {
               <div className="space-y-2 p-3 bg-gray-50 rounded-xl border">
                 <p className="text-xs font-semibold text-gray-500">Left Column</p>
                 <div><Label className="text-xs">Heading</Label><Input className="mt-1 text-sm h-8" value={data.left_title || ""} onChange={(e) => upd({ left_title: e.target.value })} /></div>
-                <Textarea rows={5} placeholder="Content (Markdown supported)" value={data.left_content || ""} onChange={(e) => upd({ left_content: e.target.value })} className="text-xs" />
+                <RichTextEditor value={data.left_content || ""} onChange={(val) => upd({ left_content: val })} placeholder="Left column content..." minHeight={150} />
               </div>
               <div className="space-y-2 p-3 bg-gray-50 rounded-xl border">
                 <p className="text-xs font-semibold text-gray-500">Right Column</p>
