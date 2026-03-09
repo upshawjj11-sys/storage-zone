@@ -129,13 +129,19 @@ export default function AdminFacilityEdit() {
           </h1>
         </div>
         {form.slug && (
-          <Button variant="outline" className="rounded-full gap-2" onClick={() => {
-            const state = (form.state || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-            const city = (form.city || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-            window.open(`/locations/${state}/${city}/${form.slug}/`, "_blank");
-          }}>
-            <Eye className="w-4 h-4" /> Preview
-          </Button>
+          <>
+            <Button
+              variant="outline"
+              className="rounded-full gap-2 border-green-300 text-green-700 hover:bg-green-50"
+              onClick={() => {
+                const state = (form.state || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+                const city = (form.city || "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+                window.open(`/locations/${state}/${city}/${form.slug}/`, "_blank");
+              }}
+            >
+              <Globe className="w-4 h-4" /> Live
+            </Button>
+          </>
         )}
         <Button onClick={handleSave} disabled={saving} className="rounded-full gap-2" style={{ background: "#E8792F" }}>
           <Save className="w-4 h-4" />
