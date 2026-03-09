@@ -699,7 +699,7 @@ export default function AdminPageEdit() {
                   </Select>
                 </div>
                 {(data.right_type || "text") === "text" ? (
-                  <Textarea rows={5} placeholder="Content (Markdown supported)" value={data.right_content || ""} onChange={(e) => upd({ right_content: e.target.value })} className="text-xs" />
+                  <RichTextEditor value={data.right_content || ""} onChange={(val) => upd({ right_content: val })} placeholder="Right column content..." minHeight={150} />
                 ) : (
                   <div className="space-y-2">
                     <Input className="text-xs" placeholder="Image URL" value={data.right_image || ""} onChange={(e) => upd({ right_image: e.target.value })} />
