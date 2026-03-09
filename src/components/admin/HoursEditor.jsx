@@ -1,13 +1,21 @@
 import React from "react";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Copy } from "lucide-react";
 
 // Renders a weekly hours editor with Open/Closed and 24-hour toggles
 export default function HoursEditor({ hours, onChange }) {
   const update = (i, patch) => {
     const next = [...hours];
     next[i] = { ...next[i], ...patch };
+    onChange(next);
+  };
+
+  const copyFromPrev = (i) => {
+    if (i === 0) return;
+    const prev = hours[i - 1];
+    const next = [...hours];
+    next[i] = { ...next[i], closed: prev.closed, is_24_hours: prev.is_24_hours, open: prev.open, close: prev.close };
     onChange(next);
   };
 
@@ -55,6 +63,18 @@ export default function HoursEditor({ hours, onChange }) {
                 </div>
               )}
             </>
+          )}
+
+          {/* Copy from previous day */}
+          {i > 0 && (
+            <button
+              type="button"
+              onClick={() => copyFromPrev(i)}
+              title="Copy from previous day"
+              className="ml-auto flex items-center gap-1 text-xs text-gray-400 hover:text-[#1B365D] transition flex-shrink-0"
+            >
+              <Copy className="w-3.5 h-3.5" /> Copy prev
+            </button>
           )}
         </div>
       ))}
