@@ -60,9 +60,10 @@ export default function PublicPage() {
             return (
               <div key={i} className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
                 {data.title && <h2 className="text-3xl font-bold text-[#1B365D] mb-6">{data.title}</h2>}
-                <div className="prose prose-lg max-w-none text-gray-600">
-                  <ReactMarkdown>{data.content || ""}</ReactMarkdown>
-                </div>
+                <div
+                  className="prose prose-lg max-w-none text-gray-600 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:my-1"
+                  dangerouslySetInnerHTML={{ __html: data.content || "" }}
+                />
               </div>
             );
           case "image":
