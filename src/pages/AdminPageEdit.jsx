@@ -457,7 +457,7 @@ export default function AdminPageEdit() {
       </div>
 
       <div className={`flex flex-1 overflow-hidden ${showPreview ? "h-[calc(100vh-57px)]" : ""}`}>
-      <div className={`${showPreview ? "w-1/2 overflow-y-auto border-r border-gray-200" : "w-full"} px-6 py-8 space-y-8`}>
+      <div className={`${showPreview ? "w-1/2 overflow-y-auto border-r border-gray-200" : "max-w-5xl mx-auto w-full"} px-6 py-8 space-y-8`}>
         {/* Page Settings */}
         <Card>
           <CardHeader><CardTitle>Page Settings</CardTitle></CardHeader>
