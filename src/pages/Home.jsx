@@ -11,7 +11,7 @@ import HeroCarousel from "../components/home/HeroCarousel";
 import ImageSlider from "../components/shared/ImageSlider";
 
 export default function Home() {
-  const { data: config } = useQuery({
+  const { data: config, isLoading: configLoading } = useQuery({
     queryKey: ["home-config"],
     queryFn: async () => {
       const items = await base44.entities.HomePageConfig.list();
