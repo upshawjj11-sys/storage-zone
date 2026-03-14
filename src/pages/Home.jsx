@@ -453,13 +453,17 @@ export default function Home() {
 
   return (
     <div className="bg-white">
-      {/* Hero with carousel + pillars */}
-      <HeroCarousel
-        config={config}
-        primaryColor={primaryColor}
-        secondaryColor={secondaryColor}
-        pillarsSection={heroPillarsSection}
-      />
+      {/* Hero with carousel + pillars — hold until config is loaded to avoid flicker */}
+      {configLoading ? (
+        <div className="w-full bg-gray-900" style={{ height: "92vh", minHeight: 520 }} />
+      ) : (
+        <HeroCarousel
+          config={config}
+          primaryColor={primaryColor}
+          secondaryColor={secondaryColor}
+          pillarsSection={heroPillarsSection}
+        />
+      )}
 
       {/* Dynamic sections (pillars already rendered in hero, skip it) */}
       {hasSections ? (
