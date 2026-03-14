@@ -595,11 +595,6 @@ export default function AdminHomePage() {
     refetch();
   };
 
-  const handleSaveAndRefreshPreview = async () => {
-    await handleSave();
-    setPreviewKey(k => k + 1);
-  };
-
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* Top bar */}
