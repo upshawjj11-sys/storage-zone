@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 
 function getVideoEmbed(url) {
@@ -384,8 +385,8 @@ function renderBlock(block, i) {
 }
 
 export default function PublicPage() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const slug = urlParams.get("slug");
+  const location = useLocation();
+  const slug = new URLSearchParams(location.search).get("slug");
 
   const { data: pages, isLoading } = useQuery({
     queryKey: ["public-page", slug],
