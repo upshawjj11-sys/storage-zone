@@ -528,7 +528,6 @@ function SectionEditor({ section, onChange, onRemove, index }) {
 export default function AdminHomePage() {
   const [saving, setSaving] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [previewKey, setPreviewKey] = useState(0);
   const [form, setForm] = useState({
     hero_title: "", hero_subtitle: "", hero_image: "", hero_images: [], hero_badge_text: "",
     hero_overlay_opacity: 0.6, sections: [],
