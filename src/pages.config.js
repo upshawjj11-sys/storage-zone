@@ -52,6 +52,8 @@ import AdminBulkUpdate from './pages/AdminBulkUpdate';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminFacilities from './pages/AdminFacilities';
 import AdminFacilityEdit from './pages/AdminFacilityEdit';
+import AdminFormEdit from './pages/AdminFormEdit';
+import AdminForms from './pages/AdminForms';
 import AdminHomePage from './pages/AdminHomePage';
 import AdminPageConfigs from './pages/AdminPageConfigs';
 import AdminPageEdit from './pages/AdminPageEdit';
@@ -67,8 +69,6 @@ import Locations from './pages/Locations';
 import PayMyBill from './pages/PayMyBill';
 import PublicPage from './pages/PublicPage';
 import SizeGuide from './pages/SizeGuide';
-import AdminForms from './pages/AdminForms';
-import AdminFormEdit from './pages/AdminFormEdit';
 import __Layout from './Layout.jsx';
 
 
@@ -78,6 +78,8 @@ export const PAGES = {
     "AdminDashboard": AdminDashboard,
     "AdminFacilities": AdminFacilities,
     "AdminFacilityEdit": AdminFacilityEdit,
+    "AdminFormEdit": AdminFormEdit,
+    "AdminForms": AdminForms,
     "AdminHomePage": AdminHomePage,
     "AdminPageConfigs": AdminPageConfigs,
     "AdminPageEdit": AdminPageEdit,
@@ -93,8 +95,6 @@ export const PAGES = {
     "PayMyBill": PayMyBill,
     "PublicPage": PublicPage,
     "SizeGuide": SizeGuide,
-    "AdminForms": AdminForms,
-    "AdminFormEdit": AdminFormEdit,
 }
 
 export const pagesConfig = {
