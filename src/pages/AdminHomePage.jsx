@@ -611,7 +611,7 @@ export default function AdminHomePage() {
           {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           {showPreview ? "Hide Preview" : "Preview"}
         </Button>
-        <Button onClick={handleSaveAndRefreshPreview} disabled={saving} className="rounded-full gap-2" style={{ background: "#E8792F" }}>
+        <Button onClick={handleSave} disabled={saving} className="rounded-full gap-2" style={{ background: "#E8792F" }}>
           <Save className="w-4 h-4" /> {saving ? "Saving..." : "Save Changes"}
         </Button>
       </div>
