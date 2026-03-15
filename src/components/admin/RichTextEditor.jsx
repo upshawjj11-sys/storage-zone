@@ -1,21 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-// react-quill CSS is already globally imported per platform setup
-const FONTS = ["", "Arial", "Georgia", "Tahoma", "Trebuchet MS", "Verdana", "Courier New", "Times New Roman"];
+const FONTS = [
+  "Arial", "Georgia", "Tahoma", "Trebuchet MS", "Verdana",
+  "Courier New", "Times New Roman", "Impact", "Comic Sans MS",
+  "Palatino Linotype", "Book Antiqua", "Garamond", "Gill Sans",
+  "Helvetica", "Lucida Sans", "Optima", "Futura", "Baskerville",
+  "Cambria", "Candara", "Century Gothic", "Consolas", "Constantia",
+  "Corbel", "Franklin Gothic Medium", "Gill Sans MT", "Lucida Console",
+  "Microsoft Sans Serif", "Rockwell", "Segoe UI"
+];
 
-// Register fonts with Quill
+// Register fonts with Quill once
 if (typeof window !== "undefined") {
-  const Quill = ReactQuill.Quill;
-  const Font = Quill.import("formats/font");
-  Font.whitelist = FONTS.filter(Boolean);
-  Quill.register(Font, true);
+  try {
+    const Quill = ReactQuill.Quill;
+    const Font = Quill.import("formats/font");
+    Font.whitelist = FONTS;
+    Quill.register(Font, true);
+  } catch (_) {}
 }
 
 const modules = {
   toolbar: [
-    [{ font: FONTS.filter(Boolean) }],
+    [{ font: FONTS }],
     [{ size: ["small", false, "large", "huge"] }],
     ["bold", "italic", "underline", "strike"],
     [{ color: [] }, { background: [] }],
@@ -38,10 +47,17 @@ const formats = [
   "link",
 ];
 
+// Build CSS for all fonts (applied via ql-font-* classes)
+const fontCss = FONTS.map(f => {
+  const cls = f.toLowerCase().replace(/\s+/g, "-");
+  return `.ql-font-${cls} { font-family: '${f}', sans-serif; }`;
+}).join("\n");
+
 export default function RichTextEditor({ value, onChange, placeholder = "Start typing...", minHeight = 200 }) {
   return (
     <div className="rich-text-editor-wrap">
       <style>{`
+        ${fontCss}
         .rich-text-editor-wrap .ql-container {
           min-height: ${minHeight}px;
           font-size: 14px;
@@ -79,6 +95,14 @@ export default function RichTextEditor({ value, onChange, placeholder = "Start t
         .rich-text-editor-wrap .ql-toolbar .ql-picker-label.ql-active {
           color: #1B365D;
         }
+        .rich-text-editor-wrap .ql-picker.ql-font .ql-picker-label::before,
+        .rich-text-editor-wrap .ql-picker.ql-font .ql-picker-item::before {
+          content: attr(data-value) !important;
+        }
+        ${FONTS.map(f => {
+          const cls = f.toLowerCase().replace(/\s+/g, "-");
+          return `.rich-text-editor-wrap .ql-picker.ql-font .ql-picker-item[data-value="${f}"]::before { font-family: '${f}', sans-serif; }`;
+        }).join("\n")}
       `}</style>
       <ReactQuill
         theme="snow"
