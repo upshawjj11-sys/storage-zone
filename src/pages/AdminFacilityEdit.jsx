@@ -44,6 +44,7 @@ export default function AdminFacilityEdit() {
     facility_type: "self_storage",
     google_place_id: "", google_my_business_url: "", facebook_url: "", instagram_url: "", x_url: "", tiktok_url: "", youtube_url: "",
     banner_image: "", banner_title: "", banner_subtitle: "",
+    notice_bar: { enabled: false, text: "", bg_color: "#E8792F", text_color: "#ffffff", bold: false, italic: false, underline: false },
     about_collapsible: false,
     show_pillars: false, pillars: [], pillars_bg_color: "#1B365D",
     features: [], photos: [], videos: [], hours: defaultHours, access_hours: [], holiday_hours: [],
