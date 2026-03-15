@@ -38,6 +38,7 @@ export default function FacilityPage() {
   const [openFaq, setOpenFaq] = useState(null);
   const [hoursTab, setHoursTab] = useState("office");
   const [aboutExpanded, setAboutExpanded] = useState(false);
+  const [photosExpanded, setPhotosExpanded] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [lightboxIdx, setLightboxIdx] = useState(null);
@@ -205,7 +206,11 @@ export default function FacilityPage() {
         <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>About This Location</h2>
         {facility.about_collapsible ? (
           <div>
-            <p className={`leading-relaxed whitespace-pre-wrap ${!aboutExpanded ? "line-clamp-4" : ""}`} style={{ color: S.body_text_color }}>{facility.about}</p>
+            <div
+              className={`leading-relaxed prose prose-sm max-w-none overflow-hidden transition-all ${!aboutExpanded ? "max-h-24" : ""}`}
+              style={{ color: S.body_text_color }}
+              dangerouslySetInnerHTML={{ __html: facility.about }}
+            />
             <button
               onClick={() => setAboutExpanded(!aboutExpanded)}
               className="mt-2 text-sm font-semibold flex items-center gap-1 hover:opacity-80 transition"
@@ -215,7 +220,11 @@ export default function FacilityPage() {
             </button>
           </div>
         ) : (
-          <p className="leading-relaxed whitespace-pre-wrap" style={{ color: S.body_text_color }}>{facility.about}</p>
+          <div
+            className="leading-relaxed prose prose-sm max-w-none"
+            style={{ color: S.body_text_color }}
+            dangerouslySetInnerHTML={{ __html: facility.about }}
+          />
         )}
       </div>
     ) : null,
@@ -258,13 +267,35 @@ export default function FacilityPage() {
     photos: facility.photos?.length > 0 ? (
       <div key="photos">
         <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Photos</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {facility.photos.map((url, i) => (
-            <button key={i} onClick={() => setLightboxIdx(i)} className="overflow-hidden rounded-xl group">
-              <img src={url} alt="" className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
-            </button>
-          ))}
-        </div>
+        {(facility.photos_display_mode || "slider") === "slider" ? (
+          <div className="rounded-xl overflow-hidden h-72 md:h-96">
+            <ImageSlider images={facility.photos} />
+          </div>
+        ) : (
+          <div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {(facility.photos_collapsible && !photosExpanded
+                ? facility.photos.slice(0, 6)
+                : facility.photos
+              ).map((url, i) => (
+                <button key={i} onClick={() => setLightboxIdx(i)} className="overflow-hidden rounded-xl group">
+                  <img src={url} alt="" className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
+                </button>
+              ))}
+            </div>
+            {facility.photos_collapsible && facility.photos.length > 6 && (
+              <button
+                onClick={() => setPhotosExpanded(!photosExpanded)}
+                className="mt-4 text-sm font-semibold flex items-center gap-1 hover:opacity-80 transition"
+                style={{ color: S.accent_color }}
+              >
+                {photosExpanded
+                  ? <><ChevronUp className="w-4 h-4" /> Show Less</>
+                  : <><ChevronDown className="w-4 h-4" /> View More ({facility.photos.length - 6} more)</>}
+              </button>
+            )}
+          </div>
+        )}
       </div>
     ) : null,
 
