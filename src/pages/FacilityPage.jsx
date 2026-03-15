@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
+import "react-quill/dist/quill.snow.css";
 import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, ChevronLeft, ChevronRight, Building2, Warehouse, Facebook, Instagram, Youtube, Twitter, Music } from "lucide-react";
 import DynamicIcon from "../components/home/DynamicIcon";
 import { Badge } from "@/components/ui/badge";
@@ -207,10 +208,11 @@ export default function FacilityPage() {
         {facility.about_collapsible ? (
           <div>
             <div
-              className={`leading-relaxed prose prose-sm max-w-none overflow-hidden transition-all ${!aboutExpanded ? "max-h-24" : ""}`}
+              className={`ql-snow overflow-hidden transition-all ${!aboutExpanded ? "max-h-24" : ""}`}
               style={{ color: S.body_text_color }}
-              dangerouslySetInnerHTML={{ __html: facility.about }}
-            />
+            >
+              <div className="ql-editor" style={{ padding: 0 }} dangerouslySetInnerHTML={{ __html: facility.about }} />
+            </div>
             <button
               onClick={() => setAboutExpanded(!aboutExpanded)}
               className="mt-2 text-sm font-semibold flex items-center gap-1 hover:opacity-80 transition"
@@ -220,11 +222,9 @@ export default function FacilityPage() {
             </button>
           </div>
         ) : (
-          <div
-            className="leading-relaxed prose prose-sm max-w-none"
-            style={{ color: S.body_text_color }}
-            dangerouslySetInnerHTML={{ __html: facility.about }}
-          />
+          <div className="ql-snow" style={{ color: S.body_text_color }}>
+            <div className="ql-editor" style={{ padding: 0 }} dangerouslySetInnerHTML={{ __html: facility.about }} />
+          </div>
         )}
       </div>
     ) : null,
@@ -268,7 +268,7 @@ export default function FacilityPage() {
       <div key="photos">
         <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Photos</h2>
         {(facility.photos_display_mode || "slider") === "slider" ? (
-          <div className="rounded-xl overflow-hidden h-72 md:h-96">
+          <div className="rounded-xl overflow-hidden" style={{ height: "380px" }}>
             <ImageSlider images={facility.photos} />
           </div>
         ) : (
