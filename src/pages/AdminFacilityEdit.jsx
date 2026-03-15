@@ -84,6 +84,7 @@ export default function AdminFacilityEdit() {
         pillars_bg_color: existing.pillars_bg_color || "#1B365D",
         sections_order: existing.sections_order || [],
         page_styles: existing.page_styles || {},
+        notice_bar: existing.notice_bar || { enabled: false, text: "", bg_color: "#E8792F", text_color: "#ffffff", bold: false, italic: false, underline: false },
       });
     }
   }, [existing]);
@@ -113,10 +114,13 @@ export default function AdminFacilityEdit() {
   };
 
   const handlePhotoUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    update("photos", [...form.photos, file_url]);
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    const urls = await Promise.all(files.map(async (file) => {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      return file_url;
+    }));
+    update("photos", [...form.photos, ...urls]);
   };
 
   const handleBannerUpload = async (e) => {
