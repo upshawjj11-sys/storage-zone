@@ -13,7 +13,12 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
   }));
 
   // Use admin-configured unit sizes if available, otherwise fall back to hardcoded
-  const UNIT_SIZES = (cfg.available_unit_sizes?.length ? cfg.available_unit_sizes : FALLBACK_UNIT_SIZES)
+  // Normalize widthIn/depthIn: admin UI stores feet (e.g. 5, 10), code needs inches
+  const UNIT_SIZES = (cfg.available_unit_sizes?.length ? cfg.available_unit_sizes.map(u => ({
+    ...u,
+    widthIn: u.widthIn <= 30 ? u.widthIn * 12 : u.widthIn,
+    depthIn: u.depthIn <= 30 ? u.depthIn * 12 : u.depthIn,
+  })) : FALLBACK_UNIT_SIZES)
     .slice()
     .sort((a, b) => a.cuft - b.cuft);
 
