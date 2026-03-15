@@ -293,11 +293,19 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
               {/* Recommendation Card */}
               <div className="rounded-2xl p-6 shadow-lg" style={{ background: cfg.recommendation_bg || "#1B365D", color: cfg.recommendation_text || "#ffffff" }}>
                 <p className="text-sm font-medium mb-1 opacity-70">Recommended Unit Size</p>
-                {recommendation?.tooLarge ? (
-                  <p className="text-xl font-bold">{UNIT_SIZES[UNIT_SIZES.length - 1]?.label}+</p>
-                ) : (
-                  <p className="text-3xl font-bold">{recommendation?.recommended?.label}</p>
-                )}
+                {(() => {
+                  const largestUnit = UNIT_SIZES[UNIT_SIZES.length - 1];
+                  const isLargest = recommendation?.recommended?.label === largestUnit?.label;
+                  const largestFillPct = isLargest && largestUnit?.cuft
+                    ? Math.round((bufferedCuft / largestUnit.cuft) * 100)
+                    : 0;
+                  const showPlus = recommendation?.tooLarge || (isLargest && largestFillPct >= 85);
+                  return (
+                    <p className={`font-bold ${showPlus ? "text-xl" : "text-3xl"}`}>
+                      {recommendation?.recommended?.label || largestUnit?.label}{showPlus ? "+" : ""}
+                    </p>
+                  );
+                })()}
                 <p className="text-sm mt-2 opacity-80">{recommendation?.recommended?.desc}</p>
                 {recommendation?.recommended?.label !== recommendation?.min?.label && (
                   <p className="text-xs mt-2 opacity-60">
