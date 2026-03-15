@@ -20,6 +20,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FacilityPreview from "../components/admin/FacilityPreview";
+import RichTextEditor from "../components/admin/RichTextEditor";
 
 const defaultHours = [
   { day: "Monday", open: "9:00 AM", close: "6:00 PM", closed: false },
@@ -48,6 +49,7 @@ export default function AdminFacilityEdit() {
     about_collapsible: false,
     show_pillars: false, pillars: [], pillars_bg_color: "#1B365D",
     features: [], photos: [], videos: [], hours: defaultHours, access_hours: [], holiday_hours: [],
+    photos_display_mode: "slider", photos_collapsible: false,
     faqs: [], reviews: [], units: [],
     unit_grid_api_key: "", unit_grid_widget_code: "", payment_center_url: "",
     latitude: null, longitude: null, meta_title: "", meta_description: "",
