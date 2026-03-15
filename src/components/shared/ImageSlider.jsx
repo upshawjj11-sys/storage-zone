@@ -16,7 +16,7 @@ export default function ImageSlider({ images = [], className = "", autoPlay = tr
   const next = () => setCurrent((c) => (c + 1) % images.length);
 
   return (
-    <div className={`relative overflow-hidden bg-gray-800 ${className}`}>
+    <div className={`relative overflow-hidden bg-gray-800 w-full h-full ${className}`}>
       {images.map((src, i) => (
         <img
           key={i}
