@@ -271,12 +271,26 @@ export default function FacilityPage() {
     videos: facility.videos?.length > 0 ? (
       <div key="videos">
         <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Videos</h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          {facility.videos.map((url, i) => (
-            <div key={i} className="rounded-xl overflow-hidden aspect-video">
-              <iframe src={url} className="w-full h-full" allowFullScreen />
-            </div>
-          ))}
+        <div className="grid md:grid-cols-2 gap-6">
+          {facility.videos.map((vid, i) => {
+            const vidObj = typeof vid === "string" ? { url: vid, title: "" } : vid;
+            if (!vidObj.url) return null;
+            return (
+              <div key={i}>
+                {vidObj.title && (
+                  <p className="font-semibold mb-2 text-sm" style={{ color: S.heading_color }}>{vidObj.title}</p>
+                )}
+                <div className="rounded-xl overflow-hidden aspect-video">
+                  <iframe
+                    src={vidObj.url}
+                    className="w-full h-full"
+                    allowFullScreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  />
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     ) : null,
