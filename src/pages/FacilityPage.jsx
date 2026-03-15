@@ -377,8 +377,18 @@ export default function FacilityPage() {
     ? [facility.banner_image]
     : (facility.photos?.length > 0 ? facility.photos : ["https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1920&q=80"]);
 
+  const nb = facility.notice_bar;
+
   return (
     <div style={{ background: S.page_bg }}>
+      {/* Notice Bar */}
+      {nb?.enabled && nb?.text && (
+        <div className="w-full px-4 py-2.5 text-sm text-center" style={{ background: nb.bg_color || "#E8792F", color: nb.text_color || "#ffffff" }}>
+          <span style={{ fontWeight: nb.bold ? "bold" : "normal", fontStyle: nb.italic ? "italic" : "normal", textDecoration: nb.underline ? "underline" : "none" }}>
+            {nb.text}
+          </span>
+        </div>
+      )}
       {/* Banner Slider */}
       <div className="relative h-[40vh] md:h-[55vh]" style={facility.banner_image ? { backgroundImage: `url(${facility.banner_image})`, backgroundSize: "cover", backgroundPosition: "center" } : {}}>
         {!facility.banner_image && <ImageSlider images={bannerImages} className="absolute inset-0" />}
