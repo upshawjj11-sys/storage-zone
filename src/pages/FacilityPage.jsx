@@ -154,9 +154,12 @@ export default function FacilityPage() {
   const DEFAULT_ORDER = ["contact", "about", "features", "units", "photos", "videos", "reviews", "faq", "socials"];
   const rawOrder = facility.sections_order?.length > 0 ? facility.sections_order : DEFAULT_ORDER;
   
-  // Parse sections order: handle both old string format and new object format with visibility
+  // Parse sections order: supports plain strings, "key:hidden" strings, and legacy objects
   const parseOrderItem = (item) => {
-    if (typeof item === "string") return { key: item, visible: true };
+    if (typeof item === "string") {
+      if (item.endsWith(":hidden")) return { key: item.replace(":hidden", ""), visible: false };
+      return { key: item, visible: true };
+    }
     return { key: item.key, visible: item.visible !== false };
   };
 
