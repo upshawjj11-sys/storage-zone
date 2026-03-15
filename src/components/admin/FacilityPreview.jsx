@@ -265,14 +265,52 @@ export default function FacilityPreview({ facility }) {
                     </button>
                   </div>
                 )}
-                <div className="space-y-1.5">
-                  {(hoursTab === "access" && facility.access_hours?.length > 0 ? facility.access_hours : facility.hours || []).map((h, i) => (
-                    <div key={i} className="flex justify-between text-xs">
-                      <span className="font-medium" style={{ color: S.sidebar_text_color }}>{h.day}</span>
-                      <span style={{ color: S.sidebar_text_color }}>{h.closed ? "Closed" : h.is_24_hours ? "24 Hours" : `${h.open} – ${h.close}`}</span>
+                {(() => {
+                  const activeHours = hoursTab === "access" && facility.access_hours?.length > 0 ? facility.access_hours : facility.hours || [];
+                  const holidayHours = facility.holiday_hours || [];
+                  const today = new Date();
+                  const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+                  const next7Dates = Array.from({ length: 7 }, (_, i) => {
+                    const d = new Date(today); d.setDate(today.getDate() + i);
+                    return d.toISOString().split("T")[0];
+                  });
+                  const dayToDate = {};
+                  next7Dates.forEach((dateStr) => {
+                    const dow = dayNames[new Date(dateStr + "T12:00:00").getDay()];
+                    dayToDate[dow] = dateStr;
+                  });
+                  const holidayByDate = {};
+                  holidayHours.forEach((h) => {
+                    if (h.applies_to === "both" || h.applies_to === hoursTab) holidayByDate[h.date] = h;
+                  });
+                  const formatH = (h) => h.closed ? "Closed" : h.is_24_hours ? "24 Hours" : `${h.open} – ${h.close}`;
+                  return (
+                    <div className="space-y-1.5">
+                      {activeHours.map((h, i) => {
+                        const date = dayToDate[h.day];
+                        const holiday = date ? holidayByDate[date] : null;
+                        return (
+                          <div key={i} className={`rounded px-1.5 py-1 ${holiday ? "bg-amber-50" : ""}`}>
+                            <div className="flex justify-between text-xs">
+                              <span className="font-medium" style={{ color: S.sidebar_text_color }}>{h.day}</span>
+                              {holiday ? (
+                                <span className="font-semibold text-amber-600">📅 {formatH(holiday)}</span>
+                              ) : (
+                                <span style={{ color: S.sidebar_text_color }}>{formatH(h)}</span>
+                              )}
+                            </div>
+                            {holiday && (
+                              <div className="flex justify-between mt-0.5">
+                                <span className="text-[10px] text-amber-500">{holiday.label}</span>
+                                <span className="text-[10px]" style={{ color: S.sidebar_text_color, opacity: 0.5 }}>Normal: {formatH(h)}</span>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
-                  ))}
-                </div>
+                  );
+                })()}
               </div>
             )}
 
