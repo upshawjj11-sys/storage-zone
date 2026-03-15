@@ -286,7 +286,7 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
                 </div>
                 <p className="text-xs text-gray-400 mt-2 flex items-start gap-1">
                   <Info className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                  {cfg.buffer_notice || "50% buffer added — furniture can't be easily stacked, so extra room is factored in for access and layout."}
+                  {cfg.buffer_notice || `${bufferPct}% buffer added — extra room is factored in for access and layout.`}
                 </p>
               </div>
 
