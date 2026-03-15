@@ -726,19 +726,56 @@ export default function AdminFacilityEdit() {
               <p className="text-sm text-gray-500">Photos managed in the Banner tab serve as the image slider. Additional photos added here also appear in the gallery section.</p>
               <div>
                 <Label className="text-base font-semibold mb-3 block">Videos</Label>
-                <p className="text-xs text-gray-500 mb-3">Paste a YouTube or Vimeo embed URL (e.g. https://www.youtube.com/embed/VIDEO_ID)</p>
-                <div className="space-y-2 mb-3">
-                  {form.videos.map((url, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <Input value={url} onChange={(e) => { const v=[...form.videos]; v[i]=e.target.value; update("videos",v); }} className="flex-1" placeholder="https://www.youtube.com/embed/..." />
-                      <Button variant="ghost" size="icon" className="text-red-500" onClick={() => update("videos", form.videos.filter((_, j) => j !== i))}>
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ))}
+                <p className="text-xs text-gray-500 mb-3">Paste any YouTube or Vimeo URL — watch links are auto-converted to embed format.</p>
+                <div className="space-y-3 mb-3">
+                  {form.videos.map((vid, i) => {
+                    const vidObj = typeof vid === "string" ? { url: vid, title: "" } : vid;
+                    const updateVid = (patch) => {
+                      const v = [...form.videos];
+                      v[i] = { ...vidObj, ...patch };
+                      update("videos", v);
+                    };
+                    return (
+                      <div key={i} className="p-3 border rounded-xl bg-gray-50 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-semibold text-gray-500">Video #{i + 1}</span>
+                          <Button variant="ghost" size="icon" className="text-red-500 w-7 h-7" onClick={() => update("videos", form.videos.filter((_, j) => j !== i))}>
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <div>
+                          <Label className="text-xs">Video URL</Label>
+                          <Input
+                            className="mt-1"
+                            value={vidObj.url}
+                            placeholder="https://www.youtube.com/watch?v=... or embed URL"
+                            onChange={(e) => {
+                              let url = e.target.value.trim();
+                              // Auto-convert YouTube watch URLs
+                              const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                              if (ytMatch) url = `https://www.youtube.com/embed/${ytMatch[1]}`;
+                              // Auto-convert Vimeo URLs
+                              const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+                              if (vimeoMatch) url = `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+                              updateVid({ url });
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Title <span className="font-normal text-gray-400">(optional)</span></Label>
+                          <Input
+                            className="mt-1"
+                            value={vidObj.title || ""}
+                            placeholder="e.g. Facility Tour"
+                            onChange={(e) => updateVid({ title: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-                <Button variant="outline" className="gap-2" onClick={() => update("videos", [...form.videos, ""])}>
-                  <Plus className="w-4 h-4" /> Add Video URL
+                <Button variant="outline" className="gap-2" onClick={() => update("videos", [...form.videos, { url: "", title: "" }])}>
+                  <Plus className="w-4 h-4" /> Add Video
                 </Button>
               </div>
             </CardContent>
