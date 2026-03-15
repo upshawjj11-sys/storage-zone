@@ -252,6 +252,74 @@ export default function AdminFacilityEdit() {
               <div><Label>Banner Title</Label><Input value={form.banner_title} onChange={(e) => update("banner_title", e.target.value)} /></div>
               <div><Label>Banner Subtitle</Label><Input value={form.banner_subtitle} onChange={(e) => update("banner_subtitle", e.target.value)} /></div>
 
+              {/* Notice Bar */}
+              <div className="border rounded-xl p-4 space-y-4 bg-gray-50">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-sm text-gray-800">Notice Bar</p>
+                    <p className="text-xs text-gray-400 mt-0.5">Announcement shown at the very top of the facility page</p>
+                  </div>
+                  <Switch
+                    checked={!!form.notice_bar?.enabled}
+                    onCheckedChange={(v) => update("notice_bar", { ...form.notice_bar, enabled: v })}
+                  />
+                </div>
+                {form.notice_bar?.enabled && (
+                  <div className="space-y-3">
+                    <div>
+                      <Label className="text-xs">Message Text</Label>
+                      <Input
+                        className="mt-1"
+                        value={form.notice_bar?.text || ""}
+                        placeholder="e.g. Special offer: First month free! Call us today."
+                        onChange={(e) => update("notice_bar", { ...form.notice_bar, text: e.target.value })}
+                      />
+                    </div>
+                    <div className="flex flex-wrap gap-4 items-end">
+                      <div>
+                        <Label className="text-xs">Background Color</Label>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <input type="color" value={form.notice_bar?.bg_color || "#E8792F"} onChange={(e) => update("notice_bar", { ...form.notice_bar, bg_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                          <Input className="w-24 h-8 text-xs font-mono" value={form.notice_bar?.bg_color || "#E8792F"} onChange={(e) => update("notice_bar", { ...form.notice_bar, bg_color: e.target.value })} />
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-xs">Text Color</Label>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <input type="color" value={form.notice_bar?.text_color || "#ffffff"} onChange={(e) => update("notice_bar", { ...form.notice_bar, text_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                          <Input className="w-24 h-8 text-xs font-mono" value={form.notice_bar?.text_color || "#ffffff"} onChange={(e) => update("notice_bar", { ...form.notice_bar, text_color: e.target.value })} />
+                        </div>
+                      </div>
+                      <div className="flex gap-3">
+                        <button
+                          type="button"
+                          onClick={() => update("notice_bar", { ...form.notice_bar, bold: !form.notice_bar?.bold })}
+                          className={`w-8 h-8 rounded border text-sm font-bold transition ${form.notice_bar?.bold ? "bg-[#1B365D] text-white border-[#1B365D]" : "bg-white text-gray-600 border-gray-300"}`}
+                        >B</button>
+                        <button
+                          type="button"
+                          onClick={() => update("notice_bar", { ...form.notice_bar, italic: !form.notice_bar?.italic })}
+                          className={`w-8 h-8 rounded border text-sm italic transition ${form.notice_bar?.italic ? "bg-[#1B365D] text-white border-[#1B365D]" : "bg-white text-gray-600 border-gray-300"}`}
+                        >I</button>
+                        <button
+                          type="button"
+                          onClick={() => update("notice_bar", { ...form.notice_bar, underline: !form.notice_bar?.underline })}
+                          className={`w-8 h-8 rounded border text-sm underline transition ${form.notice_bar?.underline ? "bg-[#1B365D] text-white border-[#1B365D]" : "bg-white text-gray-600 border-gray-300"}`}
+                        >U</button>
+                      </div>
+                    </div>
+                    {/* Preview */}
+                    {form.notice_bar?.text && (
+                      <div className="rounded-lg px-4 py-2 text-sm text-center" style={{ background: form.notice_bar?.bg_color || "#E8792F", color: form.notice_bar?.text_color || "#ffffff" }}>
+                        <span style={{ fontWeight: form.notice_bar?.bold ? "bold" : "normal", fontStyle: form.notice_bar?.italic ? "italic" : "normal", textDecoration: form.notice_bar?.underline ? "underline" : "none" }}>
+                          {form.notice_bar.text}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
               {/* Dedicated Banner Image */}
               <div>
                 <Label className="text-base font-semibold mb-1 block">Banner Background Image</Label>
@@ -301,8 +369,8 @@ export default function AdminFacilityEdit() {
                   ))}
                   <label className="h-32 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition text-gray-400">
                     <Upload className="w-5 h-5 mb-1" />
-                    <span className="text-xs">Add Photo</span>
-                    <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                    <span className="text-xs text-center px-1">Add Photos</span>
+                    <input type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoUpload} />
                   </label>
                 </div>
               </div>
