@@ -354,25 +354,52 @@ export default function AdminFacilityEdit() {
 
               <div>
                 <Label className="text-base font-semibold mb-3 block">Slider / Gallery Images</Label>
-                <p className="text-xs text-gray-500 mb-3">These images rotate as a slider on the facility page. First image is used as the main banner.</p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-                  {(form.photos || []).map((url, i) => (
-                    <div key={i} className="relative group">
-                      <img src={url} alt="" className="w-full h-32 object-cover rounded-xl" />
-                      {i === 0 && <span className="absolute top-2 left-2 bg-[#E8792F] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Main</span>}
-                      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition">
-                        {i > 0 && <button onClick={() => { const p=[...form.photos]; [p[i-1],p[i]]=[p[i],p[i-1]]; update("photos",p); }} className="bg-white rounded-full p-1 shadow text-gray-700 hover:text-[#1B365D]">←</button>}
-                        {i < form.photos.length-1 && <button onClick={() => { const p=[...form.photos]; [p[i],p[i+1]]=[p[i+1],p[i]]; update("photos",p); }} className="bg-white rounded-full p-1 shadow text-gray-700 hover:text-[#1B365D]">→</button>}
-                        <button onClick={() => update("photos", form.photos.filter((_, j) => j !== i))} className="bg-red-500 text-white rounded-full p-1 shadow"><X className="w-3 h-3" /></button>
+                <p className="text-xs text-gray-500 mb-3">These images rotate as a slider on the facility page. First image is used as the main banner. Drag to reorder.</p>
+                <DragDropContext onDragEnd={(result) => {
+                  if (!result.destination) return;
+                  const p = Array.from(form.photos);
+                  const [moved] = p.splice(result.source.index, 1);
+                  p.splice(result.destination.index, 0, moved);
+                  update("photos", p);
+                }}>
+                  <Droppable droppableId="facility-photos" direction="horizontal">
+                    {(provided) => (
+                      <div
+                        className="flex flex-wrap gap-3 mb-3"
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                      >
+                        {(form.photos || []).map((url, i) => (
+                          <Draggable key={url + i} draggableId={`photo-${i}`} index={i}>
+                            {(provided, snapshot) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className={`relative group flex-shrink-0 w-36 h-32 rounded-xl overflow-hidden cursor-grab active:cursor-grabbing ${snapshot.isDragging ? "ring-2 ring-[#1B365D] shadow-lg" : ""}`}
+                              >
+                                <img src={url} alt="" className="w-full h-full object-cover" />
+                                {i === 0 && <span className="absolute top-2 left-2 bg-[#E8792F] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Main</span>}
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); update("photos", form.photos.filter((_, j) => j !== i)); }}
+                                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                        <label className="flex-shrink-0 w-36 h-32 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition text-gray-400">
+                          <Upload className="w-5 h-5 mb-1" />
+                          <span className="text-xs text-center px-1">Add Photos</span>
+                          <input type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoUpload} />
+                        </label>
                       </div>
-                    </div>
-                  ))}
-                  <label className="h-32 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition text-gray-400">
-                    <Upload className="w-5 h-5 mb-1" />
-                    <span className="text-xs text-center px-1">Add Photos</span>
-                    <input type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoUpload} />
-                  </label>
-                </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
               </div>
             </CardContent>
           </Card>
