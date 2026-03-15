@@ -34,7 +34,7 @@ function TextBlock({ data }) {
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
       <div
-        className="prose prose-lg max-w-none"
+        className="rich-text-content"
         style={{ textAlign: data.align || "left" }}
         dangerouslySetInnerHTML={{ __html: data.content || "" }}
       />
