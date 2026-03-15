@@ -380,12 +380,11 @@ export default function AdminFacilityEdit() {
                               >
                                 <img src={url} alt="" className="w-full h-full object-cover" />
                                 {i === 0 && <span className="absolute top-2 left-2 bg-[#E8792F] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Main</span>}
-                                <button
-                                  onClick={(e) => { e.stopPropagation(); update("photos", form.photos.filter((_, j) => j !== i)); }}
-                                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition"
-                                >
-                                  <X className="w-3 h-3" />
-                                </button>
+                                <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition">
+                                  {i > 0 && <button onClick={(e) => { e.stopPropagation(); const p=[...form.photos]; [p[i-1],p[i]]=[p[i],p[i-1]]; update("photos",p); }} className="bg-white rounded-full p-1 shadow text-gray-700 hover:text-[#1B365D]">←</button>}
+                                  {i < form.photos.length-1 && <button onClick={(e) => { e.stopPropagation(); const p=[...form.photos]; [p[i],p[i+1]]=[p[i+1],p[i]]; update("photos",p); }} className="bg-white rounded-full p-1 shadow text-gray-700 hover:text-[#1B365D]">→</button>}
+                                  <button onClick={(e) => { e.stopPropagation(); update("photos", form.photos.filter((_, j) => j !== i)); }} className="bg-red-500 text-white rounded-full p-1 shadow"><X className="w-3 h-3" /></button>
+                                </div>
                               </div>
                             )}
                           </Draggable>
