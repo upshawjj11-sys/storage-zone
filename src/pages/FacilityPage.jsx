@@ -488,30 +488,63 @@ export default function FacilityPage() {
                     </div>
                   )}
                   {(() => {
-                    const today = new Date().toISOString().split("T")[0];
-                    const todayHoliday = (facility.holiday_hours || []).find((h) => h.date === today && (h.applies_to === "both" || h.applies_to === hoursTab));
-                    return todayHoliday ? (
-                      <div className="mb-3 p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 font-medium">
-                        📅 {todayHoliday.label}: {todayHoliday.closed ? "Closed today" : todayHoliday.is_24_hours ? "Open 24 Hours" : `${todayHoliday.open} – ${todayHoliday.close}`}
+                    const activeHours = hoursTab === "access" && facility.access_hours?.length > 0 ? facility.access_hours : facility.hours || [];
+                    const holidayHours = facility.holiday_hours || [];
+                    // Build a map of date -> holiday for the next 7 days
+                    const today = new Date();
+                    const next7Dates = Array.from({ length: 7 }, (_, i) => {
+                      const d = new Date(today); d.setDate(today.getDate() + i);
+                      return d.toISOString().split("T")[0];
+                    });
+                    // Map day-of-week name to upcoming date
+                    const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+                    const dayToDate = {};
+                    next7Dates.forEach((dateStr) => {
+                      const dow = dayNames[new Date(dateStr + "T12:00:00").getDay()];
+                      dayToDate[dow] = dateStr;
+                    });
+                    // Build holiday lookup by date
+                    const holidayByDate = {};
+                    holidayHours.forEach((h) => {
+                      if (h.applies_to === "both" || h.applies_to === hoursTab) {
+                        holidayByDate[h.date] = h;
+                      }
+                    });
+                    const formatH = (h) => h.closed ? "Closed" : h.is_24_hours ? "24 Hours" : `${h.open} – ${h.close}`;
+                    return (
+                      <div className="space-y-2">
+                        {activeHours.map((h, i) => {
+                          const date = dayToDate[h.day];
+                          const holiday = date ? holidayByDate[date] : null;
+                          const isToday = date === today.toISOString().split("T")[0];
+                          return (
+                            <div key={i} className={`rounded-lg px-2 py-1.5 ${isToday ? "bg-white/60 ring-1 ring-inset ring-amber-200" : ""}`}>
+                              <div className="flex justify-between text-sm">
+                                <span className="font-medium" style={{ color: S.sidebar_text_color }}>
+                                  {h.day}{isToday && <span className="ml-1.5 text-[10px] font-semibold text-amber-600 uppercase tracking-wide">Today</span>}
+                                </span>
+                                {holiday ? (
+                                  <span className="font-semibold text-amber-600">
+                                    📅 {formatH(holiday)}
+                                  </span>
+                                ) : (
+                                  <span className="font-medium" style={{ color: S.sidebar_text_color }}>{formatH(h)}</span>
+                                )}
+                              </div>
+                              {holiday && (
+                                <div className="flex justify-between mt-0.5">
+                                  <span className="text-[11px] text-amber-500 font-medium">{holiday.label}</span>
+                                  <span className="text-[11px]" style={{ color: S.sidebar_text_color, opacity: 0.5 }}>
+                                    Normal: {formatH(h)}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
-                    ) : null;
+                    );
                   })()}
-                  <div className="space-y-2">
-                    {(hoursTab === "access" && facility.access_hours?.length > 0 ? facility.access_hours : facility.hours || []).map((h, i) => (
-                      <div key={i} className="flex justify-between text-sm">
-                        <span className="font-medium" style={{ color: S.sidebar_text_color }}>{h.day}</span>
-                        <span className="font-medium" style={{ color: S.sidebar_text_color }}>
-                          {h.closed ? "Closed" : h.is_24_hours ? "24 Hours" : `${h.open} – ${h.close}`}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  {(facility.holiday_hours || []).filter((h) => h.date >= new Date().toISOString().split("T")[0] && (h.applies_to === "both" || h.applies_to === hoursTab)).slice(0, 3).map((h, i) => (
-                    <div key={i} className="mt-2 flex justify-between text-xs text-amber-700 bg-amber-50 px-2 py-1.5 rounded-lg border border-amber-100">
-                      <span>📅 {h.label} ({h.date})</span>
-                      <span>{h.closed ? "Closed" : h.is_24_hours ? "24 Hrs" : `${h.open}–${h.close}`}</span>
-                    </div>
-                  ))}
                 </div>
               )}
                {nearbyFacilities.length > 0 && (
