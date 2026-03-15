@@ -481,6 +481,18 @@ export default function AdminSizeGuideConfig({ onSaveStatus }) {
                                 value={cat.label}
                                 onChange={(e) => updateCategory(cat.id, { label: e.target.value })}
                               />
+                              <div className="flex items-center gap-1 flex-shrink-0">
+                                <Input
+                                  className="w-14 h-7 text-xs text-center"
+                                  type="number"
+                                  min="0"
+                                  max="200"
+                                  value={cat.buffer_pct ?? 50}
+                                  onChange={(e) => updateCategory(cat.id, { buffer_pct: parseFloat(e.target.value) || 0 })}
+                                  title="Buffer % for this category"
+                                />
+                                <span className="text-xs text-gray-400">% buffer</span>
+                              </div>
                               <span className="text-xs text-gray-400 flex-shrink-0">{cat.items.length} items</span>
                               <button onClick={() => setExpandedCat(isOpen ? null : cat.id)} className="text-gray-400 hover:text-gray-700 transition">
                                 {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
