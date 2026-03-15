@@ -268,7 +268,7 @@ export default function FacilityPage() {
       <div key="photos">
         <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Photos</h2>
         {(facility.photos_display_mode || "slider") === "slider" ? (
-          <div className="rounded-xl overflow-hidden" style={{ height: "380px" }}>
+          <div className="rounded-xl overflow-hidden" style={{ height: "380px", position: "relative" }}>
             <ImageSlider images={facility.photos} />
           </div>
         ) : (
