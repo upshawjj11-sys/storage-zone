@@ -31,6 +31,8 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
     const itemFitsInUnit = (item, unit) => {
       const { w, d } = item;
       const { widthIn, depthIn } = unit;
+      // If unit dimensions are missing/zero, skip footprint check (rely on volume only)
+      if (!widthIn || !depthIn) return true;
       return (
         (w <= widthIn && d <= depthIn) ||
         (d <= widthIn && w <= depthIn)
