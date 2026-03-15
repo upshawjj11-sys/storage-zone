@@ -16,18 +16,22 @@ const ALL_SECTIONS = [
 
 export default function FacilitySectionOrderEditor({ order, onChange }) {
   // Parse order: can be array of strings (backwards compat) or objects with {key, visible}
+  // Strings are stored as "key" (visible) or "key:hidden" (hidden)
   const parseOrder = (rawOrder) => {
     return rawOrder.map((item) => {
-      if (typeof item === "string") return { key: item, visible: true };
+      if (typeof item === "string") {
+        if (item.endsWith(":hidden")) return { key: item.replace(":hidden", ""), visible: false };
+        return { key: item, visible: true };
+      }
       return item;
     });
   };
 
+  // Serialize back to plain strings for storage
   const normalizeOrder = (parsed) => {
-    return parsed.map((item) => ({
-      key: item.key,
-      visible: item.visible !== false,
-    }));
+    return parsed.map((item) =>
+      item.visible !== false ? item.key : `${item.key}:hidden`
+    );
   };
 
   const parsedOrder = parseOrder(order || []);
