@@ -236,7 +236,12 @@ export default function AdminFacilityEdit() {
                   </Select>
                 </div>
               </div>
-              <div><Label>About</Label><Textarea rows={5} value={form.about} onChange={(e) => update("about", e.target.value)} /></div>
+              <div>
+                <Label>About</Label>
+                <div className="mt-1">
+                  <RichTextEditor value={form.about} onChange={(v) => update("about", v)} placeholder="Write about this facility..." minHeight={160} />
+                </div>
+              </div>
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
                 <div>
                   <p className="font-medium text-sm text-gray-800">Collapse "About" with Read More</p>
@@ -352,6 +357,36 @@ export default function AdminFacilityEdit() {
                     </label>
                   )}
                 </div>
+              </div>
+
+              {/* Photos display mode */}
+              <div className="border rounded-xl p-4 space-y-3 bg-gray-50">
+                <p className="font-semibold text-sm text-gray-800">Photos Display Mode</p>
+                <div className="flex gap-3">
+                  {["slider", "gallery"].map((mode) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => update("photos_display_mode", mode)}
+                      className={`flex-1 py-2 px-4 rounded-lg border text-sm font-medium capitalize transition ${
+                        (form.photos_display_mode || "slider") === mode
+                          ? "bg-[#1B365D] text-white border-[#1B365D]"
+                          : "bg-white text-gray-600 border-gray-300 hover:border-gray-400"
+                      }`}
+                    >
+                      {mode === "slider" ? "🎞 Slider" : "🖼 Gallery Grid"}
+                    </button>
+                  ))}
+                </div>
+                {(form.photos_display_mode || "slider") === "gallery" && (
+                  <div className="flex items-center justify-between pt-1">
+                    <div>
+                      <p className="text-sm text-gray-700 font-medium">Collapsible Gallery</p>
+                      <p className="text-xs text-gray-400">Show first 6 photos with a "View More" button</p>
+                    </div>
+                    <Switch checked={!!form.photos_collapsible} onCheckedChange={(v) => update("photos_collapsible", v)} />
+                  </div>
+                )}
               </div>
 
               <div>
