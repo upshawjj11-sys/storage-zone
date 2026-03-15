@@ -27,8 +27,25 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
     [selectedItems]
   );
 
-  // Add 50% buffer — furniture can't be stacked easily, need room to maneuver
-  const bufferedCuft = totalCuft * 1.5;
+  // Determine buffer % — use the highest buffer_pct from any selected item's category
+  // Falls back to 50% if no category buffer is configured
+  const bufferPct = useMemo(() => {
+    if (selectedItems.length === 0) return 50;
+    const usedCatIds = new Set(
+      selectedItems.map((si) => {
+        const cat = categories.find((c) => c.items?.some((it) => it.id === si.id));
+        return cat?.id;
+      })
+    );
+    const maxBuffer = Math.max(
+      ...categories
+        .filter((c) => usedCatIds.has(c.id))
+        .map((c) => c.buffer_pct ?? 50)
+    );
+    return isFinite(maxBuffer) ? maxBuffer : 50;
+  }, [selectedItems, categories]);
+
+  const bufferedCuft = totalCuft * (1 + bufferPct / 100);
 
   const recommendation = useMemo(() => {
     if (totalCuft === 0) return null;
