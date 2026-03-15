@@ -87,6 +87,8 @@ export default function AdminFacilityEdit() {
         sections_order: existing.sections_order || [],
         page_styles: existing.page_styles || {},
         notice_bar: existing.notice_bar || { enabled: false, text: "", bg_color: "#E8792F", text_color: "#ffffff", bold: false, italic: false, underline: false },
+        photos_display_mode: existing.photos_display_mode || "slider",
+        photos_collapsible: existing.photos_collapsible || false,
       });
     }
   }, [existing]);
