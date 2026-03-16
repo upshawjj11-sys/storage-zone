@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
+import { MapPin, Phone } from "lucide-react";
 
 function getVideoEmbed(url) {
   if (!url) return null;
@@ -290,6 +291,80 @@ function ContactFormBlock({ data }) {
   );
 }
 
+function LocationsGridBlock({ data }) {
+  const [facilities, setFacilities] = useState([]);
+
+  useEffect(() => {
+    if (data.facility_ids?.length) {
+      base44.entities.Facility.list("name", 100).then((all) => {
+        setFacilities(all.filter((f) => data.facility_ids.includes(f.id)));
+      });
+    }
+  }, [data.facility_ids]);
+
+  const colClass = { 1: "grid-cols-1", 2: "grid-cols-1 md:grid-cols-2", 3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" }[data.cols || 3] || "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+
+  if (!data.facility_ids?.length) {
+    return <div className="max-w-6xl mx-auto px-6 py-10 text-center text-gray-300 text-sm">[Locations Grid — no locations selected]</div>;
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto px-6 py-10">
+      {data.title && <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">{data.title}</h2>}
+      <div className={`grid ${colClass} gap-6`}>
+        {facilities.map((f) => {
+          const address = [f.address, f.city, f.state, f.zip].filter(Boolean).join(", ");
+          const facilityUrl = f.slug
+            ? `/locations/${(f.state || "").toLowerCase()}/${(f.city || "").toLowerCase().replace(/\s+/g, "-")}/${f.slug}`
+            : null;
+          return (
+            <div key={f.id} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+              {f.banner_image || (f.photos && f.photos[0]) ? (
+                <div className="h-48 overflow-hidden">
+                  <img
+                    src={f.banner_image || f.photos[0]}
+                    alt={f.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="h-48 bg-gray-100 flex items-center justify-center text-gray-300 text-sm">No photo</div>
+              )}
+              <div className="p-5">
+                <h3 className="text-lg font-bold text-[#1B365D] mb-2">{f.name}</h3>
+                {address && (
+                  <div className="flex items-start gap-2 text-gray-600 text-sm mb-1">
+                    <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
+                    <span>{address}</span>
+                  </div>
+                )}
+                {f.phone && (
+                  <div className="flex items-center gap-2 text-gray-600 text-sm mb-3">
+                    <Phone className="w-4 h-4 flex-shrink-0 text-gray-400" />
+                    <span>{f.phone}</span>
+                  </div>
+                )}
+                {(f.features || []).length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {f.features.slice(0, 4).map((feat, i) => (
+                      <span key={i} className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">{feat}</span>
+                    ))}
+                  </div>
+                )}
+                {facilityUrl && (
+                  <a href={facilityUrl} className="text-sm font-semibold text-[#E8792F] hover:underline">
+                    View Details →
+                  </a>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function EmbedBlock({ data }) {
   if (!data.code) return <div className="max-w-4xl mx-auto px-6 py-8 text-center text-gray-300 text-sm">[Embed block — no code set]</div>;
   return <div className="max-w-4xl mx-auto px-6 py-8" style={{ minHeight: data.height || "400px" }} dangerouslySetInnerHTML={{ __html: data.code || "" }} />;
@@ -311,6 +386,7 @@ function renderBlock(block, i) {
     case "testimonials": return <TestimonialsBlock key={i} data={data} />;
     case "contact_form": return <ContactFormBlock key={i} data={data} />;
     case "embed": return <EmbedBlock key={i} data={data} />;
+    case "locations_grid": return <LocationsGridBlock key={i} data={data} />;
     default: return null;
   }
 }
