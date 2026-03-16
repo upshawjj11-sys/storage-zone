@@ -33,8 +33,7 @@ function HeroBlock({ data }) {
 function TextBlock({ data }) {
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
-      <div className="prose prose-sm max-w-none" style={{ textAlign: data.align || "left" }}
-        dangerouslySetInnerHTML={{ __html: data.content || "" }} />
+      <RichTextRenderer html={data.content} style={{ textAlign: data.align || "left" }} />
     </div>
   );
 }
