@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { MapPin, Phone } from "lucide-react";
+import "react-quill/dist/quill.snow.css";
 
 function getVideoEmbed(url) {
   if (!url) return null;
