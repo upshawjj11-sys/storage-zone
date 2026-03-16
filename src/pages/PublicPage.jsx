@@ -453,7 +453,9 @@ function renderBlock(block, i) {
 
 export default function PublicPage() {
   const location = useLocation();
-  const slug = new URLSearchParams(location.search).get("slug");
+  const params = useParams();
+  // Support both /page/:slug route param AND legacy ?slug= query param
+  const slug = params.slug || new URLSearchParams(location.search).get("slug");
 
   const { data: pages, isLoading } = useQuery({
     queryKey: ["public-page", slug],
