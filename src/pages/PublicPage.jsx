@@ -75,7 +75,19 @@ function ImageBlock({ data }) {
 function ColumnContent({ type, data }) {
   switch (type) {
     case "text":
-      return <RichTextRenderer html={data.content} />;
+      return (
+        <div>
+          <RichTextRenderer html={data.content} />
+          {data.btn_text && data.btn_link && (
+            <a href={data.btn_link} className="inline-block mt-5">
+              <button className="px-7 py-3 rounded-full font-semibold text-base transition hover:opacity-90 shadow"
+                style={{ backgroundColor: data.btn_bg || "#E8792F", color: data.btn_text_color || "#ffffff" }}>
+                {data.btn_text}
+              </button>
+            </a>
+          )}
+        </div>
+      );
     case "image":
       return <img src={data.url} alt={data.alt || ""} className="w-full rounded-xl shadow-md" />;
     case "video": {
