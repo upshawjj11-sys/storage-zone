@@ -20,7 +20,9 @@ import { Columns } from "lucide-react";
 
 const BLOCK_TYPES = [
   { value: "hero", label: "Hero Banner" },
+  { value: "heading", label: "Heading / Title" },
   { value: "text", label: "Rich Text" },
+  { value: "divider", label: "Divider" },
   { value: "image", label: "Image" },
   { value: "two_column", label: "Two Column" },
   { value: "features_grid", label: "Features Grid" },
