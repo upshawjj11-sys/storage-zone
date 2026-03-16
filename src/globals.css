@@ -56,20 +56,19 @@ body {
 }
 
 /* ---- List styles ---- */
-/* RichTextRenderer converts Quill's flat <li data-list> into real <ul>/<ol>,
-   so we can use standard list-style here. Tailwind preflight's `li{display:block}`
-   is overridden by the !important rules below. */
 .rich-text-content ul,
 .rich-text-content ol {
   padding-left: 1.75em !important;
   margin: 0.5rem 0     !important;
+  list-style-position: outside !important;
 }
-.rich-text-content ul { list-style-type: disc    !important; }
-.rich-text-content ol { list-style-type: decimal !important; }
+.rich-text-content ul    { list-style-type: disc    !important; }
+.rich-text-content ol    { list-style-type: decimal !important; }
+.rich-text-content ul li { list-style-type: disc    !important; }
+.rich-text-content ol li { list-style-type: decimal !important; }
 .rich-text-content li {
-  display: list-item !important;
-  list-style: inherit !important;
-  margin: 0.2rem 0   !important;
+  display: list-item  !important;
+  margin: 0.2rem 0    !important;
 }
 
 /* Quill indent levels (kept as visual padding on <li>) */
