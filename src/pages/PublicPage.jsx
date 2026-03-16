@@ -53,7 +53,7 @@ function ImageBlock({ data }) {
 function ColumnContent({ type, data }) {
   switch (type) {
     case "text":
-      return <div className="rich-text-content" dangerouslySetInnerHTML={{ __html: data.content || "" }} />;
+      return <RichTextRenderer html={data.content} />;
     case "image":
       return <img src={data.url} alt={data.alt || ""} className="w-full rounded-xl shadow-md" />;
     case "video": {
