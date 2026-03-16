@@ -22,38 +22,30 @@ function fixQuillLists(html) {
   const doc = parser.parseFromString(`<div id="__root">${html}</div>`, "text/html");
   const root = doc.getElementById("__root");
 
-  function wrapListItems(container) {
-    // Loop until no more bare <li data-list> exist as direct children
-    let li = container.querySelector(":scope > li[data-list]");
-    while (li) {
-      const listType = li.getAttribute("data-list");
-      const wrapper = doc.createElement(listType === "ordered" ? "ol" : "ul");
+  // Keep processing until there are no more bare Quill list items
+  let bare = root.querySelector("li[data-list]");
+  while (bare) {
+    const listType = bare.getAttribute("data-list"); // "bullet" or "ordered"
+    const tag = listType === "ordered" ? "ol" : "ul";
+    const wrapper = doc.createElement(tag);
 
-      // Insert wrapper before the first li
-      container.insertBefore(wrapper, li);
+    // Place wrapper before the first bare li
+    bare.parentNode.insertBefore(wrapper, bare);
 
-      // Move all consecutive <li data-list> siblings into the wrapper
-      while (
-        wrapper.nextSibling &&
-        wrapper.nextSibling.nodeType === Node.ELEMENT_NODE &&
-        wrapper.nextSibling.tagName === "LI" &&
-        wrapper.nextSibling.hasAttribute("data-list")
-      ) {
-        const item = wrapper.nextSibling;
-        item.removeAttribute("data-list");
-        wrapper.appendChild(item);
-      }
-
-      // Also grab li itself (it was moved ahead of wrapper insertion)
-      // Actually li is now wrapper.nextSibling — no, let's re-check the approach:
-      // After insertBefore(wrapper, li), li is still in container right after wrapper.
-      // Move li and its consecutive siblings into wrapper.
-      // Reset: grab first ungrouped li again
-      li = container.querySelector(":scope > li[data-list]");
+    // Move bare and all consecutive bare siblings into the wrapper
+    while (
+      wrapper.nextSibling &&
+      wrapper.nextSibling.nodeType === Node.ELEMENT_NODE &&
+      wrapper.nextSibling.tagName === "LI" &&
+      wrapper.nextSibling.hasAttribute("data-list")
+    ) {
+      const item = wrapper.nextSibling;
+      item.removeAttribute("data-list");
+      wrapper.appendChild(item);
     }
-  }
 
-  wrapListItems(root);
+    bare = root.querySelector("li[data-list]");
+  }
 
   return root.innerHTML;
 }
