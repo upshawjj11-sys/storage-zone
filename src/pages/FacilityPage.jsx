@@ -75,10 +75,14 @@ export default function FacilityPage() {
           all.find((f) => f.slug && f.slug === slugFromPath) ||  // last segment match
           all.find((f) => f.id === slugFromPath) ||              // id match
           // Match by city+state from URL path (handles facilities with no slug set)
-          all.find((f) =>
-            norm(f.city) === norm(cityFromPath) &&
-            norm(f.state) === norm(stateFromPath)
-          ) ||
+          // State may be stored as abbreviation ("FL") or full name ("Florida")
+          all.find((f) => {
+            const stateAbbrevToFull = { fl: "florida", ga: "georgia", tx: "texas", ca: "california", ny: "newyork", nc: "northcarolina", sc: "southcarolina", va: "virginia", tn: "tennessee", al: "alabama", ms: "mississippi", la: "louisiana", ar: "arkansas", mo: "missouri", oh: "ohio", pa: "pennsylvania", nj: "newjersey", md: "maryland", dc: "districtofcolumbia" };
+            const normState = norm(f.state);
+            const fullStateName = stateAbbrevToFull[normState] || normState;
+            return norm(f.city) === norm(cityFromPath) &&
+              (normState === norm(stateFromPath) || fullStateName === norm(stateFromPath));
+          }) ||
           // Match by slug segment against normalized facility name
           all.find((f) => norm(f.name).includes(norm(slugFromPath)) || norm(slugFromPath).includes(norm(f.name).slice(0, 8))) ||
           null
