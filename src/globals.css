@@ -5,55 +5,46 @@
 @tailwind utilities;
 
 /* ============================================================
-   ALL RULES BELOW ARE UNLAYERED — they beat @layer base/utilities
-   so Tailwind's preflight reset cannot override them.
+   UNLAYERED — these rules are placed after @tailwind utilities
+   so they always win over Tailwind's @layer base preflight resets.
    ============================================================ */
 
 body {
   font-family: 'Inter', sans-serif;
 }
 
-:root {
-  --sz-primary: #1B365D;
-  --sz-secondary: #E8792F;
-  --sz-accent: #2A9D8F;
-  --sz-dark: #0F172A;
-  --sz-light: #F8FAFC;
-  --sz-muted: #94A3B8;
-  --sz-border: #E2E8F0;
-}
+/* ---- Quill size classes (emitted as <span class="ql-size-*">) ---- */
+.ql-size-small { font-size: 0.75em !important; }
+.ql-size-large { font-size: 1.5em  !important; }
+.ql-size-huge  { font-size: 2.5em  !important; }
 
-/* ---- Quill editor min-height ---- */
-.ql-editor {
-  min-height: 200px;
-}
+/* ---- Quill font classes ---- */
+.ql-font-arial           { font-family: Arial, sans-serif !important; }
+.ql-font-georgia         { font-family: Georgia, serif !important; }
+.ql-font-tahoma          { font-family: Tahoma, sans-serif !important; }
+.ql-font-verdana         { font-family: Verdana, sans-serif !important; }
+.ql-font-courier-new     { font-family: 'Courier New', monospace !important; }
+.ql-font-times-new-roman { font-family: 'Times New Roman', serif !important; }
+.ql-font-trebuchet-ms    { font-family: 'Trebuchet MS', sans-serif !important; }
+.ql-font-impact          { font-family: Impact, sans-serif !important; }
+.ql-font-comic-sans-ms   { font-family: 'Comic Sans MS', cursive !important; }
 
-/* ============================================================
-   RICH TEXT — text sizes (Quill outputs <span class="ql-size-*">)
-   These must be global (not scoped) because Quill puts them on
-   inline spans inside any container.
-   ============================================================ */
-.ql-size-small  { font-size: 0.75em !important; }
-.ql-size-large  { font-size: 1.5em  !important; }
-.ql-size-huge   { font-size: 2.5em  !important; }
-
-/* ============================================================
-   RICH TEXT CONTENT CONTAINER
-   Used by: PublicPage TextBlock, StaticPagePreview, facility about, etc.
-   ============================================================ */
+/* ---- Rich text content container ---- */
+/* Used by RichTextRenderer component everywhere Quill HTML is displayed */
 .rich-text-content {
   font-size: 1rem;
   line-height: 1.75;
   color: inherit;
 }
 
-.rich-text-content h1 { font-size: 2rem;    font-weight: 700; margin: 1rem 0 0.5rem; }
-.rich-text-content h2 { font-size: 1.5rem;  font-weight: 700; margin: 1rem 0 0.5rem; }
-.rich-text-content h3 { font-size: 1.25rem; font-weight: 600; margin: 0.75rem 0 0.5rem; }
-.rich-text-content p  { margin: 0.5rem 0; }
-
+.rich-text-content p      { margin: 0.4rem 0; }
+.rich-text-content h1     { font-size: 2rem;    font-weight: 700; margin: 1rem 0 0.5rem; }
+.rich-text-content h2     { font-size: 1.5rem;  font-weight: 700; margin: 1rem 0 0.5rem; }
+.rich-text-content h3     { font-size: 1.25rem; font-weight: 600; margin: 0.75rem 0 0.4rem; }
 .rich-text-content strong { font-weight: 700; }
 .rich-text-content em     { font-style: italic; }
+.rich-text-content u      { text-decoration: underline; }
+.rich-text-content s      { text-decoration: line-through; }
 .rich-text-content a      { color: #1B365D; text-decoration: underline; }
 
 .rich-text-content blockquote {
@@ -64,60 +55,35 @@ body {
   font-style: italic;
 }
 
-/* ============================================================
-   LIST STYLES — Tailwind preflight sets `li { display: block }`
-   and resets list-style. We must force-override for both
-   .rich-text-content (public pages) and .ql-editor (admin preview).
-
-   Quill v1 (react-quill) emits:
-     <ul>
-       <li class="ql-indent-0" data-list="bullet">…</li>
-       <li class="ql-indent-0" data-list="ordered">…</li>
-     </ul>
-   Bullets are normally shown by quill.snow.css via ::before pseudo-element
-   scoped to .ql-editor. Outside the editor we use native list-style instead.
-   ============================================================ */
-
-/* Container */
+/* ---- List styles ---- */
+/* RichTextRenderer converts Quill's flat <li data-list> into real <ul>/<ol>,
+   so we can use standard list-style here. Tailwind preflight's `li{display:block}`
+   is overridden by the !important rules below. */
 .rich-text-content ul,
 .rich-text-content ol {
-  padding-left: 1.75em   !important;
-  margin: 0.5rem 0       !important;
+  padding-left: 1.75em !important;
+  margin: 0.5rem 0     !important;
 }
-
 .rich-text-content ul { list-style-type: disc    !important; }
 .rich-text-content ol { list-style-type: decimal !important; }
-
-/* Items — reset Tailwind's `display:block` and restore list-item */
 .rich-text-content li {
-  display: list-item    !important;
-  list-style: inherit   !important;
-  margin: 0.2rem 0      !important;
-}
-
-/* data-list attribute Quill puts on each <li> */
-.rich-text-content li[data-list="bullet"]  { list-style-type: disc    !important; }
-.rich-text-content li[data-list="ordered"] { list-style-type: decimal !important; }
-
-/* Nested indent levels */
-.rich-text-content .ql-indent-1 { padding-left: 1.5em !important; }
-.rich-text-content .ql-indent-2 { padding-left: 3em   !important; }
-.rich-text-content .ql-indent-3 { padding-left: 4.5em !important; }
-.rich-text-content .ql-indent-4 { padding-left: 6em   !important; }
-
-/* ---- Same fixes inside .ql-editor for admin preview / read-only ---- */
-.ql-editor ul { list-style-type: disc    !important; padding-left: 1.75em !important; }
-.ql-editor ol { list-style-type: decimal !important; padding-left: 1.75em !important; }
-.ql-editor li {
-  display: list-item  !important;
+  display: list-item !important;
   list-style: inherit !important;
+  margin: 0.2rem 0   !important;
 }
-.ql-editor li[data-list="bullet"]  { list-style-type: disc    !important; }
-.ql-editor li[data-list="ordered"] { list-style-type: decimal !important; }
+
+/* Quill indent levels (kept as visual padding on <li>) */
+.rich-text-content .ql-indent-1 { padding-left: 1.5em  !important; }
+.rich-text-content .ql-indent-2 { padding-left: 3em    !important; }
+.rich-text-content .ql-indent-3 { padding-left: 4.5em  !important; }
+.rich-text-content .ql-indent-4 { padding-left: 6em    !important; }
+
+/* ---- Quill editor (admin) ---- */
+.ql-editor { min-height: 200px; }
+
 
 /* ============================================================
-   Shadcn / Tailwind CSS variable tokens (kept in @layer base so
-   they don't conflict with component defaults)
+   Shadcn design-token CSS variables
    ============================================================ */
 @layer base {
   :root {
@@ -141,5 +107,13 @@ body {
     --input: 214.3 31.8% 91.4%;
     --ring: 215 54% 23%;
     --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
   }
 }
