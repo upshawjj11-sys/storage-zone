@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import "react-quill/dist/quill.snow.css";
 
 /**
  * Converts Quill v1 flat list HTML into properly nested <ul>/<ol> structures.
