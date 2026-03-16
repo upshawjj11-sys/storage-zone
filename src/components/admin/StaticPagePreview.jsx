@@ -30,6 +30,28 @@ function HeroBlock({ data }) {
   );
 }
 
+function HeadingBlock({ data }) {
+  const Tag = data.level || "h2";
+  const sizeMap = { h1: "text-3xl md:text-4xl font-black", h2: "text-2xl font-bold", h3: "text-xl font-semibold", h4: "text-lg font-semibold" };
+  return (
+    <div className="max-w-4xl mx-auto px-6 pt-6 pb-1" style={{ textAlign: data.align || "left" }}>
+      <Tag className={sizeMap[Tag] || "text-2xl font-bold"} style={{ color: data.color || "#111827" }}>
+        {data.text}
+      </Tag>
+    </div>
+  );
+}
+
+function DividerBlock({ data }) {
+  const borderStyle = { line: "solid", thick: "solid", dashed: "dashed", dots: "dotted" }[data.style || "line"] || "solid";
+  const borderWidth = data.style === "thick" ? "2px" : "1px";
+  return (
+    <div className={`max-w-4xl mx-auto px-6 ${data.margin || "my-8"}`}>
+      <hr style={{ borderTopStyle: borderStyle, borderTopWidth: borderWidth, borderColor: data.color || "#E5E7EB" }} />
+    </div>
+  );
+}
+
 function TextBlock({ data }) {
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
