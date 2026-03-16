@@ -210,11 +210,9 @@ export default function FacilityPage() {
         <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>About This Location</h2>
         {facility.about_collapsible ? (
           <div>
-            <div
-              className={`rich-text-content overflow-hidden transition-all ${!aboutExpanded ? "max-h-24" : ""}`}
-              style={{ color: S.body_text_color }}
-              dangerouslySetInnerHTML={{ __html: facility.about }}
-            />
+            <div className={`overflow-hidden transition-all ${!aboutExpanded ? "max-h-24" : ""}`}>
+              <RichTextRenderer html={facility.about} style={{ color: S.body_text_color }} />
+            </div>
             <button
               onClick={() => setAboutExpanded(!aboutExpanded)}
               className="mt-2 text-sm font-semibold flex items-center gap-1 hover:opacity-80 transition"
@@ -224,11 +222,7 @@ export default function FacilityPage() {
             </button>
           </div>
         ) : (
-          <div
-            className="rich-text-content"
-            style={{ color: S.body_text_color }}
-            dangerouslySetInnerHTML={{ __html: facility.about }}
-          />
+          <RichTextRenderer html={facility.about} style={{ color: S.body_text_color }} />
         )}
       </div>
     ) : null,
