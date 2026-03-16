@@ -22,16 +22,37 @@ body {
 .ql-size-huge   { font-size: 2.5em  !important; }
 
 
-/* ---- Quill font classes ---- */
-.ql-font-arial           { font-family: Arial, sans-serif !important; }
-.ql-font-georgia         { font-family: Georgia, serif !important; }
-.ql-font-tahoma          { font-family: Tahoma, sans-serif !important; }
-.ql-font-verdana         { font-family: Verdana, sans-serif !important; }
-.ql-font-courier-new     { font-family: 'Courier New', monospace !important; }
-.ql-font-times-new-roman { font-family: 'Times New Roman', serif !important; }
-.ql-font-trebuchet-ms    { font-family: 'Trebuchet MS', sans-serif !important; }
-.ql-font-impact          { font-family: Impact, sans-serif !important; }
-.ql-font-comic-sans-ms   { font-family: 'Comic Sans MS', cursive !important; }
+/* ---- Quill font classes (must match RichTextEditor FONTS list) ---- */
+.ql-font-arial                  { font-family: Arial, sans-serif !important; }
+.ql-font-georgia                { font-family: Georgia, serif !important; }
+.ql-font-tahoma                 { font-family: Tahoma, sans-serif !important; }
+.ql-font-verdana                { font-family: Verdana, sans-serif !important; }
+.ql-font-courier-new            { font-family: 'Courier New', monospace !important; }
+.ql-font-times-new-roman        { font-family: 'Times New Roman', serif !important; }
+.ql-font-trebuchet-ms           { font-family: 'Trebuchet MS', sans-serif !important; }
+.ql-font-impact                 { font-family: Impact, sans-serif !important; }
+.ql-font-comic-sans-ms          { font-family: 'Comic Sans MS', cursive !important; }
+.ql-font-palatino-linotype      { font-family: 'Palatino Linotype', serif !important; }
+.ql-font-book-antiqua           { font-family: 'Book Antiqua', serif !important; }
+.ql-font-garamond               { font-family: Garamond, serif !important; }
+.ql-font-gill-sans              { font-family: 'Gill Sans', sans-serif !important; }
+.ql-font-helvetica              { font-family: Helvetica, sans-serif !important; }
+.ql-font-lucida-sans            { font-family: 'Lucida Sans', sans-serif !important; }
+.ql-font-optima                 { font-family: Optima, sans-serif !important; }
+.ql-font-futura                 { font-family: Futura, sans-serif !important; }
+.ql-font-baskerville            { font-family: Baskerville, serif !important; }
+.ql-font-cambria                { font-family: Cambria, serif !important; }
+.ql-font-candara                { font-family: Candara, sans-serif !important; }
+.ql-font-century-gothic         { font-family: 'Century Gothic', sans-serif !important; }
+.ql-font-consolas               { font-family: Consolas, monospace !important; }
+.ql-font-constantia             { font-family: Constantia, serif !important; }
+.ql-font-corbel                 { font-family: Corbel, sans-serif !important; }
+.ql-font-franklin-gothic-medium { font-family: 'Franklin Gothic Medium', sans-serif !important; }
+.ql-font-gill-sans-mt           { font-family: 'Gill Sans MT', sans-serif !important; }
+.ql-font-lucida-console         { font-family: 'Lucida Console', monospace !important; }
+.ql-font-microsoft-sans-serif   { font-family: 'Microsoft Sans Serif', sans-serif !important; }
+.ql-font-rockwell               { font-family: Rockwell, serif !important; }
+.ql-font-segoe-ui               { font-family: 'Segoe UI', sans-serif !important; }
 
 /* ---- Rich text content container ---- */
 /* Used by RichTextRenderer component everywhere Quill HTML is displayed */
