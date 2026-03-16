@@ -14,12 +14,14 @@ body {
 }
 
 /* ---- Quill size classes (emitted as <span class="ql-size-*">) ---- */
-/* These must beat quill.snow.css which also defines these — same specificity, so
-   since globals.css loads after the npm CSS, these win without !important,
-   but we add it for safety. */
-.ql-size-small  { font-size: 0.75em !important; }
-.ql-size-large  { font-size: 1.5em  !important; }
-.ql-size-huge   { font-size: 2.5em  !important; }
+/* Global rules — beat quill.snow.css which scopes these to .ql-snow */
+.ql-size-small { font-size: 0.75em !important; }
+.ql-size-large { font-size: 1.5em  !important; }
+.ql-size-huge  { font-size: 2.5em  !important; }
+/* Also scoped to .rich-text-content for extra specificity */
+.rich-text-content .ql-size-small { font-size: 0.75em !important; }
+.rich-text-content .ql-size-large { font-size: 1.5em  !important; }
+.rich-text-content .ql-size-huge  { font-size: 2.5em  !important; }
 
 
 /* ---- Quill font classes (must match RichTextEditor FONTS list) ---- */
