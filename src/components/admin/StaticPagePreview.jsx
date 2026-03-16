@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { MapPin, Phone } from "lucide-react";
+import RichTextRenderer from "@/components/shared/RichTextRenderer";
 
 function getVideoEmbed(url) {
   if (!url) return null;
