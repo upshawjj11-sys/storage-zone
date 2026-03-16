@@ -93,6 +93,63 @@ function BlockEditor({ block, onChange, onDelete }) {
             </div>
           </div>
         );
+      case "heading":
+        return (
+          <div className="space-y-3">
+            <div><Label>Heading Text</Label><Input value={data.text || ""} onChange={e => update("text", e.target.value)} /></div>
+            <div className="grid grid-cols-3 gap-3">
+              <div><Label>Level</Label>
+                <Select value={data.level || "h2"} onValueChange={v => update("level", v)}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="h1">H1 — Page Title</SelectItem>
+                    <SelectItem value="h2">H2 — Section</SelectItem>
+                    <SelectItem value="h3">H3 — Subheading</SelectItem>
+                    <SelectItem value="h4">H4 — Small Heading</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div><Label>Align</Label>
+                <Select value={data.align || "left"} onValueChange={v => update("align", v)}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="left">Left</SelectItem>
+                    <SelectItem value="center">Center</SelectItem>
+                    <SelectItem value="right">Right</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div><Label>Color</Label><Input type="color" value={data.color || "#111827"} onChange={e => update("color", e.target.value)} className="h-10 p-1" /></div>
+            </div>
+          </div>
+        );
+      case "divider":
+        return (
+          <div className="space-y-3">
+            <div><Label>Style</Label>
+              <Select value={data.style || "line"} onValueChange={v => update("style", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="line">Thin Line</SelectItem>
+                  <SelectItem value="thick">Thick Line</SelectItem>
+                  <SelectItem value="dashed">Dashed</SelectItem>
+                  <SelectItem value="dots">Dotted</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div><Label>Color</Label><Input type="color" value={data.color || "#E5E7EB"} onChange={e => update("color", e.target.value)} className="h-10 p-1" /></div>
+            <div><Label>Spacing</Label>
+              <Select value={data.margin || "my-8"} onValueChange={v => update("margin", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="my-4">Small</SelectItem>
+                  <SelectItem value="my-8">Medium</SelectItem>
+                  <SelectItem value="my-16">Large</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        );
       case "text":
         return (
           <div className="space-y-3">
