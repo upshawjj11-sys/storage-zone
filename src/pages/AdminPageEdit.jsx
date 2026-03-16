@@ -15,6 +15,7 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import RichTextEditor from "../components/admin/RichTextEditor";
 import StaticPagePreview from "../components/admin/StaticPagePreview";
 import ContactFormBlockEditor from "../components/admin/ContactFormBlockEditor";
+import LocationsGridBlockEditor from "../components/admin/LocationsGridBlockEditor";
 import { Columns } from "lucide-react";
 
 const BLOCK_TYPES = [
@@ -31,6 +32,7 @@ const BLOCK_TYPES = [
   { value: "testimonials", label: "Testimonials" },
   { value: "contact_form", label: "Contact Form" },
   { value: "embed", label: "Custom Embed / HTML" },
+  { value: "locations_grid", label: "Locations Grid" },
 ];
 
 function defaultBlockData(type) {
@@ -52,6 +54,7 @@ function defaultBlockData(type) {
     case "testimonials": return { title: "What Our Customers Say", items: [{ name: "Customer Name", text: "Great service!", rating: 5 }] };
     case "contact_form": return { form_id: "" };
     case "embed": return { code: "", height: "400px" };
+    case "locations_grid": return { title: "", facility_ids: [], cols: 3 };
     default: return {};
   }
 }
@@ -305,6 +308,8 @@ function BlockEditor({ block, onChange, onDelete }) {
         );
       case "contact_form":
         return <ContactFormBlockEditor data={data} update={update} />;
+      case "locations_grid":
+        return <LocationsGridBlockEditor data={data} update={update} />;
       case "embed":
         return (
           <div className="space-y-3">
