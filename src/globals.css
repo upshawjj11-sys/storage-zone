@@ -20,8 +20,7 @@ body {
 .ql-size-small  { font-size: 0.75em !important; }
 .ql-size-large  { font-size: 1.5em  !important; }
 .ql-size-huge   { font-size: 2.5em  !important; }
-/* Quill also uses data-value on selects and inline style="font-size:..." on spans in some configs */
-span[style*="font-size"] { font-size: inherit; } /* don't override inline styles */
+
 
 /* ---- Quill font classes ---- */
 .ql-font-arial           { font-family: Arial, sans-serif !important; }
