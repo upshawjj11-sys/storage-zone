@@ -59,6 +59,18 @@ const AuthenticatedApp = () => {
           }
         />
       ))}
+      {/* Facility slug routes: /locations/state/city/slug/ */}
+      <Route path="/locations/*" element={
+        <LayoutWrapper currentPageName="FacilityPage">
+          <FacilityPage />
+        </LayoutWrapper>
+      } />
+      {/* Public static pages by slug: /page/slug */}
+      <Route path="/page/:slug" element={
+        <LayoutWrapper currentPageName="PublicPage">
+          <PublicPage />
+        </LayoutWrapper>
+      } />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
