@@ -413,6 +413,14 @@ export default function Home() {
                 <div className={`text-${col.align || "left"}`}>
                   {col.heading && <h2 className="text-3xl font-bold mb-4" style={{ color: primaryColor }}>{col.heading}</h2>}
                   {col.content && <div className="prose prose-gray max-w-none text-gray-600"><ReactMarkdown>{col.content}</ReactMarkdown></div>}
+                  {col.btn_text && col.btn_link && (
+                    <a href={col.btn_link} className="inline-block mt-6">
+                      <button className="px-7 py-3 rounded-full font-semibold text-base transition hover:opacity-90 shadow"
+                        style={{ backgroundColor: col.btn_bg || secondaryColor, color: col.btn_text_color || "#ffffff" }}>
+                        {col.btn_text}
+                      </button>
+                    </a>
+                  )}
                 </div>
               );
           }
