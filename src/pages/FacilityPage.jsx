@@ -61,11 +61,26 @@ export default function FacilityPage() {
       if (slugFromPath) {
         // Load all and match: slug may be full path or just last segment or the facility id
         const all = await base44.entities.Facility.list();
+
+        // Helper: normalize a string for loose comparison
+        const norm = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+
+        // Extract city/state from path: /locations/[state]/[city]/[slug]/
+        const stateFromPath = pathParts[1] || "";
+        const cityFromPath  = pathParts[2] || "";
+
         return (
-          all.find((f) => f.slug === fullPathSlug) ||          // full path match e.g. "locations/fl/city/slug/"
-          all.find((f) => f.slug === fullPathSlug + "/") ||    // with trailing slash
-          all.find((f) => f.slug === slugFromPath) ||          // last segment match
-          all.find((f) => f.id === slugFromPath) ||            // id match
+          all.find((f) => f.slug === fullPathSlug) ||            // full path match e.g. "locations/fl/city/slug/"
+          all.find((f) => f.slug === fullPathSlug + "/") ||      // with trailing slash
+          all.find((f) => f.slug && f.slug === slugFromPath) ||  // last segment match
+          all.find((f) => f.id === slugFromPath) ||              // id match
+          // Match by city+state from URL path (handles facilities with no slug set)
+          all.find((f) =>
+            norm(f.city) === norm(cityFromPath) &&
+            norm(f.state) === norm(stateFromPath)
+          ) ||
+          // Match by slug segment against normalized facility name
+          all.find((f) => norm(f.name).includes(norm(slugFromPath)) || norm(slugFromPath).includes(norm(f.name).slice(0, 8))) ||
           null
         );
       }
