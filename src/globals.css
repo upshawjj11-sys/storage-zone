@@ -28,6 +28,11 @@ body {
   line-height: 1.75;
   color: inherit;
 }
+
+/* Quill size classes — needed for preview and live pages */
+.ql-size-small, .rich-text-content .ql-size-small { font-size: 0.75em !important; }
+.ql-size-large, .rich-text-content .ql-size-large { font-size: 1.5em !important; }
+.ql-size-huge,  .rich-text-content .ql-size-huge  { font-size: 2.5em !important; }
 .rich-text-content ul {
   list-style-type: disc !important;
   padding-left: 2rem !important;
