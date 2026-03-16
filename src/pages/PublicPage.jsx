@@ -456,6 +456,8 @@ function renderBlock(block, i) {
   const { type, data } = block;
   switch (type) {
     case "hero": return <HeroBlock key={i} data={data} />;
+    case "heading": return <HeadingBlock key={i} data={data} />;
+    case "divider": return <DividerBlock key={i} data={data} />;
     case "text": return <TextBlock key={i} data={data} />;
     case "image": return <ImageBlock key={i} data={data} />;
     case "two_column": return <TwoColumnBlock key={i} data={data} />;
