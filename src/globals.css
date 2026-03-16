@@ -63,41 +63,53 @@ body {
 }
 
 /* ---- Lists ---- */
-/* Unordered */
+/*
+  Quill v1 (react-quill) renders ALL list items as bare <li data-list="bullet|ordered">
+  inside a <ul> or <ol>. The bullet/number display relies on quill.snow.css ::before
+  pseudo-elements scoped to .ql-editor. Outside the editor we must replicate those rules
+  under .rich-text-content so the public page and previews look correct.
+*/
+
+/* Give the list containers proper spacing */
 .rich-text-content ul,
-.ql-editor ul {
+.rich-text-content ol {
+  padding-left: 1.5em  !important;
+  margin-top: 0.5rem   !important;
+  margin-bottom: 0.5rem !important;
+  list-style: none     !important; /* Quill uses ::before, not native list-style */
+}
+
+/* Bullet list items — replicate Quill snow ::before */
+.rich-text-content ul > li,
+.rich-text-content li[data-list="bullet"] {
+  display: list-item   !important;
   list-style-type: disc !important;
-  padding-left: 2rem !important;
-  margin-top: 0.75rem !important;
-  margin-bottom: 0.75rem !important;
+  margin: 0.15rem 0    !important;
 }
 
-/* Ordered */
-.rich-text-content ol,
-.ql-editor ol {
+/* Ordered list items */
+.rich-text-content ol > li,
+.rich-text-content li[data-list="ordered"] {
+  display: list-item      !important;
   list-style-type: decimal !important;
-  padding-left: 2rem !important;
-  margin-top: 0.75rem !important;
-  margin-bottom: 0.75rem !important;
+  margin: 0.15rem 0       !important;
 }
 
-/* List items — override Tailwind's reset which sets display:block and list-style:none */
-.rich-text-content ul li,
-.rich-text-content ol li,
-.ql-editor ul li,
-.ql-editor ol li {
-  display: list-item !important;
-  list-style: inherit   !important;
-  margin: 0.2rem 0      !important;
-}
+/* Fallback for plain <ul>/<ol> (non-Quill HTML) */
+.rich-text-content ul { list-style-type: disc    !important; }
+.rich-text-content ol { list-style-type: decimal !important; }
 
-/* Quill wraps list items in a <li class="ql-indent-N"> for nesting */
-.rich-text-content .ql-indent-1,
-.ql-editor .ql-indent-1 { padding-left: 1.5em !important; }
-.rich-text-content .ql-indent-2,
-.ql-editor .ql-indent-2 { padding-left: 3em   !important; }
-.rich-text-content .ql-indent-3,
-.ql-editor .ql-indent-3 { padding-left: 4.5em !important; }
+/* Indentation for nested lists */
+.rich-text-content .ql-indent-1 { padding-left: 3em   !important; }
+.rich-text-content .ql-indent-2 { padding-left: 6em   !important; }
+.rich-text-content .ql-indent-3 { padding-left: 9em   !important; }
+.rich-text-content .ql-indent-4 { padding-left: 12em  !important; }
+
+/* Same fixes for ql-editor when used in read-only / preview mode */
+.ql-editor ul > li,
+.ql-editor li[data-list="bullet"]  { list-style-type: disc    !important; display: list-item !important; }
+.ql-editor ol > li,
+.ql-editor li[data-list="ordered"] { list-style-type: decimal !important; display: list-item !important; }
 
 /* ============================================================
    Shadcn / Tailwind CSS variable tokens
