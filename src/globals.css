@@ -13,15 +13,10 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* ---- Quill size classes (emitted as <span class="ql-size-*">) ---- */
-/* Global rules — beat quill.snow.css which scopes these to .ql-snow */
-.ql-size-small { font-size: 0.75em !important; }
-.ql-size-large { font-size: 1.5em  !important; }
-.ql-size-huge  { font-size: 2.5em  !important; }
-/* Also scoped to .rich-text-content for extra specificity */
-.rich-text-content .ql-size-small { font-size: 0.75em !important; }
-.rich-text-content .ql-size-large { font-size: 1.5em  !important; }
-.rich-text-content .ql-size-huge  { font-size: 2.5em  !important; }
+/* ---- Quill size classes (emitted as <span class="ql-size-*"> or on any inline element) ---- */
+.ql-size-small, .rich-text-content .ql-size-small, .rich-text-content * .ql-size-small { font-size: 0.75em !important; }
+.ql-size-large, .rich-text-content .ql-size-large, .rich-text-content * .ql-size-large { font-size: 1.5em  !important; }
+.ql-size-huge,  .rich-text-content .ql-size-huge,  .rich-text-content * .ql-size-huge  { font-size: 2.5em  !important; }
 
 
 /* ---- Quill font classes (must match RichTextEditor FONTS list) ---- */
