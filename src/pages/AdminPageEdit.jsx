@@ -40,6 +40,8 @@ const BLOCK_TYPES = [
 function defaultBlockData(type) {
   switch (type) {
     case "hero": return { title: "Page Title", subtitle: "Subtitle text here", bg_color: "#1B365D", title_color: "#ffffff", subtitle_color: "#e2e8f0", padding_y: "py-20", image: "" };
+    case "heading": return { text: "Section Heading", level: "h2", align: "left", color: "#111827" };
+    case "divider": return { style: "line", color: "#E5E7EB", margin: "my-8" };
     case "text": return { content: "<p>Enter your content here...</p>", align: "left" };
     case "image": return { url: "", alt: "", caption: "", width: "full" };
     case "two_column": return {
