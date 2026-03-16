@@ -404,7 +404,22 @@ function ColumnContentEditor({ type, data, onChange }) {
   const update = (field, val) => onChange({ ...data, [field]: val });
   switch (type) {
     case "text":
-      return <RichTextEditor value={data.content || ""} onChange={v => onChange({ ...data, content: v })} />;
+      return (
+        <div className="space-y-3">
+          <RichTextEditor value={data.content || ""} onChange={v => onChange({ ...data, content: v })} />
+          <div className="border-t pt-3 space-y-2">
+            <p className="text-xs font-semibold text-gray-600">CTA Button (optional)</p>
+            <div className="grid grid-cols-2 gap-2">
+              <div><Label className="text-xs">Button Text</Label><Input value={data.btn_text || ""} onChange={e => update("btn_text", e.target.value)} placeholder="Learn More" /></div>
+              <div><Label className="text-xs">Button Link</Label><Input value={data.btn_link || ""} onChange={e => update("btn_link", e.target.value)} placeholder="/page/example" /></div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex items-center gap-2"><Label className="text-xs whitespace-nowrap">Button BG</Label><Input type="color" value={data.btn_bg || "#E8792F"} onChange={e => update("btn_bg", e.target.value)} className="h-8 p-0.5 w-12" /></div>
+              <div className="flex items-center gap-2"><Label className="text-xs whitespace-nowrap">Text Color</Label><Input type="color" value={data.btn_text_color || "#ffffff"} onChange={e => update("btn_text_color", e.target.value)} className="h-8 p-0.5 w-12" /></div>
+            </div>
+          </div>
+        </div>
+      );
     case "image":
       return (
         <div className="space-y-2">
