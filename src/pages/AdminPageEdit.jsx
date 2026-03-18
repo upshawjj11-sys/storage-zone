@@ -370,6 +370,43 @@ function BlockEditor({ block, onChange, onDelete }) {
             </div>
           </div>
         );
+      case "large_features_grid":
+        return (
+          <div className="space-y-3">
+            <div><Label>Section Title</Label><Input value={data.title || ""} onChange={e => update("title", e.target.value)} /></div>
+            <div><Label>Subtitle</Label><Input value={data.subtitle || ""} onChange={e => update("subtitle", e.target.value)} /></div>
+            <div className="grid grid-cols-3 gap-3">
+              <div><Label>Columns</Label>
+                <Select value={String(data.cols || 3)} onValueChange={v => update("cols", Number(v))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4">4</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div><Label>Background</Label><Input type="color" value={data.bg_color || "#f8fafc"} onChange={e => update("bg_color", e.target.value)} className="h-10 p-1" /></div>
+              <div><Label>Accent Color</Label><Input type="color" value={data.accent_color || "#E8792F"} onChange={e => update("accent_color", e.target.value)} className="h-10 p-1" /></div>
+            </div>
+            <div>
+              <Label>Items</Label>
+              <div className="space-y-2 mt-2">
+                {(data.items || []).map((item, i) => (
+                  <div key={i} className="p-3 bg-gray-50 rounded-lg space-y-2">
+                    <div className="flex items-end gap-2">
+                      <div className="flex-1"><Label className="text-xs">Icon</Label><IconPicker value={item.icon || ""} onChange={v => { const items = [...data.items]; items[i] = { ...item, icon: v }; update("items", items); }} /></div>
+                      <Button size="icon" variant="ghost" className="text-red-400 mb-0.5" onClick={() => update("items", data.items.filter((_, idx) => idx !== i))}><Trash2 className="w-3 h-3" /></Button>
+                    </div>
+                    <Input placeholder="Title" value={item.title || ""} onChange={e => { const items = [...data.items]; items[i] = { ...item, title: e.target.value }; update("items", items); }} />
+                    <Input placeholder="Description" value={item.description || ""} onChange={e => { const items = [...data.items]; items[i] = { ...item, description: e.target.value }; update("items", items); }} />
+                  </div>
+                ))}
+                <Button size="sm" variant="outline" onClick={() => update("items", [...(data.items || []), { icon: "Shield", title: "", description: "" }])}><Plus className="w-3 h-3 mr-1" />Add Item</Button>
+              </div>
+            </div>
+          </div>
+        );
       case "contact_form":
         return <ContactFormBlockEditor data={data} update={update} />;
       case "locations_grid":
