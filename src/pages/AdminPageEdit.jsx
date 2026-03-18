@@ -17,6 +17,7 @@ import StaticPagePreview from "../components/admin/StaticPagePreview";
 import ContactFormBlockEditor from "../components/admin/ContactFormBlockEditor";
 import LocationsGridBlockEditor from "../components/admin/LocationsGridBlockEditor";
 import { Columns } from "lucide-react";
+import IconPicker from "../components/admin/IconPicker";
 
 const BLOCK_TYPES = [
   { value: "hero", label: "Hero Banner" },
@@ -35,6 +36,7 @@ const BLOCK_TYPES = [
   { value: "contact_form", label: "Contact Form" },
   { value: "embed", label: "Custom Embed / HTML" },
   { value: "locations_grid", label: "Locations Grid" },
+  { value: "large_features_grid", label: "Large Feature Grid (with icons)" },
 ];
 
 function defaultBlockData(type) {
@@ -59,6 +61,7 @@ function defaultBlockData(type) {
     case "contact_form": return { form_id: "" };
     case "embed": return { code: "", height: "400px" };
     case "locations_grid": return { title: "", facility_ids: [], cols: 3 };
+    case "large_features_grid": return { title: "", subtitle: "", cols: 3, bg_color: "#f8fafc", primary_color: "#1B365D", accent_color: "#E8792F", items: [{ icon: "Shield", title: "Feature 1", description: "Description here" }] };
     default: return {};
   }
 }
