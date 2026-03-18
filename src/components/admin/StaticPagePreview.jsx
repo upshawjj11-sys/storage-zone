@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { MapPin, Phone } from "lucide-react";
+import DynamicIcon from "@/components/home/DynamicIcon";
 import RichTextRenderer from "@/components/shared/RichTextRenderer";
 
 function getVideoEmbed(url) {
@@ -313,6 +314,30 @@ function ContactFormBlock({ data }) {
   );
 }
 
+function LargeFeaturesGridBlock({ data }) {
+  const colClass = { 2: "grid-cols-2", 3: "grid-cols-2 lg:grid-cols-3", 4: "grid-cols-2 lg:grid-cols-4" }[data.cols || 3] || "grid-cols-2 lg:grid-cols-3";
+  const accent = data.accent_color || "#E8792F";
+  return (
+    <div className="py-12" style={{ backgroundColor: data.bg_color || "#f8fafc" }}>
+      <div className="max-w-6xl mx-auto px-6">
+        {data.title && <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">{data.title}</h2>}
+        {data.subtitle && <p className="text-center text-gray-500 mb-8 text-sm">{data.subtitle}</p>}
+        <div className={`grid ${colClass} gap-6`}>
+          {(data.items || []).map((item, i) => (
+            <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: `${accent}15`, color: accent }}>
+                <DynamicIcon name={item.icon || "Shield"} className="w-6 h-6" />
+              </div>
+              {item.title && <h3 className="text-base font-bold mb-1 text-gray-900">{item.title}</h3>}
+              {item.description && <p className="text-gray-500 text-xs leading-relaxed">{item.description}</p>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function LocationsGridBlock({ data }) {
   const [facilities, setFacilities] = useState([]);
 
@@ -411,6 +436,7 @@ function renderBlock(block, i) {
     case "contact_form": return <ContactFormBlock key={i} data={data} />;
     case "embed": return <EmbedBlock key={i} data={data} />;
     case "locations_grid": return <LocationsGridBlock key={i} data={data} />;
+    case "large_features_grid": return <LargeFeaturesGridBlock key={i} data={data} />;
     default: return null;
   }
 }

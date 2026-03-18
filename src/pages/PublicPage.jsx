@@ -4,6 +4,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { MapPin, Phone } from "lucide-react";
 import RichTextRenderer from "@/components/shared/RichTextRenderer";
+import DynamicIcon from "@/components/home/DynamicIcon";
 
 function getVideoEmbed(url) {
   if (!url) return null;
@@ -396,6 +397,30 @@ function EmbedBlock({ data }) {
   );
 }
 
+function LargeFeaturesGridBlock({ data }) {
+  const colClass = { 2: "grid-cols-1 sm:grid-cols-2", 3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3", 4: "grid-cols-2 lg:grid-cols-4" }[data.cols || 3] || "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+  const accent = data.accent_color || "#E8792F";
+  return (
+    <div className="py-16" style={{ backgroundColor: data.bg_color || "#f8fafc" }}>
+      <div className="max-w-6xl mx-auto px-6">
+        {data.title && <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">{data.title}</h2>}
+        {data.subtitle && <p className="text-center text-gray-500 mb-10">{data.subtitle}</p>}
+        <div className={`grid ${colClass} gap-8`}>
+          {(data.items || []).map((item, i) => (
+            <div key={i} className="bg-white rounded-2xl p-8 hover:shadow-xl transition-all border border-gray-100 group">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform" style={{ background: `${accent}15`, color: accent }}>
+                <DynamicIcon name={item.icon || "Shield"} className="w-7 h-7" />
+              </div>
+              {item.title && <h3 className="text-lg font-bold mb-2 text-gray-900">{item.title}</h3>}
+              {item.description && <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function LocationsGridBlock({ data }) {
   const [facilities, setFacilities] = useState([]);
 
@@ -483,6 +508,7 @@ function renderBlock(block, i) {
     case "contact_form": return <ContactFormBlock key={i} data={data} />;
     case "embed": return <EmbedBlock key={i} data={data} />;
     case "locations_grid": return <LocationsGridBlock key={i} data={data} />;
+    case "large_features_grid": return <LargeFeaturesGridBlock key={i} data={data} />;
     default: return null;
   }
 }
