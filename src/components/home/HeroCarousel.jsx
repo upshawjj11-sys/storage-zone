@@ -96,6 +96,15 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
                   }
                   .pillars-scroll-track { animation: pillars-scroll 12s linear infinite; }
                 `}</style>
+                {/* Info button — floats above the pillars row, top-right of the panel */}
+                {pillarsShowInfo && (
+                  <a href={pillarsInfoLink} target="_blank" rel="noopener noreferrer"
+                    className="absolute -top-4 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center hover:opacity-80 transition shadow-md"
+                    style={{ background: "rgba(30,30,30,0.9)", color: "#ffffff", border: "2px solid rgba(255,255,255,0.4)" }}
+                    title="More Info">
+                    <Info className="w-4 h-4" />
+                  </a>
+                )}
                 {/* Mobile: auto-scrolling ticker */}
                 <div className="sm:hidden border-b border-white/10 overflow-hidden">
                   <div className="flex pillars-scroll-track w-max">
@@ -108,7 +117,7 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
                   </div>
                 </div>
                 {/* Desktop: equal grid */}
-                <div className="hidden sm:flex border-b border-white/10 relative">
+                <div className="hidden sm:flex border-b border-white/10">
                   <div
                     className="grid flex-1 divide-x divide-white/10"
                     style={{ gridTemplateColumns: `repeat(${Math.min(pillars.length, 5)}, 1fr)` }}
@@ -121,13 +130,6 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
                       </div>
                     ))}
                   </div>
-                  {pillarsShowInfo && (
-                    <a href={pillarsInfoLink} target="_blank" rel="noopener noreferrer"
-                      className="absolute top-1/2 -translate-y-1/2 right-3 inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-full hover:opacity-80 transition"
-                      style={{ background: "rgba(255,255,255,0.15)", color: "#ffffff" }}>
-                      <Info className="w-3.5 h-3.5" /> Info
-                    </a>
-                  )}
                 </div>
               </>
             )}
