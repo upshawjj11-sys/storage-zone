@@ -269,7 +269,7 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                 <Textarea placeholder="Review text" value={item.text || ""} onChange={(e) => updateItem(data.items, i, "text", e.target.value)} rows={2} />
                 <div className="flex items-center gap-4">
                   <div><Label className="text-xs">Rating (1–5)</Label><Input type="number" min={1} max={5} value={item.rating || 5} onChange={(e) => updateItem(data.items, i, "rating", parseInt(e.target.value))} className="w-16" /></div>
-                  <div className="flex items-center gap-2 mt-4"><Label className="text-xs">Avatar Color</Label><input type="color" value={item.avatar_color || "#1B365D"} onChange={(e) => updateItem(data.items, i, "avatar_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" /></div>
+                  <div className="mt-4"><Label className="text-xs mb-1 block">Avatar Color</Label><BrandedColorPicker value={item.avatar_color || "#1B365D"} onChange={(v) => updateItem(data.items, i, "avatar_color", v)} /></div>
                   <div className="ml-auto mt-4"><Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem(i)}><Trash2 className="w-3 h-3" /></Button></div>
                 </div>
               </div>
