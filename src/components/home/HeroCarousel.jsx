@@ -88,7 +88,7 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
 
             {/* Pillars row */}
             {pillars.length > 0 && (
-              <>
+              <div className="relative">
                 <style>{`
                   @keyframes pillars-scroll {
                     0% { transform: translateX(0); }
