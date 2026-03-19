@@ -523,9 +523,9 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Label className="text-xs whitespace-nowrap">Text Color</Label>
-                      <input type="color" value={data.disclaimer?.color || "#6b7280"} onChange={(e) => updateData("disclaimer", { ...(data.disclaimer||{}), color: e.target.value })} className="h-7 w-10 p-0.5 rounded border" />
+                    <div>
+                      <Label className="text-xs mb-1 block">Text Color</Label>
+                      <BrandedColorPicker value={data.disclaimer?.color || "#6b7280"} onChange={(v) => updateData("disclaimer", { ...(data.disclaimer||{}), color: v })} />
                     </div>
                   </div>
                   <div>
