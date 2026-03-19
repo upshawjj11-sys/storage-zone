@@ -657,19 +657,7 @@ export default function AdminFacilityEdit() {
                                          </div>
                                        </div>
                                      </div>
-                                     {/* Info Button toggle + link */}
-                                     <div className="border-t pt-3 space-y-2">
-                                       <div className="flex items-center justify-between">
-                                         <Label className="text-xs font-semibold">Info Button</Label>
-                                         <Switch checked={!!p.show_link_button} onCheckedChange={(v) => updatePillar({ show_link_button: v })} />
-                                       </div>
-                                       {p.show_link_button && (
-                                         <div>
-                                           <Label className="text-xs">Button Link URL</Label>
-                                           <Input className="mt-1 h-8 text-sm" value={p.link || ""} placeholder="https://example.com/more-info" onChange={(e) => updatePillar({ link: e.target.value })} />
-                                         </div>
-                                       )}
-                                     </div>
+
                                   </div>
                                 )}
                               </Draggable>
