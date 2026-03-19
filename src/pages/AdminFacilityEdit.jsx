@@ -784,6 +784,41 @@ export default function AdminFacilityEdit() {
                       <Label>{unit.available !== false ? "Available" : "Occupied / Unavailable"}</Label>
                     </div>
 
+                    {/* Business Center only: open/closed status + more info page */}
+                    {isBC && (
+                      <div className="border rounded-xl p-4 bg-blue-50 space-y-3">
+                        <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide">Business Center Options</p>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-gray-800">Show Open / Closed Status</p>
+                            <p className="text-xs text-gray-500">Display an open/closed badge on this unit's card</p>
+                          </div>
+                          <Switch checked={!!unit.show_is_open} onCheckedChange={(v) => updateUnit("show_is_open", v)} />
+                        </div>
+                        {unit.show_is_open && (
+                          <div className="flex items-center justify-between pl-4 border-l-2 border-blue-200">
+                            <div>
+                              <p className="text-sm font-medium text-gray-700">Currently Open?</p>
+                              <p className="text-xs text-gray-400">Toggle whether this space is open right now</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className={`text-xs font-semibold ${unit.is_open ? "text-green-600" : "text-red-500"}`}>
+                                {unit.is_open ? "Open" : "Closed"}
+                              </span>
+                              <Switch checked={!!unit.is_open} onCheckedChange={(v) => updateUnit("is_open", v)} />
+                            </div>
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-gray-800">Enable "More Info" Button</p>
+                            <p className="text-xs text-gray-500">Shows a button linking to a dedicated unit detail page</p>
+                          </div>
+                          <Switch checked={!!unit.show_more_info} onCheckedChange={(v) => updateUnit("show_more_info", v)} />
+                        </div>
+                      </div>
+                    )}
+
                     {/* Unit features */}
                     <div>
                       <Label className="mb-2 block">Unit Features <span className="text-xs font-normal text-gray-400">(e.g. Power, Private Restroom, Side Door, Private Office)</span></Label>
