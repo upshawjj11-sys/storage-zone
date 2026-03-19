@@ -113,7 +113,7 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                               </div>
                               <Button size="sm" variant="ghost" className="text-red-500 flex-shrink-0 mt-4" onClick={() => removeItem(i)}><Trash2 className="w-3 h-3" /></Button>
                             </div>
-                            <div className="flex gap-3 pl-7">
+                            <div className="flex gap-3 pl-7 flex-wrap">
                               <div className="flex items-center gap-2">
                                 <Label className="text-xs">Icon Color</Label>
                                 <input type="color" value={item.icon_color || "#E8792F"} onChange={(e) => updateItem(data.items, i, "icon_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
@@ -122,7 +122,17 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                                 <Label className="text-xs">Text Color</Label>
                                 <input type="color" value={item.text_color || "#ffffff"} onChange={(e) => updateItem(data.items, i, "text_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
                               </div>
+                              <div className="flex items-center gap-2 ml-auto">
+                                <Label className="text-xs">Info Button</Label>
+                                <Switch checked={!!item.show_link_button} onCheckedChange={(v) => updateItem(data.items, i, "show_link_button", v)} />
+                              </div>
                             </div>
+                            {item.show_link_button && (
+                              <div className="pl-7">
+                                <Label className="text-xs">Button Link URL</Label>
+                                <Input className="mt-1" placeholder="https://example.com/more-info" value={item.link || ""} onChange={(e) => updateItem(data.items, i, "link", e.target.value)} />
+                              </div>
+                            )}
                           </div>
                         )}
                       </Draggable>
