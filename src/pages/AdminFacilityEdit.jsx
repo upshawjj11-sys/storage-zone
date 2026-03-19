@@ -22,7 +22,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FacilityPreview from "../components/admin/FacilityPreview";
 import RichTextEditor from "../components/admin/RichTextEditor";
 import AdminUnitEditor from "../components/admin/AdminUnitEditor";
-// v2
 
 const defaultHours = [
   { day: "Monday", open: "9:00 AM", close: "6:00 PM", closed: false },
