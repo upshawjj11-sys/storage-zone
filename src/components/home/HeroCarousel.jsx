@@ -108,17 +108,26 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
                   </div>
                 </div>
                 {/* Desktop: equal grid */}
-                <div
-                  className="hidden sm:grid border-b border-white/10 divide-x divide-white/10"
-                  style={{ gridTemplateColumns: `repeat(${Math.min(pillars.length, 5)}, 1fr)` }}
-                >
-                  {pillars.slice(0, 5).map((item, i) => (
-                    <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-3 py-3 text-center">
-                      <DynamicIcon name={item.icon} className="w-6 h-6" style={{ color: item.icon_color || secondaryColor }} />
-                      <span className="text-xs font-semibold leading-tight" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
-                      {item.label && <span className="text-white/50 text-xs">{item.label}</span>}
-                    </div>
-                  ))}
+                <div className="hidden sm:flex border-b border-white/10 relative">
+                  <div
+                    className="grid flex-1 divide-x divide-white/10"
+                    style={{ gridTemplateColumns: `repeat(${Math.min(pillars.length, 5)}, 1fr)` }}
+                  >
+                    {pillars.slice(0, 5).map((item, i) => (
+                      <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-3 py-3 text-center">
+                        <DynamicIcon name={item.icon} className="w-6 h-6" style={{ color: item.icon_color || secondaryColor }} />
+                        <span className="text-xs font-semibold leading-tight" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
+                        {item.label && <span className="text-white/50 text-xs">{item.label}</span>}
+                      </div>
+                    ))}
+                  </div>
+                  {pillarsShowInfo && (
+                    <a href={pillarsInfoLink} target="_blank" rel="noopener noreferrer"
+                      className="absolute top-1/2 -translate-y-1/2 right-3 inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-full hover:opacity-80 transition"
+                      style={{ background: "rgba(255,255,255,0.15)", color: "#ffffff" }}>
+                      <Info className="w-3.5 h-3.5" /> Info
+                    </a>
+                  )}
                 </div>
               </>
             )}
