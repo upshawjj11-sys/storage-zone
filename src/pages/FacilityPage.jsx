@@ -462,10 +462,11 @@ export default function FacilityPage() {
               href={facility.pillars_info_link}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute top-1/2 -translate-y-1/2 right-4 z-10 inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full hover:opacity-80 transition"
-              style={{ background: "rgba(255,255,255,0.15)", color: "#ffffff" }}
+              className="absolute -top-4 right-4 z-10 w-8 h-8 rounded-full flex items-center justify-center hover:opacity-80 transition shadow-md"
+              style={{ background: facility.pillars_bg_color || "#1B365D", color: "#ffffff", border: "2px solid rgba(255,255,255,0.4)" }}
+              title="More Info"
             >
-              <Info className="w-3.5 h-3.5" /> Info
+              <Info className="w-4 h-4" />
             </a>
           )}
           <div
