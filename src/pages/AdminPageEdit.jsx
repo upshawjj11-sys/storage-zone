@@ -4,6 +4,7 @@ import { createPageUrl } from "@/utils";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { ArrowLeft, Plus, Trash2, GripVertical, Eye, Save } from "lucide-react";
+import BrandedColorPicker from "../components/admin/BrandedColorPicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
