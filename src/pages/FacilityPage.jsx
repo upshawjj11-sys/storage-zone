@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import RichTextRenderer from "@/components/shared/RichTextRenderer";
-import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, ChevronLeft, ChevronRight, Building2, Warehouse, Facebook, Instagram, Youtube, Twitter, Music } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, ChevronLeft, ChevronRight, Building2, Warehouse, Facebook, Instagram, Youtube, Twitter, Music, Info } from "lucide-react";
 import DynamicIcon from "../components/home/DynamicIcon";
 import { Badge } from "@/components/ui/badge";
 import ImageSlider from "../components/shared/ImageSlider";
