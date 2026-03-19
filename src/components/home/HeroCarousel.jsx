@@ -83,7 +83,16 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
         </div>
 
         {/* Pillars + Search Panel */}
-        <div className="w-full max-w-3xl">
+        <div className="w-full max-w-3xl relative">
+          {/* Info button — outside overflow-hidden container so it's never clipped */}
+          {pillarsShowInfo && pillars.length > 0 && (
+            <a href={pillarsInfoLink} target="_blank" rel="noopener noreferrer"
+              className="absolute -top-3 right-0 z-30 w-6 h-6 rounded-full flex items-center justify-center hover:opacity-80 transition shadow-md"
+              style={{ background: "rgba(30,30,30,0.9)", color: "#ffffff", border: "2px solid rgba(255,255,255,0.4)" }}
+              title="More Info">
+              <Info className="w-3 h-3" />
+            </a>
+          )}
           <div className="rounded-xl overflow-hidden shadow-2xl" style={{ background: "rgba(30,30,30,0.82)", backdropFilter: "blur(6px)" }}>
 
             {/* Pillars row */}
@@ -96,15 +105,6 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
                   }
                   .pillars-scroll-track { animation: pillars-scroll 12s linear infinite; }
                 `}</style>
-                {/* Info button — floats above the pillars row, top-right of the panel */}
-                {pillarsShowInfo && (
-                  <a href={pillarsInfoLink} target="_blank" rel="noopener noreferrer"
-                    className="absolute -top-4 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center hover:opacity-80 transition shadow-md"
-                    style={{ background: "rgba(30,30,30,0.9)", color: "#ffffff", border: "2px solid rgba(255,255,255,0.4)" }}
-                    title="More Info">
-                    <Info className="w-4 h-4" />
-                  </a>
-                )}
                 {/* Mobile: auto-scrolling ticker */}
                 <div className="sm:hidden border-b border-white/10 overflow-hidden">
                   <div className="flex pillars-scroll-track w-max">
