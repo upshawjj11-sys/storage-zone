@@ -286,20 +286,14 @@ export default function AdminFacilityEdit() {
                         onChange={(e) => update("notice_bar", { ...form.notice_bar, text: e.target.value })}
                       />
                     </div>
-                    <div className="flex flex-wrap gap-4 items-end">
+                    <div className="flex flex-wrap gap-6 items-end">
                       <div>
-                        <Label className="text-xs">Background Color</Label>
-                        <div className="flex items-center gap-1.5 mt-1">
-                          <input type="color" value={form.notice_bar?.bg_color || "#E8792F"} onChange={(e) => update("notice_bar", { ...form.notice_bar, bg_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
-                          <Input className="w-24 h-8 text-xs font-mono" value={form.notice_bar?.bg_color || "#E8792F"} onChange={(e) => update("notice_bar", { ...form.notice_bar, bg_color: e.target.value })} />
-                        </div>
+                        <Label className="text-xs mb-1 block">Background Color</Label>
+                        <BrandedColorPicker value={form.notice_bar?.bg_color || "#E8792F"} onChange={(v) => update("notice_bar", { ...form.notice_bar, bg_color: v })} />
                       </div>
                       <div>
-                        <Label className="text-xs">Text Color</Label>
-                        <div className="flex items-center gap-1.5 mt-1">
-                          <input type="color" value={form.notice_bar?.text_color || "#ffffff"} onChange={(e) => update("notice_bar", { ...form.notice_bar, text_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
-                          <Input className="w-24 h-8 text-xs font-mono" value={form.notice_bar?.text_color || "#ffffff"} onChange={(e) => update("notice_bar", { ...form.notice_bar, text_color: e.target.value })} />
-                        </div>
+                        <Label className="text-xs mb-1 block">Text Color</Label>
+                        <BrandedColorPicker value={form.notice_bar?.text_color || "#ffffff"} onChange={(v) => update("notice_bar", { ...form.notice_bar, text_color: v })} />
                       </div>
                       <div className="flex gap-3">
                         <button
