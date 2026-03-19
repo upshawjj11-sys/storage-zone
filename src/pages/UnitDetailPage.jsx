@@ -120,9 +120,11 @@ export default function UnitDetailPage() {
                 Starting at ${unit.price.toLocaleString()}/mo
               </span>
             )}
-            <Badge className={unit.available !== false ? "bg-green-100 text-green-700 border-0" : "bg-gray-100 text-gray-500 border-0"}>
-              {unit.available !== false ? "Available" : "Occupied"}
-            </Badge>
+            {facility?.facility_type !== "business_center" && (
+              <Badge className={unit.available !== false ? "bg-green-100 text-green-700 border-0" : "bg-gray-100 text-gray-500 border-0"}>
+                {unit.available !== false ? "Available" : "Occupied"}
+              </Badge>
+            )}
           </div>
         </div>
 
