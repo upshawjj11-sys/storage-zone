@@ -193,9 +193,8 @@ export default function AdminPageConfigs() {
                 </div>
                 <div>
                   <Label>Title Color</Label>
-                  <div className="flex items-center gap-2 mt-1">
-                    <input type="color" value={pmb.hero_title_color || "#ffffff"} onChange={(e) => updatePmb("hero_title_color", e.target.value)} className="h-9 w-12 p-0.5 rounded border cursor-pointer" />
-                    <Input value={pmb.hero_title_color || ""} onChange={(e) => updatePmb("hero_title_color", e.target.value)} />
+                  <div className="mt-1">
+                    <BrandedColorPicker value={pmb.hero_title_color || "#ffffff"} onChange={(v) => updatePmb("hero_title_color", v)} />
                   </div>
                 </div>
               </div>
