@@ -144,7 +144,15 @@ export default function FacilityPage() {
     setSubmitted(true);
   };
 
-  if (isLoading) return <div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-[#1B365D] border-t-transparent rounded-full animate-spin" /></div>;
+  // Use cached page_bg so there's no flash of the wrong background while loading
+  const cacheKey = `fp_bg_${facilityIdParam || slugFromPath || "default"}`;
+  const cachedBg = typeof window !== "undefined" ? localStorage.getItem(cacheKey) : null;
+
+  if (isLoading) return (
+    <div className="min-h-screen flex items-center justify-center" style={{ background: cachedBg || "#ffffff" }}>
+      <div className="w-10 h-10 border-4 border-[#1B365D] border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
   if (!facility) return <div className="min-h-screen flex items-center justify-center"><p className="text-gray-500">Facility not found.</p></div>;
 
   // Resolve page styles with defaults
