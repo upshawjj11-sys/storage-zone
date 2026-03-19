@@ -288,9 +288,9 @@ function BlockEditor({ block, onChange, onDelete }) {
               <div><Label>Button Text</Label><Input value={data.button_text || ""} onChange={e => update("button_text", e.target.value)} /></div>
               <div><Label>Button Link</Label><Input value={data.button_link || ""} onChange={e => update("button_link", e.target.value)} /></div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div><Label>Background Color</Label><Input type="color" value={data.bg_color || "#E8792F"} onChange={e => update("bg_color", e.target.value)} className="h-10 p-1" /></div>
-              <div><Label>Text Color</Label><Input type="color" value={data.text_color || "#ffffff"} onChange={e => update("text_color", e.target.value)} className="h-10 p-1" /></div>
+            <div className="flex flex-wrap gap-4">
+              <div><Label className="mb-1 block">Background Color</Label><BrandedColorPicker value={data.bg_color || "#E8792F"} onChange={v => update("bg_color", v)} /></div>
+              <div><Label className="mb-1 block">Text Color</Label><BrandedColorPicker value={data.text_color || "#ffffff"} onChange={v => update("text_color", v)} /></div>
             </div>
           </div>
         );
