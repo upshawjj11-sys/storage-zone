@@ -99,6 +99,13 @@ export default function Home() {
                      <DynamicIcon name={item.icon} className="w-5 h-5" style={{ color: item.icon_color || secondaryColor }} />
                    </div>
                    <span className="font-semibold text-sm leading-tight" style={{ color: item.text_color || undefined }}>{item.text}</span>
+                   {item.show_link_button && item.link && (
+                     <a href={item.link} target="_blank" rel="noopener noreferrer"
+                       className="ml-auto inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full hover:opacity-80 transition flex-shrink-0"
+                       style={{ background: "rgba(255,255,255,0.15)", color: item.text_color || "#ffffff" }}>
+                       <Info className="w-3 h-3" /> Info
+                     </a>
+                   )}
                  </div>
                ))}
               </div>
@@ -116,11 +123,18 @@ export default function Home() {
               )}
               <div className={`grid ${colClass} gap-6`}>
                {items.map((item, i) => (
-                 <div key={i} className="bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm hover:shadow-md transition">
+                 <div key={i} className="bg-white rounded-2xl p-6 text-center border border-gray-100 shadow-sm hover:shadow-md transition relative">
                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: `${item.icon_color || secondaryColor}15` }}>
                      <DynamicIcon name={item.icon} className="w-7 h-7" style={{ color: item.icon_color || secondaryColor }} />
                    </div>
                    <p className="font-semibold" style={{ color: item.text_color || "#1f2937" }}>{item.text}</p>
+                   {item.show_link_button && item.link && (
+                     <a href={item.link} target="_blank" rel="noopener noreferrer"
+                       className="mt-3 inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border hover:opacity-80 transition"
+                       style={{ borderColor: item.icon_color || secondaryColor, color: item.icon_color || secondaryColor }}>
+                       <Info className="w-3 h-3" /> More Info
+                     </a>
+                   )}
                  </div>
                ))}
               </div>
@@ -136,6 +150,13 @@ export default function Home() {
                  <div key={i} className="flex flex-col items-center text-center px-4 gap-2">
                    <DynamicIcon name={item.icon} className="w-6 h-6" style={{ color: item.icon_color || secondaryColor }} />
                    <span className="text-sm font-semibold" style={{ color: item.text_color || "#374151" }}>{item.text}</span>
+                   {item.show_link_button && item.link && (
+                     <a href={item.link} target="_blank" rel="noopener noreferrer"
+                       className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full border hover:opacity-80 transition"
+                       style={{ borderColor: item.icon_color || secondaryColor, color: item.icon_color || secondaryColor }}>
+                       <Info className="w-3 h-3" /> More Info
+                     </a>
+                   )}
                  </div>
                ))}
               </div>
