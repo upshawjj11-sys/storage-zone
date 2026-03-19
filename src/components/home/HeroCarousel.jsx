@@ -116,7 +116,7 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
                     ))}
                   </div>
                 </div>
-                {/* Desktop: equal grid */}
+                {/* Desktop: equal grid (static grid, no overflow) */}
                 <div className="hidden sm:flex border-b border-white/10">
                   <div
                     className="grid flex-1 divide-x divide-white/10"
