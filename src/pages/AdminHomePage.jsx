@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Save, Upload, Plus, Trash2, GripVertical, ChevronDown, ChevronUp, Globe, Eye, EyeOff } from "lucide-react";
 import IconPicker from "../components/admin/IconPicker";
+import BrandedColorPicker from "../components/admin/BrandedColorPicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
