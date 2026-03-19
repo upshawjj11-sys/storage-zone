@@ -96,19 +96,8 @@ function ColorRow({ label, hint, field, form, update }) {
     <div>
       <Label>{label}</Label>
       {hint && <p className="text-xs text-gray-400 mb-1">{hint}</p>}
-      <div className="flex items-center gap-2 mt-1">
-        <input
-          type="color"
-          value={form[field] || "#000000"}
-          onChange={(e) => update(field, e.target.value)}
-          className="h-9 w-12 p-0.5 rounded border cursor-pointer"
-        />
-        <Input
-          value={form[field] || ""}
-          onChange={(e) => update(field, e.target.value)}
-          placeholder="#hex or rgba(...)"
-          className="flex-1"
-        />
+      <div className="mt-1">
+        <BrandedColorPicker value={form[field] || ""} onChange={(v) => update(field, v)} />
       </div>
     </div>
   );
