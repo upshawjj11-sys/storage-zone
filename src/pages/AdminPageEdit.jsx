@@ -387,8 +387,8 @@ function BlockEditor({ block, onChange, onDelete }) {
                   </SelectContent>
                 </Select>
               </div>
-              <div><Label>Background</Label><Input type="color" value={data.bg_color || "#f8fafc"} onChange={e => update("bg_color", e.target.value)} className="h-10 p-1" /></div>
-              <div><Label>Accent Color</Label><Input type="color" value={data.accent_color || "#E8792F"} onChange={e => update("accent_color", e.target.value)} className="h-10 p-1" /></div>
+              <div><Label className="mb-1 block">Background</Label><BrandedColorPicker value={data.bg_color || "#f8fafc"} onChange={v => update("bg_color", v)} /></div>
+              <div><Label className="mb-1 block">Accent Color</Label><BrandedColorPicker value={data.accent_color || "#E8792F"} onChange={v => update("accent_color", v)} /></div>
             </div>
             <div>
               <Label>Items</Label>
