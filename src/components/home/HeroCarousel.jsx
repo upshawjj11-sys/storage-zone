@@ -86,20 +86,39 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
 
             {/* Pillars row */}
             {pillars.length > 0 && (
-              <div className="border-b border-white/10 overflow-x-auto">
+              <>
+                <style>{`
+                  @keyframes pillars-scroll {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                  }
+                  .pillars-scroll-track { animation: pillars-scroll 12s linear infinite; }
+                `}</style>
+                {/* Mobile: auto-scrolling ticker */}
+                <div className="sm:hidden border-b border-white/10 overflow-hidden">
+                  <div className="flex pillars-scroll-track w-max">
+                    {[...pillars.slice(0, 5), ...pillars.slice(0, 5)].map((item, i) => (
+                      <div key={i} className="flex flex-col items-center justify-center gap-1 px-5 py-3 text-center min-w-[110px]">
+                        <DynamicIcon name={item.icon} className="w-5 h-5" style={{ color: item.icon_color || secondaryColor }} />
+                        <span className="text-xs font-semibold leading-tight whitespace-nowrap" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* Desktop: equal grid */}
                 <div
-                  className="divide-x divide-white/10 min-w-max sm:min-w-0 sm:w-full"
-                  style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(pillars.length, 5)}, 1fr)` }}
+                  className="hidden sm:grid border-b border-white/10 divide-x divide-white/10"
+                  style={{ gridTemplateColumns: `repeat(${Math.min(pillars.length, 5)}, 1fr)` }}
                 >
                   {pillars.slice(0, 5).map((item, i) => (
-                    <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-3 py-3 text-center min-w-[90px] sm:min-w-0">
-                      <DynamicIcon name={item.icon} className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: item.icon_color || secondaryColor }} />
+                    <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-3 py-3 text-center">
+                      <DynamicIcon name={item.icon} className="w-6 h-6" style={{ color: item.icon_color || secondaryColor }} />
                       <span className="text-xs font-semibold leading-tight" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
                       {item.label && <span className="text-white/50 text-xs">{item.label}</span>}
                     </div>
                   ))}
                 </div>
-              </div>
+              </>
             )}
 
             {/* Search row */}
