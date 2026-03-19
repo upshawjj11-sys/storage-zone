@@ -626,37 +626,50 @@ export default function AdminFacilityEdit() {
                                       </Button>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3">
-                                      <div>
-                                        <Label className="text-xs">Icon</Label>
-                                        <div className="mt-1">
-                                          <IconPicker value={p.icon} onChange={(v) => updatePillar({ icon: v })} />
-                                        </div>
-                                      </div>
-                                      <div>
-                                        <Label className="text-xs">Main Text</Label>
-                                        <Input className="mt-1 h-8 text-sm" value={p.text} placeholder="e.g. 24/7 Access" onChange={(e) => updatePillar({ text: e.target.value })} />
-                                      </div>
-                                      <div>
-                                        <Label className="text-xs">Sub-label <span className="font-normal text-gray-400">(optional)</span></Label>
-                                        <Input className="mt-1 h-8 text-sm" value={p.label || ""} placeholder="e.g. Gate Code Required" onChange={(e) => updatePillar({ label: e.target.value })} />
-                                      </div>
-                                      <div className="flex gap-4 items-end">
-                                        <div>
-                                          <Label className="text-xs">Icon Color</Label>
-                                          <div className="flex items-center gap-1.5 mt-1">
-                                            <input type="color" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
-                                            <Input className="w-20 h-8 text-xs font-mono" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} />
-                                          </div>
-                                        </div>
-                                        <div>
-                                          <Label className="text-xs">Text Color</Label>
-                                          <div className="flex items-center gap-1.5 mt-1">
-                                            <input type="color" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
-                                            <Input className="w-20 h-8 text-xs font-mono" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
+                                       <div>
+                                         <Label className="text-xs">Icon</Label>
+                                         <div className="mt-1">
+                                           <IconPicker value={p.icon} onChange={(v) => updatePillar({ icon: v })} />
+                                         </div>
+                                       </div>
+                                       <div>
+                                         <Label className="text-xs">Main Text</Label>
+                                         <Input className="mt-1 h-8 text-sm" value={p.text} placeholder="e.g. 24/7 Access" onChange={(e) => updatePillar({ text: e.target.value })} />
+                                       </div>
+                                       <div>
+                                         <Label className="text-xs">Sub-label <span className="font-normal text-gray-400">(optional)</span></Label>
+                                         <Input className="mt-1 h-8 text-sm" value={p.label || ""} placeholder="e.g. Gate Code Required" onChange={(e) => updatePillar({ label: e.target.value })} />
+                                       </div>
+                                       <div className="flex gap-4 items-end">
+                                         <div>
+                                           <Label className="text-xs">Icon Color</Label>
+                                           <div className="flex items-center gap-1.5 mt-1">
+                                             <input type="color" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                                             <Input className="w-20 h-8 text-xs font-mono" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} />
+                                           </div>
+                                         </div>
+                                         <div>
+                                           <Label className="text-xs">Text Color</Label>
+                                           <div className="flex items-center gap-1.5 mt-1">
+                                             <input type="color" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
+                                             <Input className="w-20 h-8 text-xs font-mono" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} />
+                                           </div>
+                                         </div>
+                                       </div>
+                                     </div>
+                                     {/* Info Button toggle + link */}
+                                     <div className="border-t pt-3 space-y-2">
+                                       <div className="flex items-center justify-between">
+                                         <Label className="text-xs font-semibold">Info Button</Label>
+                                         <Switch checked={!!p.show_link_button} onCheckedChange={(v) => updatePillar({ show_link_button: v })} />
+                                       </div>
+                                       {p.show_link_button && (
+                                         <div>
+                                           <Label className="text-xs">Button Link URL</Label>
+                                           <Input className="mt-1 h-8 text-sm" value={p.link || ""} placeholder="https://example.com/more-info" onChange={(e) => updatePillar({ link: e.target.value })} />
+                                         </div>
+                                       )}
+                                     </div>
                                   </div>
                                 )}
                               </Draggable>
