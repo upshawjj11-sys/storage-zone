@@ -640,20 +640,14 @@ export default function AdminFacilityEdit() {
                                          <Label className="text-xs">Sub-label <span className="font-normal text-gray-400">(optional)</span></Label>
                                          <Input className="mt-1 h-8 text-sm" value={p.label || ""} placeholder="e.g. Gate Code Required" onChange={(e) => updatePillar({ label: e.target.value })} />
                                        </div>
-                                       <div className="flex gap-4 items-end">
+                                       <div className="flex gap-6 items-end flex-wrap">
                                          <div>
-                                           <Label className="text-xs">Icon Color</Label>
-                                           <div className="flex items-center gap-1.5 mt-1">
-                                             <input type="color" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
-                                             <Input className="w-20 h-8 text-xs font-mono" value={p.icon_color || "#E8792F"} onChange={(e) => updatePillar({ icon_color: e.target.value })} />
-                                           </div>
+                                           <Label className="text-xs mb-1 block">Icon Color</Label>
+                                           <BrandedColorPicker value={p.icon_color || "#E8792F"} onChange={(v) => updatePillar({ icon_color: v })} />
                                          </div>
                                          <div>
-                                           <Label className="text-xs">Text Color</Label>
-                                           <div className="flex items-center gap-1.5 mt-1">
-                                             <input type="color" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-gray-200" />
-                                             <Input className="w-20 h-8 text-xs font-mono" value={p.text_color || "#ffffff"} onChange={(e) => updatePillar({ text_color: e.target.value })} />
-                                           </div>
+                                           <Label className="text-xs mb-1 block">Text Color</Label>
+                                           <BrandedColorPicker value={p.text_color || "#ffffff"} onChange={(v) => updatePillar({ text_color: v })} />
                                          </div>
                                        </div>
                                      </div>
