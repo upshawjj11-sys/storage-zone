@@ -686,13 +686,13 @@ export default function AdminHomePage() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Label className="text-xs whitespace-nowrap">Button BG</Label>
-                    <input type="color" value={form.hero_arrows?.color || "#000000"} onChange={(e) => update("hero_arrows", { ...(form.hero_arrows||{}), color: e.target.value })} className="h-7 w-10 p-0.5 rounded border" />
+                  <div>
+                    <Label className="text-xs mb-1 block">Button BG</Label>
+                    <BrandedColorPicker value={form.hero_arrows?.color || "#000000"} onChange={(v) => update("hero_arrows", { ...(form.hero_arrows||{}), color: v })} />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Label className="text-xs whitespace-nowrap">Icon Color</Label>
-                    <input type="color" value={form.hero_arrows?.icon_color || "#ffffff"} onChange={(e) => update("hero_arrows", { ...(form.hero_arrows||{}), icon_color: e.target.value })} className="h-7 w-10 p-0.5 rounded border" />
+                  <div>
+                    <Label className="text-xs mb-1 block">Icon Color</Label>
+                    <BrandedColorPicker value={form.hero_arrows?.icon_color || "#ffffff"} onChange={(v) => update("hero_arrows", { ...(form.hero_arrows||{}), icon_color: v })} />
                   </div>
                 </div>
               )}
