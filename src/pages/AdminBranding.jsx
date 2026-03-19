@@ -107,7 +107,7 @@ export default function AdminBranding() {
         <Card>
           <CardHeader><CardTitle className="flex items-center gap-2"><Palette className="w-5 h-5" /> Colors</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
               {[
                 { field: "primary_color", label: "Primary" },
                 { field: "secondary_color", label: "Secondary" },
@@ -116,11 +116,8 @@ export default function AdminBranding() {
                 { field: "background_color", label: "Background" },
               ].map(({ field, label }) => (
                 <div key={field}>
-                  <Label>{label}</Label>
-                  <div className="flex items-center gap-2">
-                    <input type="color" value={form[field]} onChange={(e) => update(field, e.target.value)} className="w-10 h-10 rounded-lg border cursor-pointer" />
-                    <Input value={form[field]} onChange={(e) => update(field, e.target.value)} className="text-xs" />
-                  </div>
+                  <Label className="mb-1 block">{label}</Label>
+                  <BrandedColorPicker value={form[field]} onChange={(v) => update(field, v)} />
                 </div>
               ))}
             </div>
