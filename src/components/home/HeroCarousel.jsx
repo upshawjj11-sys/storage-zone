@@ -131,7 +131,7 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
                     ))}
                   </div>
                 </div>
-              </>
+              </div>
             )}
 
             {/* Search row */}
