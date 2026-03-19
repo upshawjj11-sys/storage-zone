@@ -722,7 +722,7 @@ export default function AdminFacilityEdit() {
             <CardContent className="p-6 space-y-4">
               <div className="flex items-center justify-between">
                 <Button variant="outline" className="gap-2" onClick={() => update("units", [...form.units, {
-                  name: "", size: "", price: 0, unit_type: form.facility_type === "business_center" ? "Warehouse" : "Standard",
+                  name: "", size: "", price: 0, unit_type: form.facility_type === "business_center" ? "" : "Standard",
                   available: true, features: [], photos: [], videos: []
                 }])}>
                   <Plus className="w-4 h-4" /> Add Unit
