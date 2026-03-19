@@ -342,9 +342,9 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                           <div><Label className="text-xs">Button Text</Label><Input value={col.btn_text || ""} onChange={(e) => updateCol("btn_text", e.target.value)} placeholder="Learn More" /></div>
                           <div><Label className="text-xs">Button Link</Label><Input value={col.btn_link || ""} onChange={(e) => updateCol("btn_link", e.target.value)} placeholder="/page/example" /></div>
                         </div>
-                        <div className="grid grid-cols-2 gap-2">
-                          <div className="flex items-center gap-2"><Label className="text-xs whitespace-nowrap">Button BG</Label><input type="color" value={col.btn_bg || "#E8792F"} onChange={(e) => updateCol("btn_bg", e.target.value)} className="h-7 w-10 p-0.5 rounded border" /></div>
-                          <div className="flex items-center gap-2"><Label className="text-xs whitespace-nowrap">Button Text Color</Label><input type="color" value={col.btn_text_color || "#ffffff"} onChange={(e) => updateCol("btn_text_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" /></div>
+                        <div className="flex gap-4 flex-wrap">
+                          <div><Label className="text-xs mb-1 block">Button BG</Label><BrandedColorPicker value={col.btn_bg || "#E8792F"} onChange={(v) => updateCol("btn_bg", v)} /></div>
+                          <div><Label className="text-xs mb-1 block">Button Text Color</Label><BrandedColorPicker value={col.btn_text_color || "#ffffff"} onChange={(v) => updateCol("btn_text_color", v)} /></div>
                         </div>
                       </div>
                     </div>
