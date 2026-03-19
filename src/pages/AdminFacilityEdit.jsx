@@ -886,6 +886,29 @@ export default function AdminFacilityEdit() {
                         </Button>
                       </div>
                     </div>
+
+                    {/* BC-only: Description & PDF */}
+                    {isBC && (
+                      <>
+                        <div>
+                          <Label className="mb-2 block">Unit Description <span className="text-xs font-normal text-gray-400">(shown on the More Info page)</span></Label>
+                          <RichTextEditor
+                            value={unit.description || ""}
+                            onChange={(v) => updateUnit("description", v)}
+                            placeholder="Describe this space..."
+                            minHeight={120}
+                          />
+                        </div>
+                        <div>
+                          <Label className="mb-1 block">PDF Document URL <span className="text-xs font-normal text-gray-400">(optional — brochure, floor plan, etc.)</span></Label>
+                          <Input
+                            value={unit.pdf_url || ""}
+                            onChange={(e) => updateUnit("pdf_url", e.target.value)}
+                            placeholder="https://..."
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 );
               })}
