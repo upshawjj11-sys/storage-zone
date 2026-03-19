@@ -123,7 +123,7 @@ function BlockEditor({ block, onChange, onDelete }) {
                   </SelectContent>
                 </Select>
               </div>
-              <div><Label>Color</Label><Input type="color" value={data.color || "#111827"} onChange={e => update("color", e.target.value)} className="h-10 p-1" /></div>
+              <div><Label className="mb-1 block">Color</Label><BrandedColorPicker value={data.color || "#111827"} onChange={v => update("color", v)} /></div>
             </div>
           </div>
         );
