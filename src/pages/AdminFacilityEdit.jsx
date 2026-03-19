@@ -596,6 +596,21 @@ export default function AdminFacilityEdit() {
                     <p className="text-sm text-gray-400 text-center py-4">No pillars yet. Click "Add Pillar" to get started.</p>
                   )}
 
+                  {/* Bar-level Info Button */}
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-700">Info Button</p>
+                      <p className="text-xs text-gray-400 mt-0.5">Show an "Info" button in the top-right of the pillars bar</p>
+                    </div>
+                    <Switch checked={!!form.pillars_show_info_button} onCheckedChange={(v) => update("pillars_show_info_button", v)} />
+                  </div>
+                  {form.pillars_show_info_button && (
+                    <div>
+                      <Label className="text-xs">Info Button Link URL</Label>
+                      <Input className="mt-1" value={form.pillars_info_link || ""} placeholder="https://example.com/more-info" onChange={(e) => update("pillars_info_link", e.target.value)} />
+                    </div>
+                  )}
+
                   <DragDropContext onDragEnd={(result) => {
                     if (!result.destination) return;
                     const ps = Array.from(form.pillars);
