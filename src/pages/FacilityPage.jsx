@@ -155,6 +155,10 @@ export default function FacilityPage() {
   );
   if (!facility) return <div className="min-h-screen flex items-center justify-center"><p className="text-gray-500">Facility not found.</p></div>;
 
+  // Cache the page bg color for instant next-load (no flash)
+  const resolvedBg = facility.page_styles?.page_bg || "#ffffff";
+  if (typeof window !== "undefined") localStorage.setItem(cacheKey, resolvedBg);
+
   // Resolve page styles with defaults
   const ps = facility.page_styles || {};
   const S = {
