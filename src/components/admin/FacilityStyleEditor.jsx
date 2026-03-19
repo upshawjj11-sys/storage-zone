@@ -77,21 +77,9 @@ const GROUPS = [
 function ColorRow({ label, colorKey, value, onChange }) {
   const val = value || DEFAULTS[colorKey];
   return (
-    <div className="flex items-center justify-between py-2">
+    <div className="flex items-center justify-between py-2.5">
       <span className="text-sm text-gray-700">{label}</span>
-      <div className="flex items-center gap-2">
-        <input
-          type="color"
-          value={val}
-          onChange={(e) => onChange(colorKey, e.target.value)}
-          className="w-8 h-8 rounded cursor-pointer border border-gray-200"
-        />
-        <Input
-          className="w-24 h-8 text-xs font-mono"
-          value={val}
-          onChange={(e) => onChange(colorKey, e.target.value)}
-        />
-      </div>
+      <BrandedColorPicker value={val} onChange={(v) => onChange(colorKey, v)} />
     </div>
   );
 }
