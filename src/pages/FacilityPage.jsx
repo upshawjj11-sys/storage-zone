@@ -275,7 +275,7 @@ export default function FacilityPage() {
         )}
         <div className="space-y-3">
           {facility.units.map((unit, i) => (
-            <UnitCard key={i} unit={unit} facilityType={facility.facility_type} onAction={handleAction} />
+            <UnitCard key={i} unit={unit} facilityType={facility.facility_type} facilityId={facility.id} unitIndex={i} onAction={handleAction} />
           ))}
         </div>
       </div>
