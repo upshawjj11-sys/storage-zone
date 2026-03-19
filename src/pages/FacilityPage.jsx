@@ -466,6 +466,13 @@ export default function FacilityPage() {
                 <DynamicIcon name={item.icon} className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" style={{ color: item.icon_color || "#E8792F" }} />
                 <span className="text-[10px] sm:text-xs font-semibold leading-tight break-words w-full" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
                 {item.label && <span className="text-[9px] sm:text-xs opacity-60 leading-tight break-words w-full" style={{ color: item.text_color || "#ffffff" }}>{item.label}</span>}
+                {item.show_link_button && item.link && (
+                  <a href={item.link} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
+                    className="mt-0.5 inline-flex items-center gap-0.5 text-[9px] sm:text-[10px] font-semibold px-1.5 py-0.5 rounded-full hover:opacity-80 transition"
+                    style={{ background: "rgba(255,255,255,0.15)", color: item.text_color || "#ffffff" }}>
+                    <Info className="w-2.5 h-2.5" /> Info
+                  </a>
+                )}
               </div>
             ))}
           </div>
