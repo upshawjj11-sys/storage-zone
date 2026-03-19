@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Check, ChevronDown, ChevronUp, Play, Image } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Image, Info } from "lucide-react";
 
-export default function UnitCard({ unit, facilityType, onAction }) {
+export default function UnitCard({ unit, facilityType, facilityId, unitIndex, onAction }) {
   const [expanded, setExpanded] = useState(false);
   const [photoIdx, setPhotoIdx] = useState(0);
 
   const isBC = facilityType === "business_center";
   const hasMedia = (unit.photos?.length > 0) || (unit.videos?.length > 0);
+
+  const moreInfoUrl = `/UnitDetailPage?facility=${facilityId}&unit=${unitIndex}`;
 
   return (
     <div
@@ -26,6 +28,14 @@ export default function UnitCard({ unit, facilityType, onAction }) {
             <p className="font-semibold text-gray-900">{unit.name}</p>
             {unit.unit_type && (
               <Badge className="bg-[#1B365D]/10 text-[#1B365D] border-0 text-xs">{unit.unit_type}</Badge>
+            )}
+            {/* Open/Closed badge for BC */}
+            {isBC && unit.show_is_open && (
+              <Badge className={unit.is_open
+                ? "bg-green-100 text-green-700 border-0 text-xs"
+                : "bg-red-100 text-red-600 border-0 text-xs"}>
+                {unit.is_open ? "● Open" : "● Closed"}
+              </Badge>
             )}
           </div>
           <p className="text-sm text-gray-500 mt-0.5">
@@ -52,7 +62,7 @@ export default function UnitCard({ unit, facilityType, onAction }) {
           {unit.available !== false
             ? <Badge className="bg-green-100 text-green-700 border-0">Available</Badge>
             : <Badge variant="secondary">Occupied</Badge>}
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center flex-wrap justify-end">
             {hasMedia && (
               <button onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
                 className="text-xs flex items-center gap-1 text-[#E8792F] hover:underline">
@@ -60,6 +70,16 @@ export default function UnitCard({ unit, facilityType, onAction }) {
                 {expanded ? "Hide" : "View"} media
                 {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               </button>
+            )}
+            {/* More Info button for BC */}
+            {isBC && unit.show_more_info && facilityId != null && (
+              <a
+                href={moreInfoUrl}
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#1B365D] text-[#1B365D] hover:bg-[#1B365D] hover:text-white transition font-medium"
+              >
+                <Info className="w-3.5 h-3.5" /> More Info
+              </a>
             )}
             {unit.available !== false && (
               <Button size="sm" className="rounded-full text-xs" style={{ background: "#E8792F" }}
