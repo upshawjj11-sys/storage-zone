@@ -110,7 +110,7 @@ export default function Layout({ children, currentPageName }) {
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
-      <PopupRenderer currentPageName={activePageName} facilityId={facilityId} />
+      <PopupRenderer currentPageName={activePageName} facilityId={facilityId} slugFromPath={slugFromPath} />
     </div>
   );
 }
