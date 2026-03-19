@@ -59,9 +59,9 @@ export default function UnitCard({ unit, facilityType, facilityId, unitIndex, on
               {isBC ? <>Starting at<br /><span>${unit.price.toLocaleString()}/mo</span></> : `$${unit.price}/mo`}
             </p>
           )}
-          {unit.available !== false
+          {!isBC && (unit.available !== false
             ? <Badge className="bg-green-100 text-green-700 border-0">Available</Badge>
-            : <Badge variant="secondary">Occupied</Badge>}
+            : <Badge variant="secondary">Occupied</Badge>)}
           <div className="flex gap-2 items-center flex-wrap justify-end">
             {hasMedia && (
               <button onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
