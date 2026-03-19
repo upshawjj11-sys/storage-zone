@@ -243,18 +243,18 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                 </Select>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="flex items-center gap-2">
-                <Label className="text-xs whitespace-nowrap">Card BG</Label>
-                <input type="color" value={data.card_bg || "#ffffff"} onChange={(e) => updateData("card_bg", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
+            <div className="flex flex-wrap gap-4">
+              <div>
+                <Label className="text-xs mb-1 block">Card BG</Label>
+                <BrandedColorPicker value={data.card_bg || "#ffffff"} onChange={(v) => updateData("card_bg", v)} />
               </div>
-              <div className="flex items-center gap-2">
-                <Label className="text-xs whitespace-nowrap">Text Color</Label>
-                <input type="color" value={data.text_color || "#374151"} onChange={(e) => updateData("text_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
+              <div>
+                <Label className="text-xs mb-1 block">Text Color</Label>
+                <BrandedColorPicker value={data.text_color || "#374151"} onChange={(v) => updateData("text_color", v)} />
               </div>
-              <div className="flex items-center gap-2">
-                <Label className="text-xs whitespace-nowrap">Star Color</Label>
-                <input type="color" value={data.star_color || "#facc15"} onChange={(e) => updateData("star_color", e.target.value)} className="h-7 w-10 p-0.5 rounded border" />
+              <div>
+                <Label className="text-xs mb-1 block">Star Color</Label>
+                <BrandedColorPicker value={data.star_color || "#facc15"} onChange={(v) => updateData("star_color", v)} />
               </div>
             </div>
             <Button size="sm" variant="outline" className="gap-1" onClick={() => addItem({ name: "", text: "", rating: 5, location: "", avatar_color: "#1B365D" })}>
