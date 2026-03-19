@@ -563,18 +563,8 @@ export default function AdminFacilityEdit() {
                       <p className="text-sm font-medium text-gray-700">Bar Background Color</p>
                       <p className="text-xs text-gray-400">Color of the entire pillars bar</p>
                     </div>
-                    <div className="ml-auto flex items-center gap-2">
-                      <input
-                        type="color"
-                        value={form.pillars_bg_color || "#1B365D"}
-                        onChange={(e) => update("pillars_bg_color", e.target.value)}
-                        className="w-8 h-8 rounded cursor-pointer border border-gray-200"
-                      />
-                      <Input
-                        className="w-24 h-8 text-xs font-mono"
-                        value={form.pillars_bg_color || "#1B365D"}
-                        onChange={(e) => update("pillars_bg_color", e.target.value)}
-                      />
+                    <div className="ml-auto">
+                      <BrandedColorPicker value={form.pillars_bg_color || "#1B365D"} onChange={(v) => update("pillars_bg_color", v)} />
                     </div>
                   </div>
 
