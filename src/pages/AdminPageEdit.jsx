@@ -455,8 +455,8 @@ function ColumnContentEditor({ type, data, onChange }) {
               <div><Label className="text-xs">Button Link</Label><Input value={data.btn_link || ""} onChange={e => update("btn_link", e.target.value)} placeholder="/page/example" /></div>
             </div>
             <div className="grid grid-cols-2 gap-2">
-              <div className="flex items-center gap-2"><Label className="text-xs whitespace-nowrap">Button BG</Label><Input type="color" value={data.btn_bg || "#E8792F"} onChange={e => update("btn_bg", e.target.value)} className="h-8 p-0.5 w-12" /></div>
-              <div className="flex items-center gap-2"><Label className="text-xs whitespace-nowrap">Text Color</Label><Input type="color" value={data.btn_text_color || "#ffffff"} onChange={e => update("btn_text_color", e.target.value)} className="h-8 p-0.5 w-12" /></div>
+              <div><Label className="text-xs mb-1 block">Button BG</Label><BrandedColorPicker value={data.btn_bg || "#E8792F"} onChange={v => update("btn_bg", v)} /></div>
+              <div><Label className="text-xs mb-1 block">Text Color</Label><BrandedColorPicker value={data.btn_text_color || "#ffffff"} onChange={v => update("btn_text_color", v)} /></div>
             </div>
           </div>
         </div>
