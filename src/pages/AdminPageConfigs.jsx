@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Save, Upload, CreditCard, MapPin, Ruler } from "lucide-react";
 import AdminSizeGuideConfig from "../components/admin/AdminSizeGuideConfig";
+import BrandedColorPicker from "../components/admin/BrandedColorPicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
