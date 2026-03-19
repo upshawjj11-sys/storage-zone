@@ -471,7 +471,7 @@ function SectionEditor({ section, onChange, onRemove, index }) {
             <div><Label>Section Title</Label><Input value={section.title || ""} onChange={(e) => onChange({ ...section, title: e.target.value })} placeholder="Section heading" /></div>
             <div><Label>Section Subtitle</Label><Input value={section.subtitle || ""} onChange={(e) => onChange({ ...section, subtitle: e.target.value })} placeholder="Optional subheading" /></div>
           </div>
-          <div><Label>Background Color</Label><Input type="color" value={section.bg_color || "#ffffff"} onChange={(e) => onChange({ ...section, bg_color: e.target.value })} className="h-10 w-24 p-1" /></div>
+          <div><Label className="mb-1 block">Background Color</Label><BrandedColorPicker value={section.bg_color || "#ffffff"} onChange={(v) => onChange({ ...section, bg_color: v })} /></div>
           <div className="border-t pt-4">{renderDataEditor()}</div>
 
           {/* Disclaimer box */}
