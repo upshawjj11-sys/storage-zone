@@ -211,7 +211,7 @@ export default function PopupRenderer({ currentPageName, facilityId, slugFromPat
 
     loadPopup();
     return () => clearTimeout(timer);
-  }, [currentPageName, facilityId]);
+  }, [currentPageName, facilityId, slugFromPath]);
 
   if (!popup || !visible) return null;
 
