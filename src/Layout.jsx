@@ -97,7 +97,11 @@ export default function Layout({ children, currentPageName }) {
   }
 
   // Extract facilityId from URL for facility-specific popup matching
+  // Support both ?id= param (admin preview) and slug-based URLs (/locations/state/city/slug)
   const facilityId = new URLSearchParams(window.location.search).get("id");
+  const slugFromPath = isFacilitySlugPage
+    ? window.location.pathname.replace(/\/$/, "").split("/").filter(Boolean).pop()
+    : null;
 
   const activePageName = isFacilitySlugPage ? "FacilityPage" : currentPageName;
 
