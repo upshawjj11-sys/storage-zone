@@ -86,13 +86,10 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
 
             {/* Pillars row */}
             {pillars.length > 0 && (
-              <div
-                className="divide-x divide-white/10 border-b border-white/10"
-                style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(pillars.length, 5)}, 1fr)` }}
-              >
+              <div className="border-b border-white/10 grid grid-cols-3 sm:grid-cols-5 divide-white/10">
                 {pillars.slice(0, 5).map((item, i) => (
-                  <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-3 py-4 text-center">
-                    <DynamicIcon name={item.icon} className="w-6 h-6" style={{ color: item.icon_color || secondaryColor }} />
+                  <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-2 py-3 text-center border-r border-white/10 last:border-r-0 sm:[&:nth-child(3)]:border-r">
+                    <DynamicIcon name={item.icon} className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: item.icon_color || secondaryColor }} />
                     <span className="text-xs font-semibold leading-tight" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
                     {item.label && <span className="text-white/50 text-xs">{item.label}</span>}
                   </div>
@@ -101,8 +98,8 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
             )}
 
             {/* Search row */}
-            <form onSubmit={handleSearch} className="flex items-center gap-3 p-4">
-              <div className="flex-1 flex items-center gap-2 bg-white rounded-lg px-3 py-2">
+            <form onSubmit={handleSearch} className="p-4 space-y-2 sm:space-y-0 sm:flex sm:items-center sm:gap-3">
+              <div className="flex items-center gap-2 bg-white rounded-lg px-3 py-2 flex-1">
                 <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
                 <input
                   type="text"
@@ -112,20 +109,22 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
                   className="flex-1 outline-none text-sm text-gray-800 bg-transparent"
                 />
               </div>
-              <button
-                type="submit"
-                className="px-6 py-2.5 rounded-lg font-semibold text-white text-sm transition-opacity hover:opacity-90"
-                style={{ background: secondaryColor }}
-              >
-                Search
-              </button>
-              <span className="text-white/50 text-xs font-medium">OR</span>
-              <Link
-                to={createPageUrl("Locations")}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg font-semibold text-white text-sm border border-white/30 hover:bg-white/10 transition"
-              >
-                <MapPin className="w-4 h-4" /> Near Me
-              </Link>
+              <div className="flex items-center gap-2">
+                <button
+                  type="submit"
+                  className="flex-1 sm:flex-none px-6 py-2.5 rounded-lg font-semibold text-white text-sm transition-opacity hover:opacity-90"
+                  style={{ background: secondaryColor }}
+                >
+                  Search
+                </button>
+                <span className="text-white/50 text-xs font-medium">OR</span>
+                <Link
+                  to={createPageUrl("Locations")}
+                  className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg font-semibold text-white text-sm border border-white/30 hover:bg-white/10 transition"
+                >
+                  <MapPin className="w-4 h-4" /> Near Me
+                </Link>
+              </div>
             </form>
           </div>
         </div>
