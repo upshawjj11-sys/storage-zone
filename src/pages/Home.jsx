@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { MapPin, Shield, Clock, ArrowRight, Star, ChevronRight } from "lucide-react";
+import { MapPin, Shield, Clock, ArrowRight, Star, ChevronRight, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DynamicIcon from "../components/home/DynamicIcon";
 import ReactMarkdown from "react-markdown";
