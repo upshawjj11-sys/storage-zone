@@ -88,6 +88,19 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                 </Select>
               </div>
             </div>
+            {/* Bar-level info button */}
+            <div className="border rounded-xl p-3 space-y-2 bg-white">
+              <div className="flex items-center justify-between">
+                <Label className="text-xs font-semibold">Info Button (top-right of bar)</Label>
+                <Switch checked={!!data.show_info_button} onCheckedChange={(v) => updateData("show_info_button", v)} />
+              </div>
+              {data.show_info_button && (
+                <div>
+                  <Label className="text-xs">Info Button Link URL</Label>
+                  <Input className="mt-1" placeholder="https://example.com/more-info" value={data.info_link || ""} onChange={(e) => updateData("info_link", e.target.value)} />
+                </div>
+              )}
+            </div>
             <Button size="sm" variant="outline" className="gap-1" onClick={() => addItem({ icon: "Check", text: "" })}>
               <Plus className="w-3 h-3" /> Add Pillar
             </Button>
