@@ -83,17 +83,19 @@ export default function Home() {
         const style = data.style || "banner";
         const items = data.items || [];
         if (!items.length) return null;
-        const infoBtn = data.show_info_button && data.info_link ? (
+        const barColor = section.bg_color || primaryColor;
+        const infoCircleBtn = data.show_info_button && data.info_link ? (
           <a href={data.info_link} target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full hover:opacity-80 transition flex-shrink-0"
-            style={{ background: "rgba(255,255,255,0.15)", color: "#ffffff" }}>
-            <Info className="w-3.5 h-3.5" /> Info
+            className="absolute -top-4 right-4 z-10 w-8 h-8 rounded-full flex items-center justify-center hover:opacity-80 transition shadow-md"
+            style={{ background: barColor, color: "#ffffff", border: "2px solid rgba(255,255,255,0.4)" }}
+            title="More Info">
+            <Info className="w-4 h-4" />
           </a>
         ) : null;
 
         if (style === "banner") return (
-          <section key={section.id} style={{ background: section.bg_color || primaryColor }} className="py-6 relative">
-            {infoBtn && <div className="absolute top-3 right-4 z-10">{infoBtn}</div>}
+          <section key={section.id} style={{ background: barColor }} className="py-6 relative">
+            {infoCircleBtn}
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
               {(section.title || section.subtitle) && (
                 <div className="text-center mb-6">
@@ -116,7 +118,14 @@ export default function Home() {
         );
         if (style === "cards") return (
           <section key={section.id} style={{ background: section.bg_color || "#f8fafc" }} className="py-16 relative">
-            {infoBtn && <div className="absolute top-4 right-4 z-10" style={{ background: section.bg_color || "#f8fafc" }}><a href={data.info_link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border hover:opacity-80 transition" style={{ borderColor: secondaryColor, color: secondaryColor }}><Info className="w-3.5 h-3.5" /> Info</a></div>}
+            {data.show_info_button && data.info_link && (
+              <a href={data.info_link} target="_blank" rel="noopener noreferrer"
+                className="absolute -top-4 right-4 z-10 w-8 h-8 rounded-full flex items-center justify-center hover:opacity-80 transition shadow-md"
+                style={{ background: section.bg_color || "#f8fafc", color: secondaryColor, border: `2px solid ${secondaryColor}` }}
+                title="More Info">
+                <Info className="w-4 h-4" />
+              </a>
+            )}
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
               {(section.title || section.subtitle) && (
                 <div className="text-center mb-10">
@@ -140,7 +149,14 @@ export default function Home() {
         // minimal
         return (
           <section key={section.id} style={{ background: section.bg_color || "#fff" }} className="py-10 border-y border-gray-100 relative">
-            {infoBtn && <div className="absolute top-3 right-4 z-10"><a href={data.info_link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full border hover:opacity-80 transition" style={{ borderColor: secondaryColor, color: secondaryColor }}><Info className="w-3.5 h-3.5" /> Info</a></div>}
+            {data.show_info_button && data.info_link && (
+              <a href={data.info_link} target="_blank" rel="noopener noreferrer"
+                className="absolute -top-4 right-4 z-10 w-8 h-8 rounded-full flex items-center justify-center hover:opacity-80 transition shadow-md"
+                style={{ background: section.bg_color || "#fff", color: secondaryColor, border: `2px solid ${secondaryColor}` }}
+                title="More Info">
+                <Info className="w-4 h-4" />
+              </a>
+            )}
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
               <div className={`grid ${colClass} gap-4 divide-x divide-gray-100`}>
                {items.map((item, i) => (
