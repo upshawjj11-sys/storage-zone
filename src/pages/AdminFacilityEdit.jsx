@@ -720,19 +720,18 @@ export default function AdminFacilityEdit() {
 
         <TabsContent value="units">
           <Card>
-            <CardContent className="p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <Button variant="outline" className="gap-2" onClick={() => update("units", [...form.units, {
-                  name: "", size: "", price: 0, unit_type: form.facility_type === "business_center" ? "" : "Standard",
-                  available: true, features: [], photos: [], videos: []
-                }])}>
-                  <Plus className="w-4 h-4" /> Add Unit
-                </Button>
-                {form.facility_type === "business_center" && (
-                  <p className="text-xs text-gray-500">Business Center: prices shown as "Starting at", units use "Inquire".</p>
-                )}
-              </div>
-              {form.units.map((unit, i) => {
+            <CardContent className="p-6">
+              <AdminUnitEditor
+                units={form.units}
+                facilityType={form.facility_type}
+                onChange={(units) => update("units", units)}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* DEAD CODE PLACEHOLDER - replaced by AdminUnitEditor above */}
+        {false && form.units.map((unit, i) => {
                 const updateUnit = (key, val) => {
                   const units = [...form.units]; units[i] = { ...units[i], [key]: val }; update("units", units);
                 };
