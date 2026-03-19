@@ -778,11 +778,13 @@ export default function AdminFacilityEdit() {
                       </div>
                     </div>
 
-                    {/* Availability */}
-                    <div className="flex items-center gap-2">
-                      <Switch checked={unit.available !== false} onCheckedChange={(v) => updateUnit("available", v)} />
-                      <Label>{unit.available !== false ? "Available" : "Occupied / Unavailable"}</Label>
-                    </div>
+                    {/* Availability (self storage only) */}
+                    {!isBC && (
+                      <div className="flex items-center gap-2">
+                        <Switch checked={unit.available !== false} onCheckedChange={(v) => updateUnit("available", v)} />
+                        <Label>{unit.available !== false ? "Available" : "Occupied / Unavailable"}</Label>
+                      </div>
+                    )}
 
                     {/* Business Center only: open/closed status + more info page */}
                     {isBC && (
