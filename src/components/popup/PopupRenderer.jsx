@@ -141,7 +141,7 @@ const PAGE_NAME_MAP = {
   "/PublicPage": "PublicPage",
 };
 
-export default function PopupRenderer({ currentPageName, facilityId }) {
+export default function PopupRenderer({ currentPageName, facilityId, slugFromPath }) {
   const [popup, setPopup] = useState(null);
   const [visible, setVisible] = useState(false);
   const [triggered, setTriggered] = useState(false);
@@ -152,13 +152,27 @@ export default function PopupRenderer({ currentPageName, facilityId }) {
       const today = new Date().toISOString().split("T")[0];
       const allPopups = await base44.entities.Popup.filter({ status: "active" });
 
+      // For facility slug pages, load all facilities to match by slug/id
+      let resolvedFacilityId = facilityId;
+      if (!resolvedFacilityId && slugFromPath) {
+        const facilities = await base44.entities.Facility.list();
+        const fullPath = window.location.pathname.replace(/^\//, "").replace(/\/$/, "");
+        const matched = facilities.find((f) =>
+          f.id === slugFromPath ||
+          f.slug === fullPath ||
+          f.slug === fullPath + "/" ||
+          f.slug === slugFromPath
+        );
+        resolvedFacilityId = matched?.id || null;
+      }
+
       const matching = allPopups.filter((p) => {
         if (p.start_date && today < p.start_date) return false;
         if (p.end_date && today > p.end_date) return false;
         const pages = p.show_on_pages || [];
         if (pages.length === 0) return true; // show everywhere
         // Match by page name or facility id
-        return pages.includes(currentPageName) || (facilityId && pages.includes(facilityId));
+        return pages.includes(currentPageName) || (resolvedFacilityId && pages.includes(resolvedFacilityId));
       });
 
       if (!matching.length) return;
