@@ -72,6 +72,12 @@ const AuthenticatedApp = () => {
           <PublicPage />
         </LayoutWrapper>
       } />
+      {/* Business center unit detail page */}
+      <Route path="/UnitDetailPage" element={
+        <LayoutWrapper currentPageName="UnitDetailPage">
+          <UnitDetailPage />
+        </LayoutWrapper>
+      } />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
