@@ -719,13 +719,13 @@ export default function AdminHomePage() {
                     </Select>
                   </div>
                   <div />
-                  <div className="flex items-center gap-2">
-                    <Label className="text-xs whitespace-nowrap">Active Color</Label>
-                    <input type="color" value={form.hero_dots?.active_color || "#E8792F"} onChange={(e) => update("hero_dots", { ...(form.hero_dots||{}), active_color: e.target.value })} className="h-7 w-10 p-0.5 rounded border" />
+                  <div>
+                    <Label className="text-xs mb-1 block">Active Color</Label>
+                    <BrandedColorPicker value={form.hero_dots?.active_color || "#E8792F"} onChange={(v) => update("hero_dots", { ...(form.hero_dots||{}), active_color: v })} />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Label className="text-xs whitespace-nowrap">Inactive Color</Label>
-                    <input type="color" value={form.hero_dots?.inactive_color || "#aaaaaa"} onChange={(e) => update("hero_dots", { ...(form.hero_dots||{}), inactive_color: e.target.value })} className="h-7 w-10 p-0.5 rounded border" />
+                  <div>
+                    <Label className="text-xs mb-1 block">Inactive Color</Label>
+                    <BrandedColorPicker value={form.hero_dots?.inactive_color || "#aaaaaa"} onChange={(v) => update("hero_dots", { ...(form.hero_dots||{}), inactive_color: v })} />
                   </div>
                 </div>
               )}
