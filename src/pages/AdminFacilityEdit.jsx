@@ -755,11 +755,12 @@ export default function AdminFacilityEdit() {
                       </div>
                       <div>
                         <Label>Unit Type</Label>
-                        <Select value={unit.unit_type || "Standard"} onValueChange={(v) => updateUnit("unit_type", v)}>
-                          <SelectTrigger><SelectValue /></SelectTrigger>
+                        <Select value={unit.unit_type || ""} onValueChange={(v) => updateUnit("unit_type", v)}>
+                          <SelectTrigger><SelectValue placeholder="Select type..." /></SelectTrigger>
                           <SelectContent>
                             {isBC ? (
                               <>
+                                <SelectItem value={null}>— None —</SelectItem>
                                 <SelectItem value="Warehouse">Warehouse</SelectItem>
                                 <SelectItem value="Office Space">Office Space</SelectItem>
                                 <SelectItem value="Warehouse/Office Space">Warehouse/Office Space</SelectItem>
