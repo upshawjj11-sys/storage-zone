@@ -178,7 +178,7 @@ function SectionEditor({ section, onChange, onRemove, index }) {
               <div><Label>CTA Button Text</Label><Input value={data.cta_text || ""} onChange={(e) => updateData("cta_text", e.target.value)} /></div>
               <div><Label>CTA Button Link</Label><Input value={data.cta_url || ""} onChange={(e) => updateData("cta_url", e.target.value)} /></div>
             </div>
-            <div><Label>Background Color</Label><Input type="color" value={data.bg_color || "#1B365D"} onChange={(e) => updateData("bg_color", e.target.value)} className="h-10 w-24 p-1" /></div>
+            <div><Label className="mb-1 block">Background Color</Label><BrandedColorPicker value={data.bg_color || "#1B365D"} onChange={(v) => updateData("bg_color", v)} /></div>
           </div>
         );
       case "text_block":
