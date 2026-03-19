@@ -41,6 +41,8 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
   };
 
   const pillars = pillarsSection?.data?.items || [];
+  const pillarsInfoLink = pillarsSection?.data?.info_link;
+  const pillarsShowInfo = pillarsSection?.data?.show_info_button && pillarsInfoLink;
 
   return (
     <section className="relative w-full overflow-hidden" style={{ height: "92vh", minHeight: 520 }}>
