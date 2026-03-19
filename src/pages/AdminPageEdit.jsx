@@ -78,10 +78,10 @@ function BlockEditor({ block, onChange, onDelete }) {
           <div className="space-y-3">
             <div><Label>Title</Label><Input value={data.title || ""} onChange={e => update("title", e.target.value)} /></div>
             <div><Label>Subtitle</Label><Input value={data.subtitle || ""} onChange={e => update("subtitle", e.target.value)} /></div>
-            <div className="grid grid-cols-3 gap-3">
-              <div><Label>Background Color</Label><Input type="color" value={data.bg_color || "#1B365D"} onChange={e => update("bg_color", e.target.value)} className="h-10 p-1" /></div>
-              <div><Label>Title Color</Label><Input type="color" value={data.title_color || "#ffffff"} onChange={e => update("title_color", e.target.value)} className="h-10 p-1" /></div>
-              <div><Label>Subtitle Color</Label><Input type="color" value={data.subtitle_color || "#e2e8f0"} onChange={e => update("subtitle_color", e.target.value)} className="h-10 p-1" /></div>
+            <div className="flex flex-wrap gap-4">
+              <div><Label className="mb-1 block">Background Color</Label><BrandedColorPicker value={data.bg_color || "#1B365D"} onChange={v => update("bg_color", v)} /></div>
+              <div><Label className="mb-1 block">Title Color</Label><BrandedColorPicker value={data.title_color || "#ffffff"} onChange={v => update("title_color", v)} /></div>
+              <div><Label className="mb-1 block">Subtitle Color</Label><BrandedColorPicker value={data.subtitle_color || "#e2e8f0"} onChange={v => update("subtitle_color", v)} /></div>
             </div>
             <div><Label>Background Image URL</Label><Input value={data.image || ""} onChange={e => update("image", e.target.value)} placeholder="https://..." /></div>
             <div><Label>Padding</Label>
