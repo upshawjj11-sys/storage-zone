@@ -141,7 +141,7 @@ function BlockEditor({ block, onChange, onDelete }) {
                 </SelectContent>
               </Select>
             </div>
-            <div><Label>Color</Label><Input type="color" value={data.color || "#E5E7EB"} onChange={e => update("color", e.target.value)} className="h-10 p-1" /></div>
+            <div><Label className="mb-1 block">Color</Label><BrandedColorPicker value={data.color || "#E5E7EB"} onChange={v => update("color", v)} /></div>
             <div><Label>Spacing</Label>
               <Select value={data.margin || "my-8"} onValueChange={v => update("margin", v)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
