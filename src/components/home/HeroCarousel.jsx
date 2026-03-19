@@ -86,14 +86,19 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
 
             {/* Pillars row */}
             {pillars.length > 0 && (
-              <div className="border-b border-white/10 flex flex-wrap justify-center">
-                {pillars.slice(0, 5).map((item, i) => (
-                  <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-3 py-3 text-center" style={{ flexBasis: pillars.length <= 3 ? `${100 / pillars.length}%` : "auto", minWidth: "80px" }}>
-                    <DynamicIcon name={item.icon} className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: item.icon_color || secondaryColor }} />
-                    <span className="text-xs font-semibold leading-tight" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
-                    {item.label && <span className="text-white/50 text-xs">{item.label}</span>}
-                  </div>
-                ))}
+              <div className="border-b border-white/10 overflow-x-auto">
+                <div
+                  className="divide-x divide-white/10 min-w-max sm:min-w-0 sm:w-full"
+                  style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(pillars.length, 5)}, 1fr)` }}
+                >
+                  {pillars.slice(0, 5).map((item, i) => (
+                    <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-3 py-3 text-center min-w-[90px] sm:min-w-0">
+                      <DynamicIcon name={item.icon} className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: item.icon_color || secondaryColor }} />
+                      <span className="text-xs font-semibold leading-tight" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
+                      {item.label && <span className="text-white/50 text-xs">{item.label}</span>}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
