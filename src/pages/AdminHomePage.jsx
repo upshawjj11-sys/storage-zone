@@ -397,10 +397,10 @@ function SectionEditor({ section, onChange, onRemove, index }) {
 
                   {col.type === "testimonials" && (
                     <div className="space-y-2">
-                      <div className="grid grid-cols-3 gap-2">
-                        <div className="flex items-center gap-1"><Label className="text-xs">Card BG</Label><input type="color" value={col.card_bg || "#ffffff"} onChange={(e) => updateCol("card_bg", e.target.value)} className="h-6 w-8 p-0.5 rounded border" /></div>
-                        <div className="flex items-center gap-1"><Label className="text-xs">Text</Label><input type="color" value={col.text_color || "#374151"} onChange={(e) => updateCol("text_color", e.target.value)} className="h-6 w-8 p-0.5 rounded border" /></div>
-                        <div className="flex items-center gap-1"><Label className="text-xs">Stars</Label><input type="color" value={col.star_color || "#facc15"} onChange={(e) => updateCol("star_color", e.target.value)} className="h-6 w-8 p-0.5 rounded border" /></div>
+                      <div className="flex gap-4 flex-wrap">
+                        <div><Label className="text-xs mb-1 block">Card BG</Label><BrandedColorPicker value={col.card_bg || "#ffffff"} onChange={(v) => updateCol("card_bg", v)} /></div>
+                        <div><Label className="text-xs mb-1 block">Text</Label><BrandedColorPicker value={col.text_color || "#374151"} onChange={(v) => updateCol("text_color", v)} /></div>
+                        <div><Label className="text-xs mb-1 block">Stars</Label><BrandedColorPicker value={col.star_color || "#facc15"} onChange={(v) => updateCol("star_color", v)} /></div>
                       </div>
                       <Button size="sm" variant="outline" className="gap-1" onClick={() => addColItem({ name: "", text: "", rating: 5, location: "" })}>
                         <Plus className="w-3 h-3" /> Add Review
