@@ -91,7 +91,7 @@ export default function BlogPost() {
 
         {/* Content */}
         <div className="rich-text-content prose prose-lg max-w-none text-gray-700">
-          <RichTextRenderer content={post.content} />
+          <RichTextRenderer html={post.content} />
         </div>
 
         {/* Tags */}
