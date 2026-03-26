@@ -9,6 +9,10 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import FacilityPage from './pages/FacilityPage';
 import PublicPage from './pages/PublicPage';
 import UnitDetailPage from './pages/UnitDetailPage';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
+import AdminBlog from './pages/AdminBlog';
+import AdminBlogEdit from './pages/AdminBlogEdit';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -76,6 +80,28 @@ const AuthenticatedApp = () => {
       <Route path="/UnitDetailPage" element={
         <LayoutWrapper currentPageName="UnitDetailPage">
           <UnitDetailPage />
+        </LayoutWrapper>
+      } />
+      {/* Blog */}
+      <Route path="/Blog" element={
+        <LayoutWrapper currentPageName="Blog">
+          <Blog />
+        </LayoutWrapper>
+      } />
+      <Route path="/blog/:slug" element={
+        <LayoutWrapper currentPageName="BlogPost">
+          <BlogPost />
+        </LayoutWrapper>
+      } />
+      {/* Admin Blog */}
+      <Route path="/AdminBlog" element={
+        <LayoutWrapper currentPageName="AdminBlog">
+          <AdminBlog />
+        </LayoutWrapper>
+      } />
+      <Route path="/AdminBlogEdit" element={
+        <LayoutWrapper currentPageName="AdminBlogEdit">
+          <AdminBlogEdit />
         </LayoutWrapper>
       } />
       <Route path="*" element={<PageNotFound />} />

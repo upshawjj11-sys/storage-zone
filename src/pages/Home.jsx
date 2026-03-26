@@ -9,6 +9,7 @@ import DynamicIcon from "../components/home/DynamicIcon";
 import ReactMarkdown from "react-markdown";
 import HeroCarousel from "../components/home/HeroCarousel";
 import ImageSlider from "../components/shared/ImageSlider";
+import BlogSection from "../components/home/BlogSection";
 
 export default function Home() {
   const { data: config, isLoading: configLoading } = useQuery({
@@ -362,6 +363,8 @@ export default function Home() {
           </section>
         );
       }
+      case "blog":
+        return <BlogSection key={section.id} section={section} />;
       case "two_column": {
         const renderCol = (col) => {
           if (!col) return null;

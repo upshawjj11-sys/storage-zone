@@ -27,6 +27,7 @@ const SECTION_TYPES = [
   { value: "faq", label: "FAQ" },
   { value: "stats", label: "Stats Bar" },
   { value: "two_column", label: "Two Column Layout (half + half)" },
+  { value: "blog", label: "Blog Posts Preview" },
 ];
 
 const COLUMN_BLOCK_TYPES = [
@@ -289,6 +290,73 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                 <Button size="sm" variant="ghost" className="text-red-500" onClick={() => removeItem(i)}><Trash2 className="w-3 h-3" /></Button>
               </div>
             ))}
+          </div>
+        );
+      case "blog":
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Layout Style</Label>
+                <Select value={data.layout || "cards"} onValueChange={(v) => updateData("layout", v)}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="cards">Cards Grid</SelectItem>
+                    <SelectItem value="list">List</SelectItem>
+                    <SelectItem value="magazine">Magazine (1 large + side list)</SelectItem>
+                    <SelectItem value="centered_hero">Centered / Alternating</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-xs">Number of Posts</Label>
+                <Select value={String(data.post_count || "3")} onValueChange={(v) => updateData("post_count", parseInt(v))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">1 post</SelectItem>
+                    <SelectItem value="2">2 posts</SelectItem>
+                    <SelectItem value="3">3 posts</SelectItem>
+                    <SelectItem value="4">4 posts</SelectItem>
+                    <SelectItem value="6">6 posts</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-center justify-between border rounded-lg p-2.5">
+                <Label className="text-xs">Show Excerpt</Label>
+                <Switch checked={data.show_excerpt !== false} onCheckedChange={(v) => updateData("show_excerpt", v)} />
+              </div>
+              <div className="flex items-center justify-between border rounded-lg p-2.5">
+                <Label className="text-xs">Show Date</Label>
+                <Switch checked={data.show_date !== false} onCheckedChange={(v) => updateData("show_date", v)} />
+              </div>
+              <div className="flex items-center justify-between border rounded-lg p-2.5">
+                <Label className="text-xs">Show Read Time</Label>
+                <Switch checked={data.show_read_time !== false} onCheckedChange={(v) => updateData("show_read_time", v)} />
+              </div>
+              <div className="flex items-center justify-between border rounded-lg p-2.5">
+                <Label className="text-xs">Show Category</Label>
+                <Switch checked={data.show_category !== false} onCheckedChange={(v) => updateData("show_category", v)} />
+              </div>
+              <div className="flex items-center justify-between border rounded-lg p-2.5 col-span-2">
+                <Label className="text-xs">Show "View All" Button</Label>
+                <Switch checked={data.show_view_all !== false} onCheckedChange={(v) => updateData("show_view_all", v)} />
+              </div>
+            </div>
+            {data.show_view_all !== false && (
+              <div>
+                <Label className="text-xs">View All Link URL</Label>
+                <Input className="mt-1" value={data.view_all_url || "/Blog"} onChange={(e) => updateData("view_all_url", e.target.value)} placeholder="/Blog" />
+              </div>
+            )}
+            <div className="flex flex-wrap gap-4">
+              <div><Label className="text-xs mb-1 block">Accent Color</Label><BrandedColorPicker value={data.accent_color || "#E8792F"} onChange={(v) => updateData("accent_color", v)} /></div>
+              <div><Label className="text-xs mb-1 block">Card BG</Label><BrandedColorPicker value={data.card_bg || "#ffffff"} onChange={(v) => updateData("card_bg", v)} /></div>
+              <div><Label className="text-xs mb-1 block">Text Color</Label><BrandedColorPicker value={data.text_color || "#111827"} onChange={(v) => updateData("text_color", v)} /></div>
+              <div><Label className="text-xs mb-1 block">Button BG</Label><BrandedColorPicker value={data.btn_bg || "#E8792F"} onChange={(v) => updateData("btn_bg", v)} /></div>
+              <div><Label className="text-xs mb-1 block">Button Text</Label><BrandedColorPicker value={data.btn_text_color || "#ffffff"} onChange={(v) => updateData("btn_text_color", v)} /></div>
+            </div>
           </div>
         );
       case "locations":

@@ -22,6 +22,8 @@ const adminPages = [
   "AdminPageConfigs",
   "AdminForms",
   "AdminFormEdit",
+  "AdminBlog",
+  "AdminBlogEdit",
 ];
 
 // Detect /locations/[state]/[city]/[slug]/ pattern

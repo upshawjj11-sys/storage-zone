@@ -1,0 +1,61 @@
+{
+  "name": "BlogPost",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "excerpt": {
+      "type": "string",
+      "description": "Short summary shown in cards/previews"
+    },
+    "content": {
+      "type": "string",
+      "description": "Full rich-text HTML content"
+    },
+    "cover_image": {
+      "type": "string",
+      "description": "URL to cover image"
+    },
+    "author_name": {
+      "type": "string"
+    },
+    "author_avatar": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published"
+      ],
+      "default": "draft"
+    },
+    "published_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "read_time_minutes": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}
