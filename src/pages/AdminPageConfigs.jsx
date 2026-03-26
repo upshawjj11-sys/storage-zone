@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { Save, Upload, CreditCard, MapPin, Ruler } from "lucide-react";
+import { Save, Upload, CreditCard, MapPin, Ruler, BookOpen } from "lucide-react";
 import AdminSizeGuideConfig from "../components/admin/AdminSizeGuideConfig";
 import BrandedColorPicker from "../components/admin/BrandedColorPicker";
 import { Button } from "@/components/ui/button";
@@ -112,10 +112,31 @@ function SectionCard({ title, children }) {
   );
 }
 
+const defaultBlog = {
+  page_key: "blog",
+  hero_bg_color: "#1B365D",
+  hero_title: "Our Blog",
+  hero_subtitle: "Tips, news, and insights.",
+  hero_title_color: "#ffffff",
+  hero_subtitle_color: "rgba(255,255,255,0.7)",
+  page_bg_color: "#f9fafb",
+  accent_color: "#E8792F",
+  card_bg_color: "#ffffff",
+  card_title_color: "#111827",
+  card_text_color: "#6b7280",
+  card_layout: "grid-3",
+  show_search: true,
+  show_category_filter: true,
+  show_excerpt: true,
+  show_date: true,
+  show_read_time: true,
+};
+
 export default function AdminPageConfigs() {
-  const [saving, setSaving] = useState({ pay_my_bill: false, locations: false });
+  const [saving, setSaving] = useState({ pay_my_bill: false, locations: false, blog: false });
   const [pmb, setPmb] = useState(defaultPayMyBill);
   const [loc, setLoc] = useState(defaultLocations);
+  const [blog, setBlog] = useState(defaultBlog);
 
   const { data: configs, refetch } = useQuery({
     queryKey: ["page-configs"],
@@ -127,16 +148,19 @@ export default function AdminPageConfigs() {
     if (!configs?.length) return;
     const pmbConfig = configs.find((c) => c.page_key === "pay_my_bill");
     const locConfig = configs.find((c) => c.page_key === "locations");
+    const blogConfig = configs.find((c) => c.page_key === "blog");
     if (pmbConfig) setPmb({ ...defaultPayMyBill, ...pmbConfig });
     if (locConfig) setLoc({ ...defaultLocations, ...locConfig });
+    if (blogConfig) setBlog({ ...defaultBlog, ...blogConfig });
   }, [configs]);
 
   const updatePmb = (field, val) => setPmb((p) => ({ ...p, [field]: val }));
   const updateLoc = (field, val) => setLoc((p) => ({ ...p, [field]: val }));
+  const updateBlog = (field, val) => setBlog((p) => ({ ...p, [field]: val }));
 
   const handleSave = async (pageKey) => {
     setSaving((s) => ({ ...s, [pageKey]: true }));
-    const form = pageKey === "pay_my_bill" ? pmb : loc;
+    const form = pageKey === "pay_my_bill" ? pmb : pageKey === "locations" ? loc : blog;
     const data = { ...form };
     delete data.id; delete data.created_date; delete data.updated_date; delete data.created_by;
     const existing = configs.find((c) => c.page_key === pageKey);
@@ -173,6 +197,9 @@ export default function AdminPageConfigs() {
           </TabsTrigger>
           <TabsTrigger value="size_guide" className="gap-2">
             <Ruler className="w-4 h-4" /> Size Guide
+          </TabsTrigger>
+          <TabsTrigger value="blog" className="gap-2">
+            <BookOpen className="w-4 h-4" /> Blog
           </TabsTrigger>
         </TabsList>
 
@@ -487,6 +514,71 @@ export default function AdminPageConfigs() {
         {/* ─── SIZE GUIDE ─── */}
         <TabsContent value="size_guide">
           <AdminSizeGuideConfig />
+        </TabsContent>
+
+        {/* ─── BLOG ─── */}
+        <TabsContent value="blog">
+          <div className="space-y-6">
+            <div className="flex justify-end">
+              <Button onClick={() => handleSave("blog")} disabled={saving.blog} className="rounded-full gap-2" style={{ background: "#E8792F" }}>
+                <Save className="w-4 h-4" /> {saving.blog ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+
+            <SectionCard title="Hero Banner">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Title Text</Label>
+                  <Input className="mt-1" value={blog.hero_title} onChange={(e) => updateBlog("hero_title", e.target.value)} />
+                </div>
+                <ColorRow label="Title Color" field="hero_title_color" form={blog} update={updateBlog} />
+              </div>
+              <div>
+                <Label>Subtitle Text</Label>
+                <Input className="mt-1" value={blog.hero_subtitle} onChange={(e) => updateBlog("hero_subtitle", e.target.value)} />
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <ColorRow label="Subtitle Color" field="hero_subtitle_color" form={blog} update={updateBlog} />
+                <ColorRow label="Hero Background Color" field="hero_bg_color" form={blog} update={updateBlog} />
+              </div>
+            </SectionCard>
+
+            <SectionCard title="Page & Cards">
+              <div className="grid md:grid-cols-2 gap-4">
+                <ColorRow label="Page Background" field="page_bg_color" form={blog} update={updateBlog} />
+                <ColorRow label="Accent Color" hint="Category labels, buttons, highlights" field="accent_color" form={blog} update={updateBlog} />
+                <ColorRow label="Card Background" field="card_bg_color" form={blog} update={updateBlog} />
+                <ColorRow label="Card Title Color" field="card_title_color" form={blog} update={updateBlog} />
+                <ColorRow label="Card Text / Excerpt Color" field="card_text_color" form={blog} update={updateBlog} />
+              </div>
+              <div>
+                <Label>Card Layout</Label>
+                <Select value={blog.card_layout || "grid-3"} onValueChange={(v) => updateBlog("card_layout", v)}>
+                  <SelectTrigger className="mt-1 w-56"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="grid-3">3 Columns</SelectItem>
+                    <SelectItem value="grid-2">2 Columns</SelectItem>
+                    <SelectItem value="list">List View</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </SectionCard>
+
+            <SectionCard title="Visibility Options">
+              {[
+                { field: "show_search", label: "Show Search Bar" },
+                { field: "show_category_filter", label: "Show Category Filter" },
+                { field: "show_excerpt", label: "Show Post Excerpt / Body Text" },
+                { field: "show_date", label: "Show Publish Date" },
+                { field: "show_read_time", label: "Show Read Time" },
+              ].map(({ field, label }) => (
+                <div key={field} className="flex items-center justify-between py-2 border-b last:border-0">
+                  <span className="text-sm text-gray-700">{label}</span>
+                  <Switch checked={blog[field] !== false} onCheckedChange={(v) => updateBlog(field, v)} />
+                </div>
+              ))}
+            </SectionCard>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
