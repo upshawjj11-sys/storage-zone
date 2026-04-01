@@ -17,6 +17,7 @@ export default function AdminSiteSettings() {
   const [form, setForm] = useState({
     nav_logo_url: "", nav_style: "default",
     nav_cta_buttons: [],
+    nav_logo_height: 48, nav_height: "normal",
     nav_bg_color: "#ffffff", nav_text_color: "#1B365D", nav_border_bottom: true,
     header_announcement: "", header_announcement_color: "#E8792F", header_announcement_text_color: "#ffffff", header_announcement_enabled: false,
     nav_links: [],
@@ -164,6 +165,30 @@ export default function AdminSiteSettings() {
                     <input type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} />
                   </label>
                   {form.nav_logo_url && <button className="text-xs text-red-500 mt-1 block" onClick={() => update("nav_logo_url", "")}>Remove</button>}
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Navbar Height</Label>
+                    <Select value={form.nav_height || "normal"} onValueChange={(v) => update("nav_height", v)}>
+                      <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="normal">Normal (~64px)</SelectItem>
+                        <SelectItem value="large">Large (~80px)</SelectItem>
+                        <SelectItem value="xl">Extra Large (~100px)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>Logo Height (px)</Label>
+                    <Input
+                      type="number"
+                      className="mt-1"
+                      value={form.nav_logo_height || 48}
+                      onChange={(e) => update("nav_logo_height", parseInt(e.target.value) || 48)}
+                      min={24}
+                      max={200}
+                    />
+                  </div>
                 </div>
                 <div>
                   <Label>Nav Layout Style</Label>

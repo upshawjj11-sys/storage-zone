@@ -1,0 +1,185 @@
+{
+  "name": "SiteSettings",
+  "type": "object",
+  "properties": {
+    "nav_logo_url": {
+      "type": "string"
+    },
+    "nav_logo_height": {
+      "type": "number",
+      "description": "Logo height in pixels (default: 48)"
+    },
+    "nav_height": {
+      "type": "string",
+      "description": "Navbar height class: normal, large, xl",
+      "enum": [
+        "normal",
+        "large",
+        "xl"
+      ],
+      "default": "normal"
+    },
+    "nav_style": {
+      "type": "string",
+      "enum": [
+        "default",
+        "centered",
+        "minimal"
+      ],
+      "default": "default"
+    },
+    "nav_links": {
+      "type": "array",
+      "description": "Top-level nav items. Each can be a simple link OR a dropdown group with children.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "open_new_tab": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "link",
+              "dropdown"
+            ],
+            "default": "link"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "open_new_tab": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "nav_cta_buttons": {
+      "type": "array",
+      "description": "Multiple CTA buttons in the navbar",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "filled",
+              "outline",
+              "ghost"
+            ],
+            "default": "filled"
+          },
+          "bg_color": {
+            "type": "string"
+          },
+          "text_color": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "nav_bg_color": {
+      "type": "string"
+    },
+    "nav_text_color": {
+      "type": "string"
+    },
+    "nav_border_bottom": {
+      "type": "boolean",
+      "default": true
+    },
+    "header_announcement": {
+      "type": "string"
+    },
+    "header_announcement_color": {
+      "type": "string"
+    },
+    "header_announcement_text_color": {
+      "type": "string"
+    },
+    "header_announcement_enabled": {
+      "type": "boolean"
+    },
+    "footer_tagline": {
+      "type": "string"
+    },
+    "footer_links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "footer_columns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "heading": {
+            "type": "string"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "footer_copyright": {
+      "type": "string"
+    },
+    "footer_bg_color": {
+      "type": "string"
+    },
+    "footer_text_color": {
+      "type": "string"
+    },
+    "footer_accent_color": {
+      "type": "string"
+    },
+    "footer_show_social": {
+      "type": "boolean"
+    }
+  },
+  "required": []
+}
