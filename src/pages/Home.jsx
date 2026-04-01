@@ -317,8 +317,8 @@ export default function Home() {
         return (
           <section key={section.id} style={{ background: section.bg_color || "#fff" }} className="py-16">
             <div className={`max-w-4xl mx-auto px-4 sm:px-6 text-${data.align || "left"}`}>
-              {section.title && <h2 className="text-3xl font-bold mb-4" style={{ color: primaryColor }}>{section.title}</h2>}
-              {data.content && <div className="prose prose-gray max-w-none"><ReactMarkdown>{data.content}</ReactMarkdown></div>}
+              {section.title && <h2 className="text-3xl font-bold mb-4" style={{ color: data.title_color || primaryColor }}>{section.title}</h2>}
+              {data.content && <div className="prose prose-gray max-w-none" style={{ color: data.text_color || undefined }}><ReactMarkdown>{data.content}</ReactMarkdown></div>}
             </div>
           </section>
         );
@@ -455,6 +455,7 @@ export default function Home() {
               );
           }
         };
+        const mobileOrder = data.mobile_order || "left_first";
         return (
           <section key={section.id} style={{ background: section.bg_color || "#fff" }} className="py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -465,8 +466,8 @@ export default function Home() {
                 </div>
               )}
               <div className="grid md:grid-cols-2 gap-10 items-center">
-                <div>{renderCol(data.left)}</div>
-                <div>{renderCol(data.right)}</div>
+                <div className={mobileOrder === "right_first" ? "order-2 md:order-1" : ""}>{renderCol(data.left)}</div>
+                <div className={mobileOrder === "right_first" ? "order-1 md:order-2" : ""}>{renderCol(data.right)}</div>
               </div>
             </div>
           </section>

@@ -196,6 +196,10 @@ function SectionEditor({ section, onChange, onRemove, index }) {
                 </SelectContent>
               </Select>
             </div>
+            <div className="flex gap-4 flex-wrap">
+              <div><Label className="text-xs mb-1 block">Title Color</Label><BrandedColorPicker value={data.title_color || "#1B365D"} onChange={(v) => updateData("title_color", v)} /></div>
+              <div><Label className="text-xs mb-1 block">Body Text Color</Label><BrandedColorPicker value={data.text_color || "#374151"} onChange={(v) => updateData("text_color", v)} /></div>
+            </div>
           </div>
         );
       case "faq":
@@ -367,6 +371,16 @@ function SectionEditor({ section, onChange, onRemove, index }) {
         return (
           <div className="space-y-4">
             <p className="text-xs text-gray-500">Configure the left and right half-column blocks independently.</p>
+            <div>
+              <Label className="text-xs">Mobile Column Order</Label>
+              <Select value={data.mobile_order || "left_first"} onValueChange={(v) => updateData("mobile_order", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="left_first">Left column first (default)</SelectItem>
+                  <SelectItem value="right_first">Right column first</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             {["left", "right"].map((side) => {
               const col = data[side] || {};
               const updateCol = (key, val) => updateData(side, { ...col, [key]: val });
