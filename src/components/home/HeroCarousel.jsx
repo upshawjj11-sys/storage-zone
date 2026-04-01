@@ -109,9 +109,9 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
                 <div className="sm:hidden border-b border-white/10 overflow-hidden">
                   <div className="flex pillars-scroll-track w-max">
                     {[...pillars.slice(0, 5), ...pillars.slice(0, 5)].map((item, i) => (
-                      <div key={i} className="flex flex-col items-center justify-center gap-1 px-5 py-3 text-center min-w-[110px]">
-                        <DynamicIcon name={item.icon} className="w-5 h-5" style={{ color: item.icon_color || secondaryColor }} />
-                        <span className="text-xs font-semibold leading-tight whitespace-nowrap" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
+                      <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-5 py-4 text-center min-w-[130px]">
+                        <DynamicIcon name={item.icon} className="w-7 h-7" style={{ color: item.icon_color || secondaryColor }} />
+                        <span className="text-sm font-semibold leading-tight whitespace-nowrap" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
                       </div>
                     ))}
                   </div>
@@ -123,9 +123,9 @@ export default function HeroCarousel({ config, primaryColor, secondaryColor, pil
                     style={{ gridTemplateColumns: `repeat(${Math.min(pillars.length, 5)}, 1fr)` }}
                   >
                     {pillars.slice(0, 5).map((item, i) => (
-                      <div key={i} className="flex flex-col items-center justify-center gap-1.5 px-3 py-3 text-center">
-                        <DynamicIcon name={item.icon} className="w-6 h-6" style={{ color: item.icon_color || secondaryColor }} />
-                        <span className="text-xs font-semibold leading-tight" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
+                      <div key={i} className="flex flex-col items-center justify-center gap-2 px-4 py-5 text-center">
+                        <DynamicIcon name={item.icon} className="w-9 h-9" style={{ color: item.icon_color || secondaryColor }} />
+                        <span className="text-sm font-bold leading-tight" style={{ color: item.text_color || "#ffffff" }}>{item.text}</span>
                         {item.label && <span className="text-white/50 text-xs">{item.label}</span>}
                       </div>
                     ))}
