@@ -19,6 +19,9 @@ export default function AdminSiteSettings() {
     nav_cta_buttons: [],
     nav_logo_height: 48, nav_height: "normal",
     nav_bg_color: "#ffffff", nav_text_color: "#1B365D", nav_border_bottom: true,
+    nav_menu_font_size: "15", nav_menu_font_weight: "500", nav_menu_letter_spacing: "0",
+    nav_menu_text_transform: "none", nav_menu_hover_color: "", nav_menu_hover_underline: false,
+    nav_menu_hover_bg: "", nav_menu_hover_opacity: 0.7,
     header_announcement: "", header_announcement_color: "#E8792F", header_announcement_text_color: "#ffffff", header_announcement_enabled: false,
     nav_links: [],
     footer_tagline: "", footer_copyright: "", footer_bg_color: "#0F172A", footer_text_color: "#ffffff",
@@ -220,6 +223,114 @@ export default function AdminSiteSettings() {
                 <div className="flex items-center gap-3">
                   <Switch checked={form.nav_border_bottom !== false} onCheckedChange={(v) => update("nav_border_bottom", v)} />
                   <Label>Show bottom border on nav</Label>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader><CardTitle>Menu Design</CardTitle></CardHeader>
+              <CardContent className="space-y-5">
+                {/* Preview strip */}
+                <div
+                  className="flex items-center gap-6 px-5 py-3 rounded-xl border"
+                  style={{ background: form.nav_bg_color || "#ffffff" }}
+                >
+                  {["Home", "Locations", "About Us"].map((label, i) => (
+                    <span key={i} style={{
+                      color: form.nav_text_color || "#1B365D",
+                      fontSize: `${form.nav_menu_font_size || 15}px`,
+                      fontWeight: form.nav_menu_font_weight || "500",
+                      letterSpacing: form.nav_menu_letter_spacing > 0 ? `${form.nav_menu_letter_spacing}px` : undefined,
+                      textTransform: form.nav_menu_text_transform !== "none" ? form.nav_menu_text_transform : undefined,
+                      ...(i === 1 ? {
+                        color: form.nav_menu_hover_color || form.nav_text_color || "#1B365D",
+                        opacity: form.nav_menu_hover_opacity ?? 0.7,
+                        textDecoration: form.nav_menu_hover_underline ? "underline" : "none",
+                        background: form.nav_menu_hover_bg || undefined,
+                        borderRadius: form.nav_menu_hover_bg ? "4px" : undefined,
+                        padding: form.nav_menu_hover_bg ? "2px 6px" : undefined,
+                      } : {}),
+                    }}>
+                      {label}{i === 1 ? " ←hover" : ""}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <Label className="text-xs">Font Size (px)</Label>
+                    <Input type="number" className="mt-1" min={10} max={30}
+                      value={form.nav_menu_font_size || "15"}
+                      onChange={(e) => update("nav_menu_font_size", e.target.value)} />
+                  </div>
+                  <div>
+                    <Label className="text-xs">Font Weight</Label>
+                    <Select value={String(form.nav_menu_font_weight || "500")} onValueChange={(v) => update("nav_menu_font_weight", v)}>
+                      <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="300">Light (300)</SelectItem>
+                        <SelectItem value="400">Regular (400)</SelectItem>
+                        <SelectItem value="500">Medium (500)</SelectItem>
+                        <SelectItem value="600">Semi-Bold (600)</SelectItem>
+                        <SelectItem value="700">Bold (700)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label className="text-xs">Letter Spacing (px)</Label>
+                    <Input type="number" className="mt-1" min={-2} max={5} step={0.5}
+                      value={form.nav_menu_letter_spacing || "0"}
+                      onChange={(e) => update("nav_menu_letter_spacing", e.target.value)} />
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="text-xs">Text Transform</Label>
+                  <Select value={form.nav_menu_text_transform || "none"} onValueChange={(v) => update("nav_menu_text_transform", v)}>
+                    <SelectTrigger className="mt-1 w-48"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">None</SelectItem>
+                      <SelectItem value="uppercase">UPPERCASE</SelectItem>
+                      <SelectItem value="capitalize">Capitalize</SelectItem>
+                      <SelectItem value="lowercase">lowercase</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="border-t pt-4">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Hover State</p>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-xs">Hover Text Color</Label>
+                      <div className="flex items-center gap-2 mt-1">
+                        <input type="color" value={form.nav_menu_hover_color || form.nav_text_color || "#1B365D"}
+                          onChange={(e) => update("nav_menu_hover_color", e.target.value)} className="h-9 w-12 p-1 rounded border" />
+                        <Input value={form.nav_menu_hover_color || ""} onChange={(e) => update("nav_menu_hover_color", e.target.value)} placeholder="Same as default" />
+                      </div>
+                    </div>
+                    <div>
+                      <Label className="text-xs">Hover Background (optional)</Label>
+                      <div className="flex items-center gap-2 mt-1">
+                        <input type="color" value={form.nav_menu_hover_bg || "#f0f0f0"}
+                          onChange={(e) => update("nav_menu_hover_bg", e.target.value)} className="h-9 w-12 p-1 rounded border" />
+                        <Input value={form.nav_menu_hover_bg || ""} onChange={(e) => update("nav_menu_hover_bg", e.target.value)} placeholder="None" />
+                        {form.nav_menu_hover_bg && <button className="text-xs text-red-400" onClick={() => update("nav_menu_hover_bg", "")}>Clear</button>}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                      <Label className="text-xs">Hover Opacity: {form.nav_menu_hover_opacity ?? 0.7}</Label>
+                      <input type="range" min={0.1} max={1} step={0.05}
+                        value={form.nav_menu_hover_opacity ?? 0.7}
+                        onChange={(e) => update("nav_menu_hover_opacity", parseFloat(e.target.value))}
+                        className="w-full mt-2" />
+                    </div>
+                    <div className="flex items-center gap-3 mt-5">
+                      <Switch checked={!!form.nav_menu_hover_underline} onCheckedChange={(v) => update("nav_menu_hover_underline", v)} />
+                      <Label className="text-xs">Underline on hover</Label>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>

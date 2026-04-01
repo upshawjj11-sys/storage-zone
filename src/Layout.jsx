@@ -72,19 +72,22 @@ export default function Layout({ children, currentPageName }) {
   if (isAdmin) {
     if (!user || (user.role !== "admin" && user.role !== "editor")) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center max-w-md px-6">
-            <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">🔒</span>
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <div className="flex-1 flex items-center justify-center bg-gray-50">
+            <div className="text-center max-w-md px-6">
+              <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">🔒</span>
+              </div>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">Access Denied</h2>
+              <p className="text-gray-500 mb-6">You need admin or editor access to view this page.</p>
+              <button
+                onClick={() => base44.auth.redirectToLogin(window.location.href)}
+                className="px-6 py-2.5 bg-[#1B365D] text-white rounded-lg font-medium hover:opacity-90 transition"
+              >
+                Sign In
+              </button>
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Access Denied</h2>
-            <p className="text-gray-500 mb-6">You need admin or editor access to view this page.</p>
-            <button
-              onClick={() => base44.auth.redirectToLogin(window.location.href)}
-              className="px-6 py-2.5 bg-[#1B365D] text-white rounded-lg font-medium hover:opacity-90 transition"
-            >
-              Sign In
-            </button>
           </div>
         </div>
       );

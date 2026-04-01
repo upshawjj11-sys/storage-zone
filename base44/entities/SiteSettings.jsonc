@@ -11,7 +11,7 @@
     },
     "nav_height": {
       "type": "string",
-      "description": "Navbar height class: normal, large, xl",
+      "description": "Navbar height: normal, large, xl",
       "enum": [
         "normal",
         "large",
@@ -28,9 +28,57 @@
       ],
       "default": "default"
     },
+    "nav_bg_color": {
+      "type": "string"
+    },
+    "nav_text_color": {
+      "type": "string"
+    },
+    "nav_border_bottom": {
+      "type": "boolean",
+      "default": true
+    },
+    "nav_menu_font_size": {
+      "type": "string",
+      "description": "Menu link font size in px (e.g. 15)"
+    },
+    "nav_menu_font_weight": {
+      "type": "string",
+      "description": "Menu link font weight (e.g. 400, 500, 600, 700)"
+    },
+    "nav_menu_letter_spacing": {
+      "type": "string",
+      "description": "Letter spacing in px (e.g. 0, 0.5, 1)"
+    },
+    "nav_menu_text_transform": {
+      "type": "string",
+      "enum": [
+        "none",
+        "uppercase",
+        "lowercase",
+        "capitalize"
+      ],
+      "default": "none"
+    },
+    "nav_menu_hover_color": {
+      "type": "string",
+      "description": "Link color on hover"
+    },
+    "nav_menu_hover_underline": {
+      "type": "boolean",
+      "default": false
+    },
+    "nav_menu_hover_bg": {
+      "type": "string",
+      "description": "Background highlight color on hover (optional)"
+    },
+    "nav_menu_hover_opacity": {
+      "type": "number",
+      "description": "Opacity on hover (0\u20131, default 0.7)"
+    },
     "nav_links": {
       "type": "array",
-      "description": "Top-level nav items. Each can be a simple link OR a dropdown group with children.",
+      "description": "Top-level nav items.",
       "items": {
         "type": "object",
         "properties": {
@@ -73,7 +121,6 @@
     },
     "nav_cta_buttons": {
       "type": "array",
-      "description": "Multiple CTA buttons in the navbar",
       "items": {
         "type": "object",
         "properties": {
@@ -100,16 +147,6 @@
           }
         }
       }
-    },
-    "nav_bg_color": {
-      "type": "string"
-    },
-    "nav_text_color": {
-      "type": "string"
-    },
-    "nav_border_bottom": {
-      "type": "boolean",
-      "default": true
     },
     "header_announcement": {
       "type": "string"

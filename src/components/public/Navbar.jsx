@@ -1,10 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Menu, X, ChevronDown } from "lucide-react";
 
-function DropdownMenu({ link, textColor }) {
+const NAV_HEIGHTS = { normal: "h-16", large: "h-20", xl: "h-24" };
+const NAV_HEIGHT_PX = { normal: 64, large: 80, xl: 96 };
+
+function NavLink({ link, textStyle, hoverStyle, dropdownStyle, onClick }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -14,161 +16,247 @@ function DropdownMenu({ link, textColor }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  return (
-    <div className="relative" ref={ref}>
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-1 text-sm font-medium hover:opacity-70 transition"
-        style={{ color: textColor }}
-      >
-        {link.label}
-        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && (
-        <div className="absolute top-full left-0 mt-2 min-w-[180px] bg-white border border-gray-100 rounded-xl shadow-xl py-1 z-50">
-          {(link.children || []).map((child, i) => (
-            child.url?.startsWith("http") ? (
-              <a key={i} href={child.url} target={child.open_new_tab ? "_blank" : undefined} rel="noreferrer"
-                onClick={() => setOpen(false)}
-                className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#E8792F] transition-colors">
+  if (link.type === "dropdown") {
+    return (
+      <div ref={ref} className="relative">
+        <button
+          className="flex items-center gap-1 transition-colors duration-150 whitespace-nowrap"
+          style={textStyle}
+          onMouseEnter={(e) => { Object.assign(e.currentTarget.style, hoverStyle); setOpen(true); }}
+          onMouseLeave={(e) => { Object.assign(e.currentTarget.style, textStyle); }}
+          onClick={() => setOpen(!open)}
+        >
+          {link.label}
+          <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        </button>
+        {open && (
+          <div
+            className="absolute top-full left-0 mt-1 min-w-[180px] rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50"
+            style={{ background: dropdownStyle?.bg || "#ffffff" }}
+          >
+            {(link.children || []).map((child, i) => (
+              <a
+                key={i}
+                href={child.url || "#"}
+                target={child.open_new_tab ? "_blank" : "_self"}
+                rel="noreferrer"
+                className="block px-4 py-2.5 text-sm transition-colors hover:bg-gray-50"
+                style={{ color: dropdownStyle?.text || "#1B365D" }}
+                onClick={() => { setOpen(false); onClick?.(); }}
+              >
                 {child.label}
               </a>
-            ) : (
-              <Link key={i} to={child.url || "/"} onClick={() => setOpen(false)}
-                className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#E8792F] transition-colors">
-                {child.label}
-              </Link>
-            )
-          ))}
-        </div>
-      )}
-    </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <a
+      href={link.url || "#"}
+      target={link.open_new_tab ? "_blank" : "_self"}
+      rel="noreferrer"
+      className="transition-colors duration-150 whitespace-nowrap"
+      style={textStyle}
+      onMouseEnter={(e) => Object.assign(e.currentTarget.style, hoverStyle)}
+      onMouseLeave={(e) => Object.assign(e.currentTarget.style, textStyle)}
+      onClick={onClick}
+    >
+      {link.label}
+    </a>
   );
 }
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileExpanded, setMobileExpanded] = useState({});
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileDropdowns, setMobileDropdowns] = useState({});
 
   const { data: settings } = useQuery({
     queryKey: ["site-settings-nav"],
-    queryFn: async () => { const items = await base44.entities.SiteSettings.list(); return items[0] || {}; },
+    queryFn: async () => {
+      const items = await base44.entities.SiteSettings.list();
+      return items[0] || {};
+    },
+    staleTime: 30000,
   });
 
-  const { data: branding } = useQuery({
-    queryKey: ["branding-nav"],
-    queryFn: async () => { const items = await base44.entities.BrandingKit.list(); return items[0] || {}; },
-  });
+  const s = settings || {};
+  const navHeight = NAV_HEIGHTS[s.nav_height] || "h-16";
+  const navHeightPx = NAV_HEIGHT_PX[s.nav_height] || 64;
+  const logoHeight = s.nav_logo_height || 48;
+  const bgColor = s.nav_bg_color || "#ffffff";
+  const textColor = s.nav_text_color || "#1B365D";
+  const links = s.nav_links || [];
+  const ctaButtons = s.nav_cta_buttons || [];
+  const hasBorder = s.nav_border_bottom !== false;
 
-  const logoUrl = settings?.nav_logo_url || branding?.logo_url;
-  const siteName = branding?.site_name || "Storage Zone";
-  const bgColor = settings?.nav_bg_color || "#ffffff";
-  const textColor = settings?.nav_text_color || "#1B365D";
-  const borderBottom = settings?.nav_border_bottom !== false;
-  const navLinks = settings?.nav_links || [];
-  const ctaButtons = settings?.nav_cta_buttons || [];
-  const announcement = settings?.header_announcement_enabled ? settings.header_announcement : null;
+  // Menu text style settings
+  const menuFontSize = s.nav_menu_font_size || "15";
+  const menuFontWeight = s.nav_menu_font_weight || "500";
+  const menuLetterSpacing = s.nav_menu_letter_spacing || "0";
+  const menuTextTransform = s.nav_menu_text_transform || "none";
+  const menuHoverColor = s.nav_menu_hover_color || textColor;
+  const menuHoverUnderline = s.nav_menu_hover_underline || false;
+  const menuHoverBg = s.nav_menu_hover_bg || "";
+  const menuHoverOpacity = s.nav_menu_hover_opacity != null ? s.nav_menu_hover_opacity : 0.7;
 
-  const renderCtaButton = (btn, i) => {
-    const style = btn.style || "filled";
-    const bg = btn.bg_color || "#E8792F";
-    const tc = btn.text_color || "#ffffff";
-    const href = btn.url || "#";
-    const isExternal = href.startsWith("http");
-    let className = "px-4 py-2 rounded-lg text-sm font-semibold transition";
-    let inlineStyle = {};
-    if (style === "filled") inlineStyle = { background: bg, color: tc };
-    else if (style === "outline") { className += " border-2"; inlineStyle = { borderColor: bg, color: bg }; }
-    else inlineStyle = { color: bg };
-    if (isExternal) return <a key={i} href={href} target="_blank" rel="noreferrer" className={className} style={inlineStyle}>{btn.text}</a>;
-    return <Link key={i} to={href} className={className} style={inlineStyle}>{btn.text}</Link>;
+  const textStyle = {
+    color: textColor,
+    fontSize: `${menuFontSize}px`,
+    fontWeight: menuFontWeight,
+    letterSpacing: menuLetterSpacing !== "0" ? `${menuLetterSpacing}px` : undefined,
+    textTransform: menuTextTransform !== "none" ? menuTextTransform : undefined,
   };
 
-  const toggleMobileGroup = (i) => setMobileExpanded(prev => ({ ...prev, [i]: !prev[i] }));
+  const hoverStyle = {
+    color: menuHoverColor || textColor,
+    fontSize: `${menuFontSize}px`,
+    fontWeight: menuFontWeight,
+    letterSpacing: menuLetterSpacing !== "0" ? `${menuLetterSpacing}px` : undefined,
+    textTransform: menuTextTransform !== "none" ? menuTextTransform : undefined,
+    opacity: menuHoverOpacity,
+    textDecoration: menuHoverUnderline ? "underline" : "none",
+    background: menuHoverBg || undefined,
+    borderRadius: menuHoverBg ? "4px" : undefined,
+    padding: menuHoverBg ? "2px 6px" : undefined,
+  };
+
+  const dropdownStyle = { bg: bgColor, text: textColor };
+
+  const renderCta = (btn, i) => {
+    const base = "px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-80 whitespace-nowrap";
+    if (btn.style === "outline") {
+      return (
+        <a key={i} href={btn.url || "#"} className={`${base} border-2`}
+          style={{ borderColor: btn.bg_color || "#E8792F", color: btn.bg_color || "#E8792F", background: "transparent" }}>
+          {btn.text}
+        </a>
+      );
+    }
+    if (btn.style === "ghost") {
+      return (
+        <a key={i} href={btn.url || "#"} className={`${base}`}
+          style={{ color: btn.bg_color || "#E8792F", background: "transparent" }}>
+          {btn.text}
+        </a>
+      );
+    }
+    return (
+      <a key={i} href={btn.url || "#"} className={`${base}`}
+        style={{ background: btn.bg_color || "#E8792F", color: btn.text_color || "#ffffff" }}>
+        {btn.text}
+      </a>
+    );
+  };
 
   return (
     <>
-      {announcement && (
-        <div className="text-center text-sm py-2 px-4 font-medium"
-          style={{ background: settings.header_announcement_color || "#E8792F", color: settings.header_announcement_text_color || "#ffffff" }}>
-          {announcement}
+      {/* Announcement bar */}
+      {s.header_announcement_enabled && s.header_announcement && (
+        <div
+          className="text-center text-sm py-2 px-4 font-medium"
+          style={{ background: s.header_announcement_color || "#E8792F", color: s.header_announcement_text_color || "#ffffff" }}
+        >
+          {s.header_announcement}
         </div>
       )}
-      <nav className={`sticky top-0 z-50 w-full${borderBottom ? " border-b border-gray-200" : ""}`} style={{ background: bgColor }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-6">
+
+      {/* Main navbar */}
+      <nav
+        className={`${navHeight} flex items-center px-4 md:px-8 sticky top-0 z-40`}
+        style={{
+          background: bgColor,
+          borderBottom: hasBorder ? "1px solid rgba(0,0,0,0.08)" : "none",
+          boxShadow: hasBorder ? "0 1px 4px rgba(0,0,0,0.06)" : "none",
+        }}
+      >
+        <div className="w-full max-w-7xl mx-auto flex items-center justify-between gap-6">
+
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0 flex items-center">
-            {logoUrl
-              ? <img src={logoUrl} alt={siteName} className="h-10 w-auto object-contain" />
-              : <span className="text-xl font-black" style={{ color: textColor }}>{siteName}</span>}
-          </Link>
+          <a href="/" className="flex-shrink-0">
+            {s.nav_logo_url ? (
+              <img
+                src={s.nav_logo_url}
+                alt="Logo"
+                style={{ height: `${logoHeight}px`, maxHeight: `${navHeightPx - 16}px`, width: "auto", objectFit: "contain" }}
+              />
+            ) : (
+              <span className="text-xl font-bold" style={{ color: textColor }}>Site</span>
+            )}
+          </a>
 
           {/* Desktop nav links */}
           <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
-            {navLinks.map((link, i) => {
-              if (link.type === "dropdown" && link.children?.length) {
-                return <DropdownMenu key={i} link={link} textColor={textColor} />;
-              }
-              return link.url?.startsWith("http") ? (
-                <a key={i} href={link.url} target={link.open_new_tab ? "_blank" : undefined} rel="noreferrer"
-                  className="text-sm font-medium hover:opacity-70 transition" style={{ color: textColor }}>{link.label}</a>
-              ) : (
-                <Link key={i} to={link.url || "/"} className="text-sm font-medium hover:opacity-70 transition" style={{ color: textColor }}>{link.label}</Link>
-              );
-            })}
+            {links.map((link, i) => (
+              <NavLink key={i} link={link} textStyle={textStyle} hoverStyle={hoverStyle} dropdownStyle={dropdownStyle} />
+            ))}
           </div>
 
           {/* Desktop CTA buttons */}
-          <div className="hidden md:flex items-center gap-2">
-            {ctaButtons.map((btn, i) => renderCtaButton(btn, i))}
+          <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+            {ctaButtons.map((btn, i) => renderCta(btn, i))}
           </div>
 
           {/* Mobile hamburger */}
-          <button className="md:hidden p-2" style={{ color: textColor }} onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <button
+            className="md:hidden p-2 rounded-lg"
+            style={{ color: textColor }}
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
+      </nav>
 
-        {/* Mobile menu */}
-        {menuOpen && (
-          <div className="md:hidden border-t border-gray-100 px-4 py-4 space-y-1" style={{ background: bgColor }}>
-            {navLinks.map((link, i) => {
-              if (link.type === "dropdown" && link.children?.length) {
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div
+          className="md:hidden fixed inset-x-0 z-30 shadow-lg border-b"
+          style={{ background: bgColor, top: navHeightPx + (s.header_announcement_enabled && s.header_announcement ? 36 : 0) }}
+        >
+          <div className="px-5 py-4 space-y-1">
+            {links.map((link, i) => {
+              if (link.type === "dropdown") {
                 return (
                   <div key={i}>
-                    <button onClick={() => toggleMobileGroup(i)}
-                      className="flex items-center justify-between w-full py-2 text-sm font-medium" style={{ color: textColor }}>
+                    <button
+                      className="w-full flex items-center justify-between py-2.5 text-left"
+                      style={textStyle}
+                      onClick={() => setMobileDropdowns(p => ({ ...p, [i]: !p[i] }))}
+                    >
                       {link.label}
-                      <ChevronDown className={`w-4 h-4 transition-transform ${mobileExpanded[i] ? "rotate-180" : ""}`} />
+                      <ChevronDown className={`w-4 h-4 transition-transform ${mobileDropdowns[i] ? "rotate-180" : ""}`} />
                     </button>
-                    {mobileExpanded[i] && (
-                      <div className="pl-4 space-y-1 border-l-2 border-gray-200 ml-2 mb-1">
-                        {(link.children || []).map((child, j) => (
-                          child.url?.startsWith("http") ? (
-                            <a key={j} href={child.url} target={child.open_new_tab ? "_blank" : undefined} rel="noreferrer"
-                              className="block py-1.5 text-sm text-gray-600" onClick={() => setMenuOpen(false)}>{child.label}</a>
-                          ) : (
-                            <Link key={j} to={child.url || "/"} className="block py-1.5 text-sm text-gray-600" onClick={() => setMenuOpen(false)}>{child.label}</Link>
-                          )
+                    {mobileDropdowns[i] && (
+                      <div className="pl-4 space-y-1 border-l-2 border-gray-100 mb-1">
+                        {(link.children || []).map((child, ci) => (
+                          <a key={ci} href={child.url || "#"} target={child.open_new_tab ? "_blank" : "_self"} rel="noreferrer"
+                            className="block py-2 text-sm" style={{ color: textColor }}
+                            onClick={() => setMobileOpen(false)}>
+                            {child.label}
+                          </a>
                         ))}
                       </div>
                     )}
                   </div>
                 );
               }
-              return link.url?.startsWith("http") ? (
-                <a key={i} href={link.url} target={link.open_new_tab ? "_blank" : undefined} rel="noreferrer"
-                  className="block py-2 text-sm font-medium" style={{ color: textColor }} onClick={() => setMenuOpen(false)}>{link.label}</a>
-              ) : (
-                <Link key={i} to={link.url || "/"} className="block py-2 text-sm font-medium" style={{ color: textColor }} onClick={() => setMenuOpen(false)}>{link.label}</Link>
+              return (
+                <a key={i} href={link.url || "#"} target={link.open_new_tab ? "_blank" : "_self"} rel="noreferrer"
+                  className="block py-2.5" style={textStyle}
+                  onClick={() => setMobileOpen(false)}>
+                  {link.label}
+                </a>
               );
             })}
-            <div className="flex flex-col gap-2 pt-2">
-              {ctaButtons.map((btn, i) => renderCtaButton(btn, i))}
+            <div className="pt-3 flex flex-col gap-2 border-t border-gray-100">
+              {ctaButtons.map((btn, i) => renderCta(btn, i))}
             </div>
           </div>
-        )}
-      </nav>
+        </div>
+      )}
     </>
   );
 }
