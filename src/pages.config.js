@@ -47,22 +47,6 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import AdminBranding from './pages/AdminBranding';
-import AdminBulkUpdate from './pages/AdminBulkUpdate';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminFacilities from './pages/AdminFacilities';
-import AdminFacilityEdit from './pages/AdminFacilityEdit';
-import AdminFormEdit from './pages/AdminFormEdit';
-import AdminForms from './pages/AdminForms';
-import AdminHomePage from './pages/AdminHomePage';
-import AdminPageConfigs from './pages/AdminPageConfigs';
-import AdminPageEdit from './pages/AdminPageEdit';
-import AdminPages from './pages/AdminPages';
-import AdminPopupEdit from './pages/AdminPopupEdit';
-import AdminPopups from './pages/AdminPopups';
-import AdminReservations from './pages/AdminReservations';
-import AdminSiteSettings from './pages/AdminSiteSettings';
-import AdminTeam from './pages/AdminTeam';
 import FacilityPage from './pages/FacilityPage';
 import Home from './pages/Home';
 import Locations from './pages/Locations';
@@ -73,22 +57,6 @@ import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "AdminBranding": AdminBranding,
-    "AdminBulkUpdate": AdminBulkUpdate,
-    "AdminDashboard": AdminDashboard,
-    "AdminFacilities": AdminFacilities,
-    "AdminFacilityEdit": AdminFacilityEdit,
-    "AdminFormEdit": AdminFormEdit,
-    "AdminForms": AdminForms,
-    "AdminHomePage": AdminHomePage,
-    "AdminPageConfigs": AdminPageConfigs,
-    "AdminPageEdit": AdminPageEdit,
-    "AdminPages": AdminPages,
-    "AdminPopupEdit": AdminPopupEdit,
-    "AdminPopups": AdminPopups,
-    "AdminReservations": AdminReservations,
-    "AdminSiteSettings": AdminSiteSettings,
-    "AdminTeam": AdminTeam,
     "FacilityPage": FacilityPage,
     "Home": Home,
     "Locations": Locations,

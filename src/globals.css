@@ -109,6 +109,7 @@ body {
    ============================================================ */
 @layer base {
   :root {
+    /* Default brand colors - set immediately to avoid white flash */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
