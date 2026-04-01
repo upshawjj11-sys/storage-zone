@@ -6,53 +6,53 @@ import { Menu, X, ChevronDown } from "lucide-react";
 const NAV_HEIGHTS = { normal: "h-16", large: "h-20", xl: "h-24" };
 const NAV_HEIGHT_PX = { normal: 64, large: 80, xl: 96 };
 
-function NavLink({ link, textStyle, hoverStyle, dropdownStyle, onClick }) {
-  const [open, setOpen] = useState(false);
+// Desktop dropdown — controlled externally so only one can be open at a time
+function DesktopDropdown({ link, textStyle, hoverStyle, dropdownStyle, isOpen, onToggle, onClose }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) onClose(); };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  if (link.type === "dropdown") {
-    return (
-      <div ref={ref} className="relative">
-        <button
-          className="flex items-center gap-1 transition-colors duration-150 whitespace-nowrap"
-          style={textStyle}
-          onMouseEnter={(e) => { Object.assign(e.currentTarget.style, hoverStyle); setOpen(true); }}
-          onMouseLeave={(e) => { Object.assign(e.currentTarget.style, textStyle); }}
-          onClick={() => setOpen(!open)}
+  return (
+    <div ref={ref} className="relative">
+      <button
+        className="flex items-center gap-1 transition-colors duration-150 whitespace-nowrap"
+        style={isOpen ? hoverStyle : textStyle}
+        onClick={onToggle}
+        onMouseEnter={(e) => Object.assign(e.currentTarget.style, hoverStyle)}
+        onMouseLeave={(e) => { if (!isOpen) Object.assign(e.currentTarget.style, textStyle); }}
+      >
+        {link.label}
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+      </button>
+      {isOpen && (
+        <div
+          className="absolute top-full left-0 mt-1 min-w-[180px] rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50"
+          style={{ background: dropdownStyle?.bg || "#ffffff" }}
         >
-          {link.label}
-          <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
-        </button>
-        {open && (
-          <div
-            className="absolute top-full left-0 mt-1 min-w-[180px] rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50"
-            style={{ background: dropdownStyle?.bg || "#ffffff" }}
-          >
-            {(link.children || []).map((child, i) => (
-              <a
-                key={i}
-                href={child.url || "#"}
-                target={child.open_new_tab ? "_blank" : "_self"}
-                rel="noreferrer"
-                className="block px-4 py-2.5 text-sm transition-colors hover:bg-gray-50"
-                style={{ color: dropdownStyle?.text || "#1B365D" }}
-                onClick={() => { setOpen(false); onClick?.(); }}
-              >
-                {child.label}
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  }
+          {(link.children || []).map((child, i) => (
+            <a
+              key={i}
+              href={child.url || "#"}
+              target={child.open_new_tab ? "_blank" : "_self"}
+              rel="noreferrer"
+              className="block px-4 py-2.5 text-sm transition-colors hover:bg-gray-50"
+              style={{ color: dropdownStyle?.text || "#1B365D" }}
+              onClick={onClose}
+            >
+              {child.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
+function DesktopLink({ link, textStyle, hoverStyle }) {
   return (
     <a
       href={link.url || "#"}
@@ -62,7 +62,6 @@ function NavLink({ link, textStyle, hoverStyle, dropdownStyle, onClick }) {
       style={textStyle}
       onMouseEnter={(e) => Object.assign(e.currentTarget.style, hoverStyle)}
       onMouseLeave={(e) => Object.assign(e.currentTarget.style, textStyle)}
-      onClick={onClick}
     >
       {link.label}
     </a>
@@ -72,6 +71,8 @@ function NavLink({ link, textStyle, hoverStyle, dropdownStyle, onClick }) {
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileDropdowns, setMobileDropdowns] = useState({});
+  // Only one desktop dropdown open at a time — track by index, null = all closed
+  const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 
   const { data: settings } = useQuery({
     queryKey: ["site-settings-nav"],
@@ -92,7 +93,6 @@ export default function Navbar() {
   const ctaButtons = s.nav_cta_buttons || [];
   const hasBorder = s.nav_border_bottom !== false;
 
-  // Menu text style settings
   const menuFontSize = s.nav_menu_font_size || "15";
   const menuFontWeight = s.nav_menu_font_weight || "500";
   const menuLetterSpacing = s.nav_menu_letter_spacing || "0";
@@ -137,14 +137,14 @@ export default function Navbar() {
     }
     if (btn.style === "ghost") {
       return (
-        <a key={i} href={btn.url || "#"} className={`${base}`}
+        <a key={i} href={btn.url || "#"} className={base}
           style={{ color: btn.bg_color || "#E8792F", background: "transparent" }}>
           {btn.text}
         </a>
       );
     }
     return (
-      <a key={i} href={btn.url || "#"} className={`${base}`}
+      <a key={i} href={btn.url || "#"} className={base}
         style={{ background: btn.bg_color || "#E8792F", color: btn.text_color || "#ffffff" }}>
         {btn.text}
       </a>
@@ -187,11 +187,25 @@ export default function Navbar() {
             )}
           </a>
 
-          {/* Desktop nav links */}
+          {/* Desktop nav links — only one dropdown open at a time */}
           <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
-            {links.map((link, i) => (
-              <NavLink key={i} link={link} textStyle={textStyle} hoverStyle={hoverStyle} dropdownStyle={dropdownStyle} />
-            ))}
+            {links.map((link, i) => {
+              if (link.type === "dropdown") {
+                return (
+                  <DesktopDropdown
+                    key={i}
+                    link={link}
+                    textStyle={textStyle}
+                    hoverStyle={hoverStyle}
+                    dropdownStyle={dropdownStyle}
+                    isOpen={openDropdownIndex === i}
+                    onToggle={() => setOpenDropdownIndex(openDropdownIndex === i ? null : i)}
+                    onClose={() => setOpenDropdownIndex(null)}
+                  />
+                );
+              }
+              return <DesktopLink key={i} link={link} textStyle={textStyle} hoverStyle={hoverStyle} />;
+            })}
           </div>
 
           {/* Desktop CTA buttons */}
