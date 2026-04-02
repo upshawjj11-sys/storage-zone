@@ -545,17 +545,23 @@ export default function FacilityPage() {
                     // Build a map of date -> holiday for the next 7 days
                     const now = new Date();
                     const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+                    const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+                    const todayDow = dayNames[now.getDay()];
+
                     const next7Dates = Array.from({ length: 7 }, (_, i) => {
                       const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
                       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
                     });
-                    // Map day-of-week name to upcoming date
-                    const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+                    // Map day-of-week name to upcoming date (using local time)
                     const dayToDate = {};
                     next7Dates.forEach((dateStr) => {
-                      const dow = dayNames[new Date(dateStr + "T12:00:00").getDay()];
+                      const [year, month, day] = dateStr.split("-").map(Number);
+                      const d = new Date(year, month - 1, day);
+                      const dow = dayNames[d.getDay()];
                       dayToDate[dow] = dateStr;
                     });
+
                     // Build holiday lookup by date
                     const holidayByDate = {};
                     holidayHours.forEach((h) => {
@@ -565,36 +571,41 @@ export default function FacilityPage() {
                     });
                     const formatH = (h) => h.closed ? "Closed" : h.is_24_hours ? "24 Hours" : `${h.open} – ${h.close}`;
                     return (
-                      <div className="space-y-2">
-                        {activeHours.map((h, i) => {
-                          const date = dayToDate[h.day];
-                          const holiday = date ? holidayByDate[date] : null;
-                          const isToday = date === todayStr;
-                          return (
-                            <div key={i} className={`rounded-lg px-2 py-1.5 ${isToday ? "bg-white/60 ring-1 ring-inset ring-amber-200" : ""}`}>
-                              <div className="flex justify-between text-sm">
-                                <span className="font-medium" style={{ color: S.sidebar_text_color }}>
-                                  {h.day}{isToday && <span className="ml-1.5 text-[10px] font-semibold text-amber-600 uppercase tracking-wide">Today</span>}
-                                </span>
-                                {holiday ? (
-                                  <span className="font-semibold text-amber-600">
-                                    📅 {formatH(holiday)}
+                      <div className="space-y-3">
+                        <div className="text-xs font-semibold uppercase tracking-wide text-amber-600 pb-2 border-b" style={{ borderColor: S.sidebar_text_color + "20" }}>
+                          Today: {todayDow}
+                        </div>
+                        <div className="space-y-2">
+                          {activeHours.map((h, i) => {
+                            const date = dayToDate[h.day];
+                            const holiday = date ? holidayByDate[date] : null;
+                            const isToday = date === todayStr;
+                            return (
+                              <div key={i} className={`rounded-lg px-2 py-1.5 ${isToday ? "bg-white/60 ring-1 ring-inset ring-amber-200" : ""}`}>
+                                <div className="flex justify-between text-sm">
+                                  <span className="font-medium" style={{ color: S.sidebar_text_color }}>
+                                    {h.day}{isToday && <span className="ml-1.5 text-[10px] font-semibold text-amber-600 uppercase tracking-wide">Today</span>}
                                   </span>
-                                ) : (
-                                  <span className="font-medium" style={{ color: S.sidebar_text_color }}>{formatH(h)}</span>
+                                  {holiday ? (
+                                    <span className="font-semibold text-amber-600">
+                                      📅 {formatH(holiday)}
+                                    </span>
+                                  ) : (
+                                    <span className="font-medium" style={{ color: S.sidebar_text_color }}>{formatH(h)}</span>
+                                  )}
+                                </div>
+                                {holiday && (
+                                  <div className="flex justify-between mt-0.5">
+                                    <span className="text-[11px] text-amber-500 font-medium">{holiday.label}</span>
+                                    <span className="text-[11px]" style={{ color: S.sidebar_text_color, opacity: 0.5 }}>
+                                      Normal: {formatH(h)}
+                                    </span>
+                                  </div>
                                 )}
                               </div>
-                              {holiday && (
-                                <div className="flex justify-between mt-0.5">
-                                  <span className="text-[11px] text-amber-500 font-medium">{holiday.label}</span>
-                                  <span className="text-[11px]" style={{ color: S.sidebar_text_color, opacity: 0.5 }}>
-                                    Normal: {formatH(h)}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
+                        </div>
                       </div>
                     );
                   })()}
