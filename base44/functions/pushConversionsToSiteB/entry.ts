@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
-const SITE_B_ENDPOINT = 'https://zone-command-base.base44.app/api/receiveSiteAConversions';
+const SITE_B_ENDPOINT = 'https://zone-command-base.base44.app/api/functions/receiveSiteAConversions';
 const SITE_B_API_KEY = Deno.env.get('SITE_B_API_KEY');
 
 // Sanitize reservation data, removing sensitive info
