@@ -52,11 +52,9 @@ function sanitizeAbandonedRental(abandoned) {
     conversion_type: 'abandoned_rental',
     status: abandoned.status,
     created_date: abandoned.created_date,
-    session_data: {
-      abandoned_at: abandoned.abandoned_at,
-      time_on_site_seconds: abandoned.time_on_site_seconds,
-      step_reached: abandoned.step_reached,
-    },
+    abandoned_at: abandoned.abandoned_at,
+    time_on_site_seconds: abandoned.time_on_site_seconds,
+    step_reached: abandoned.step_reached,
   };
 }
 
