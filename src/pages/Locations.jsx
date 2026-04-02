@@ -24,7 +24,7 @@ const STATE_ABBR = {
 };
 
 const DEFAULTS = {
-  hero_bg_color: "#1B365D",
+  hero_bg_color: "#E8792F",
   hero_bg_image: "",
   hero_title: "Find Your Storage Location",
   hero_subtitle: "Search by city, state, or zip code to find a location near you.",
@@ -36,7 +36,7 @@ const DEFAULTS = {
   card_border_color: "#f3f4f6",
   card_border_radius: "1rem",
   card_shadow: "sm",
-  card_hover_border_color: "#1B365D",
+  card_hover_border_color: "#E8792F",
   card_title_color: "#1B365D",
   card_subtitle_color: "#6b7280",
   accent_color: "#E8792F",

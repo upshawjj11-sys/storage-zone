@@ -4,7 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { MapPin, CreditCard, ChevronRight, ArrowLeft, Search } from "lucide-react";
 
 const DEFAULTS = {
-  hero_bg_color: "#1B365D",
+  hero_bg_color: "#E8792F",
   hero_bg_image: "",
   hero_title: "Pay My Bill",
   hero_subtitle: "Select your storage location below to securely access your account and make a payment.",
@@ -18,13 +18,13 @@ const DEFAULTS = {
   card_border_color: "#e5e7eb",
   card_border_radius: "1rem",
   card_shadow: "sm",
-  card_hover_border_color: "#1B365D",
+  card_hover_border_color: "#E8792F",
   card_title_color: "#111827",
   card_subtitle_color: "#6b7280",
   accent_color: "#E8792F",
   portal_header_bg: "#ffffff",
   portal_header_text_color: "#1f2937",
-  portal_back_btn_color: "#1B365D",
+  portal_back_btn_color: "#E8792F",
   pmb_show_search_bar: true,
   pmb_search_bar_placeholder: "Search by name, city, or address...",
   pmb_search_bar_bg: "#ffffff",
