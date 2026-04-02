@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { ITEM_CATEGORIES, UNIT_SIZES as FALLBACK_UNIT_SIZES } from "./itemData";
 import { Plus, Minus, Trash2, GripVertical, ChevronDown, ChevronUp, Info } from "lucide-react";
+import DynamicIcon from "../home/DynamicIcon";
 
 export default function UnitCalculator({ categories: propCategories, cfg = {} }) {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -135,7 +136,8 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
                     onClick={() => setOpenCategory(isOpen ? null : (cat.id || cat.label))}
                   >
                     <span className="font-semibold text-gray-800 flex items-center gap-2">
-                      <span>{cat.icon}</span> {cat.label}
+                      <DynamicIcon name={cat.icon} className="w-5 h-5" />
+                      {cat.label}
                     </span>
                     {isOpen ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
                   </button>
@@ -153,7 +155,7 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
                                 : "border-gray-200 bg-gray-50 text-gray-700 hover:border-[#1B365D]"
                             }`}
                           >
-                            <span className="text-2xl">{item.icon}</span>
+                            <DynamicIcon name={item.icon} className="w-6 h-6" />
                             <span className="leading-tight">{item.label}</span>
                             <span className="text-xs text-gray-400 font-normal">{item.cuft} cu ft</span>
                             {inList && (
@@ -211,7 +213,7 @@ export default function UnitCalculator({ categories: propCategories, cfg = {} })
                               <div {...provided.dragHandleProps} className="text-gray-300 cursor-grab flex-shrink-0">
                                 <GripVertical className="w-4 h-4" />
                               </div>
-                              <span className="text-xl flex-shrink-0">{si.icon}</span>
+                              <DynamicIcon name={si.icon} className="w-5 h-5 flex-shrink-0" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium text-gray-800 truncate">{si.label}</p>
                                 <p className="text-xs text-gray-400">
