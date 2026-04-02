@@ -547,6 +547,7 @@ export default function FacilityPage() {
                     const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
                     const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
                     const todayDow = dayNames[now.getDay()];
+                    const todayDowIndex = now.getDay();
 
                     const next7Dates = Array.from({ length: 7 }, (_, i) => {
                       const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
@@ -569,6 +570,16 @@ export default function FacilityPage() {
                         holidayByDate[h.date] = h;
                       }
                     });
+
+                    // Reorder hours starting with today
+                    const reorderedHours = activeHours.sort((a, b) => {
+                      const aIdx = dayNames.indexOf(a.day);
+                      const bIdx = dayNames.indexOf(b.day);
+                      const aOffset = (aIdx - todayDowIndex + 7) % 7;
+                      const bOffset = (bIdx - todayDowIndex + 7) % 7;
+                      return aOffset - bOffset;
+                    });
+
                     const formatH = (h) => h.closed ? "Closed" : h.is_24_hours ? "24 Hours" : `${h.open} – ${h.close}`;
                     return (
                       <div className="space-y-3">
@@ -576,7 +587,7 @@ export default function FacilityPage() {
                           Today: {todayDow}
                         </div>
                         <div className="space-y-2">
-                          {activeHours.map((h, i) => {
+                          {reorderedHours.map((h, i) => {
                             const date = dayToDate[h.day];
                             const holiday = date ? holidayByDate[date] : null;
                             const isToday = date === todayStr;
