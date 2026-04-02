@@ -340,6 +340,7 @@ export default function RentalFlow({ open, onClose, facility, unit, onSwitchToRe
 
     const timeOnSiteSeconds = Math.round((Date.now() - (sessionStartRef.current || Date.now())) / 1000);
     const stepLabel = enabledSteps[stepIndex]?.label || "Personal Info";
+    const stepReached = `Step ${stepIndex + 1}/${enabledSteps.length} - ${stepLabel}`;
 
     // Save to database
     await base44.entities.AbandonedRental.create({
@@ -356,7 +357,7 @@ export default function RentalFlow({ open, onClose, facility, unit, onSwitchToRe
       customer_phone: formData.phone || "",
       abandoned_at: new Date().toISOString(),
       time_on_site_seconds: timeOnSiteSeconds,
-      step_reached: stepLabel,
+      step_reached: stepReached,
     }).catch(() => {}); // persist abandonment
 
     // Send email notification
@@ -373,7 +374,7 @@ export default function RentalFlow({ open, onClose, facility, unit, onSwitchToRe
       customer_phone: formData.phone || "",
       abandoned_at: new Date().toISOString(),
       time_on_site_seconds: timeOnSiteSeconds,
-      step_reached: stepLabel,
+      step_reached: stepReached,
     }).catch(() => {}); // fire-and-forget, don't block UI
   };
 
