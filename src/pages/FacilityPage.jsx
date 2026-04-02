@@ -10,6 +10,7 @@ import UnitCard from "../components/facility/UnitCard";
 import RentalFlow from "../components/facility/RentalFlow";
 import ReservationFlow from "../components/facility/ReservationFlow";
 import InquiryFlow from "../components/facility/InquiryFlow";
+import UnitPickerModal from "../components/facility/UnitPickerModal";
 
 // Helper to build the canonical URL for a facility
 export function facilityUrl(facility) {
@@ -46,6 +47,7 @@ export default function FacilityPage() {
   const [activeFlow, setActiveFlow] = useState(null); // "rental" | "reservation" | "inquiry"
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [lightboxIdx, setLightboxIdx] = useState(null);
+  const [unitPickerFlow, setUnitPickerFlow] = useState(null); // flow type waiting for unit selection
 
   const { data: facility, isLoading } = useQuery({
     queryKey: ["facility", facilityIdParam, fullPathSlug],
@@ -118,9 +120,13 @@ export default function FacilityPage() {
   const isBC = (facility?.facility_type === "business_center");
 
   const handleAction = (unit = null, flowType = null) => {
-    setSelectedUnit(unit);
-    // If no flowType passed, default by facility type
     const flow = flowType || (isBC ? "inquiry" : "reservation");
+    // If no unit selected and facility has units, show picker first
+    if (!unit && facility?.units?.filter((u) => u.available !== false).length > 0) {
+      setUnitPickerFlow(flow);
+      return;
+    }
+    setSelectedUnit(unit);
     setActiveFlow(flow);
   };
 
@@ -671,6 +677,17 @@ export default function FacilityPage() {
         </div>
       )}
 
+      <UnitPickerModal
+        open={!!unitPickerFlow}
+        onClose={() => setUnitPickerFlow(null)}
+        facility={facility}
+        flowType={unitPickerFlow}
+        onSelectUnit={(unit) => {
+          setSelectedUnit(unit);
+          setActiveFlow(unitPickerFlow);
+          setUnitPickerFlow(null);
+        }}
+      />
       <RentalFlow
         open={activeFlow === "rental"}
         onClose={closeFlow}
