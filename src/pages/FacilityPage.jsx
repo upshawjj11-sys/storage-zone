@@ -582,12 +582,8 @@ export default function FacilityPage() {
 
                     const formatH = (h) => h.closed ? "Closed" : h.is_24_hours ? "24 Hours" : `${h.open} – ${h.close}`;
                     return (
-                      <div className="space-y-3">
-                        <div className="text-xs font-semibold uppercase tracking-wide text-amber-600 pb-2 border-b" style={{ borderColor: S.sidebar_text_color + "20" }}>
-                          Today: {todayDow}
-                        </div>
-                        <div className="space-y-2">
-                          {reorderedHours.map((h, i) => {
+                      <div className="space-y-2">
+                        {reorderedHours.map((h, i) => {
                             const date = dayToDate[h.day];
                             const holiday = date ? holidayByDate[date] : null;
                             const isToday = date === todayStr;
@@ -616,10 +612,9 @@ export default function FacilityPage() {
                               </div>
                             );
                           })}
-                        </div>
-                      </div>
-                    );
-                  })()}
+                          </div>
+                          );
+                          })()}
                 </div>
               )}
                {nearbyFacilities.length > 0 && (
