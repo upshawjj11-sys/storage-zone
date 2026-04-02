@@ -102,15 +102,15 @@ export default function UnitCard({ unit, facilityType, facilityId, unitIndex, on
             <div className="flex flex-col items-center gap-1.5">
               <button
                 onClick={() => onAction(unit, "rental")}
-                className="px-6 py-2.5 rounded-full font-extrabold text-base transition hover:opacity-90 whitespace-nowrap border-2"
-                style={{ background: "transparent", color: orange, borderColor: orange }}
+                className="px-6 py-2.5 rounded-full font-extrabold text-base transition hover:opacity-90 whitespace-nowrap shadow-md"
+                style={{ background: orange, color: orangeText }}
               >
                 Rent Now →
               </button>
               <button
                 onClick={() => onAction(unit, "reservation")}
-                className="px-5 py-2 rounded-full font-medium text-sm transition hover:opacity-90 whitespace-nowrap shadow-md"
-                style={{ color: primary, borderColor: primary, background: "#ffffff", border: `2px solid ${primary}` }}
+                className="px-5 py-2 rounded-full font-medium text-sm transition hover:opacity-90 whitespace-nowrap shadow-sm border"
+                style={{ color: primary, borderColor: "#CBD5E1", background: "#ffffff" }}
               >
                 Reserve · Free
               </button>
