@@ -49,6 +49,8 @@ export default function FacilityPage() {
 
   const { data: facility, isLoading } = useQuery({
     queryKey: ["facility", facilityIdParam, fullPathSlug],
+    staleTime: 0,
+    gcTime: 5 * 60 * 1000,
     queryFn: async () => {
       // Prefer ?id= param (admin preview), then slug from path
       if (facilityIdParam) {
