@@ -296,7 +296,7 @@ export default function FacilityPage() {
                 <button
                   onClick={() => setUnitsExpanded(!unitsExpanded)}
                   className="text-sm font-semibold hover:opacity-75 transition flex items-center gap-1"
-                  style={{ color: S.cta_button_bg }}
+                  style={{ color: S.accent_color || S.cta_button_bg }}
                 >
                   {unitsExpanded ? viewLessLabel : viewMoreLabel}
                 </button>
