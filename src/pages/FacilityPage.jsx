@@ -42,6 +42,7 @@ export default function FacilityPage() {
   const [hoursTab, setHoursTab] = useState("office");
   const [aboutExpanded, setAboutExpanded] = useState(false);
   const [photosExpanded, setPhotosExpanded] = useState(false);
+  const [unitsExpanded, setUnitsExpanded] = useState(false);
   const [activeFlow, setActiveFlow] = useState(null); // "rental" | "reservation" | "inquiry"
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [lightboxIdx, setLightboxIdx] = useState(null);
@@ -258,21 +259,53 @@ export default function FacilityPage() {
         <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>Available Units</h2>
         <div dangerouslySetInnerHTML={{ __html: facility.unit_grid_widget_code }} />
       </div>
-    ) : facility.units?.length > 0 ? (
-      <div key="units">
-        <h2 className="text-2xl font-bold mb-4" style={{ color: S.heading_color }}>
-          {isBC ? "Available Spaces" : "Available Units"}
-        </h2>
-        {isBC && (
-          <p className="text-sm mb-4" style={{ color: S.body_text_color }}>Select a space below to inquire for more information.</p>
-        )}
-        <div className="space-y-3">
-          {facility.units.map((unit, i) => (
-            <UnitCard key={i} unit={unit} facilityType={facility.facility_type} facilityId={facility.id} unitIndex={i} onAction={handleAction} />
-          ))}
+    ) : facility.units?.length > 0 ? (() => {
+      const cfg = facility.flow_config || {};
+      const PREVIEW_COUNT = cfg.units_preview_count || 3;
+      const viewMoreEnabled = cfg.units_view_more_enabled !== false;
+      const viewMoreLabel = cfg.units_view_more_label || "+ View all units at this location";
+      const viewLessLabel = cfg.units_view_less_label || "− Show fewer units";
+      const visibleUnits = (!viewMoreEnabled || unitsExpanded) ? facility.units : facility.units.slice(0, PREVIEW_COUNT);
+      const hasMore = viewMoreEnabled && facility.units.length > PREVIEW_COUNT;
+      return (
+        <div key="units">
+          <h2 className="text-2xl font-bold mb-1" style={{ color: S.heading_color }}>
+            {isBC ? "Available Spaces" : "Available Units"}
+          </h2>
+          {isBC && (
+            <p className="text-sm mb-3" style={{ color: S.body_text_color }}>Select a space below to inquire for more information.</p>
+          )}
+          <div className="rounded-2xl border bg-white overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
+            <div className="px-5 divide-y" style={{ borderColor: "#E5E7EB" }}>
+              {visibleUnits.map((unit, i) => (
+                <UnitCard
+                  key={i}
+                  unit={unit}
+                  facilityType={facility.facility_type}
+                  facilityId={facility.id}
+                  unitIndex={i}
+                  onAction={handleAction}
+                  accentColor={S.accent_color}
+                  buttonBg={S.cta_button_bg}
+                  buttonText={S.cta_button_text}
+                />
+              ))}
+            </div>
+            {hasMore && (
+              <div className="border-t px-5 py-4" style={{ borderColor: "#E5E7EB" }}>
+                <button
+                  onClick={() => setUnitsExpanded(!unitsExpanded)}
+                  className="text-sm font-semibold hover:opacity-75 transition flex items-center gap-1"
+                  style={{ color: S.cta_button_bg }}
+                >
+                  {unitsExpanded ? viewLessLabel : viewMoreLabel}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    ) : null,
+      );
+    })() : null,
 
     photos: facility.photos?.length > 0 ? (
       <div key="photos">

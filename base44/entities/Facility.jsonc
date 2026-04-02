@@ -1,0 +1,491 @@
+{
+  "name": "Facility",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "facility_type": {
+      "type": "string",
+      "enum": [
+        "self_storage",
+        "business_center"
+      ],
+      "default": "self_storage"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "zip": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "google_place_id": {
+      "type": "string"
+    },
+    "google_my_business_url": {
+      "type": "string"
+    },
+    "facebook_url": {
+      "type": "string"
+    },
+    "instagram_url": {
+      "type": "string"
+    },
+    "x_url": {
+      "type": "string"
+    },
+    "tiktok_url": {
+      "type": "string"
+    },
+    "youtube_url": {
+      "type": "string"
+    },
+    "notice_bar": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "text": {
+          "type": "string"
+        },
+        "bg_color": {
+          "type": "string"
+        },
+        "text_color": {
+          "type": "string"
+        },
+        "bold": {
+          "type": "boolean",
+          "default": false
+        },
+        "italic": {
+          "type": "boolean",
+          "default": false
+        },
+        "underline": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "hours": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "string"
+          },
+          "open": {
+            "type": "string"
+          },
+          "close": {
+            "type": "string"
+          },
+          "closed": {
+            "type": "boolean"
+          },
+          "is_24_hours": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "access_hours": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "string"
+          },
+          "open": {
+            "type": "string"
+          },
+          "close": {
+            "type": "string"
+          },
+          "closed": {
+            "type": "boolean"
+          },
+          "is_24_hours": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "holiday_hours": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "open": {
+            "type": "string"
+          },
+          "close": {
+            "type": "string"
+          },
+          "closed": {
+            "type": "boolean"
+          },
+          "is_24_hours": {
+            "type": "boolean"
+          },
+          "applies_to": {
+            "type": "string",
+            "enum": [
+              "office",
+              "access",
+              "both"
+            ],
+            "default": "both"
+          }
+        }
+      }
+    },
+    "show_pillars": {
+      "type": "boolean",
+      "default": false
+    },
+    "pillars_bg_color": {
+      "type": "string"
+    },
+    "pillars_show_info_button": {
+      "type": "boolean",
+      "default": false,
+      "description": "Show a circular info button above the pillars bar"
+    },
+    "pillars_info_link": {
+      "type": "string",
+      "description": "URL the info button links to"
+    },
+    "pillars": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "icon_color": {
+            "type": "string"
+          },
+          "text_color": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "page_styles": {
+      "type": "object",
+      "properties": {
+        "page_bg": {
+          "type": "string"
+        },
+        "heading_color": {
+          "type": "string"
+        },
+        "body_text_color": {
+          "type": "string"
+        },
+        "accent_color": {
+          "type": "string"
+        },
+        "section_card_bg": {
+          "type": "string"
+        },
+        "section_card_text": {
+          "type": "string"
+        },
+        "sidebar_bg": {
+          "type": "string"
+        },
+        "sidebar_heading_color": {
+          "type": "string"
+        },
+        "sidebar_text_color": {
+          "type": "string"
+        },
+        "cta_bg": {
+          "type": "string"
+        },
+        "cta_text_color": {
+          "type": "string"
+        },
+        "cta_button_bg": {
+          "type": "string"
+        },
+        "cta_button_text": {
+          "type": "string"
+        },
+        "hours_active_tab_bg": {
+          "type": "string"
+        },
+        "hours_active_tab_text": {
+          "type": "string"
+        },
+        "faq_border_color": {
+          "type": "string"
+        },
+        "faq_text_color": {
+          "type": "string"
+        },
+        "review_card_bg": {
+          "type": "string"
+        }
+      }
+    },
+    "flow_config": {
+      "type": "object",
+      "description": "Controls the rental/reservation/inquiry flow UI and units section behavior",
+      "properties": {
+        "units_preview_count": {
+          "type": "number",
+          "description": "Number of units to show before the 'View More' toggle (default: 3)"
+        },
+        "units_view_more_enabled": {
+          "type": "boolean",
+          "description": "Show the View More toggle (default: true)",
+          "default": true
+        },
+        "units_view_more_label": {
+          "type": "string",
+          "description": "Label for the expand link (default: '+ View all units at this location')"
+        },
+        "units_view_less_label": {
+          "type": "string",
+          "description": "Label for the collapse link (default: '\u2212 Show fewer units')"
+        }
+      }
+    },
+    "about": {
+      "type": "string"
+    },
+    "about_collapsible": {
+      "type": "boolean",
+      "default": false
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "photos_display_mode": {
+      "type": "string",
+      "enum": [
+        "slider",
+        "gallery"
+      ],
+      "default": "slider"
+    },
+    "photos_collapsible": {
+      "type": "boolean",
+      "default": false
+    },
+    "videos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "banner_image": {
+      "type": "string"
+    },
+    "banner_title": {
+      "type": "string"
+    },
+    "banner_subtitle": {
+      "type": "string"
+    },
+    "faqs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "number"
+          },
+          "text": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "unit_grid_api_key": {
+      "type": "string"
+    },
+    "unit_grid_widget_code": {
+      "type": "string"
+    },
+    "payment_center_url": {
+      "type": "string"
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "type": {
+            "type": "string"
+          },
+          "unit_type": {
+            "type": "string",
+            "enum": [
+              "Standard",
+              "Climate Controlled",
+              "Warehouse",
+              "Office Space",
+              "Warehouse/Office Space",
+              "Suite",
+              "Other"
+            ]
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "is_open": {
+            "type": "boolean",
+            "description": "For business centers: whether the tenant/space is currently open"
+          },
+          "show_is_open": {
+            "type": "boolean",
+            "description": "For business centers: whether to display the open/closed status badge"
+          },
+          "show_more_info": {
+            "type": "boolean",
+            "description": "For business centers: whether to show a More Info button"
+          },
+          "description": {
+            "type": "string",
+            "description": "Rich text description for the unit detail page"
+          },
+          "pdf_url": {
+            "type": "string",
+            "description": "URL to a PDF document shown on the unit detail page"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "videos": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "coming_soon"
+      ],
+      "default": "active"
+    },
+    "meta_title": {
+      "type": "string"
+    },
+    "meta_description": {
+      "type": "string"
+    },
+    "sections_order": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

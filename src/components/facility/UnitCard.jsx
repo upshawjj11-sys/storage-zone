@@ -1,145 +1,123 @@
-import React, { useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Check, ChevronDown, ChevronUp, Image, Info } from "lucide-react";
+import React from "react";
+import { Check, Info } from "lucide-react";
 
-export default function UnitCard({ unit, facilityType, facilityId, unitIndex, onAction }) {
-  const [expanded, setExpanded] = useState(false);
-  const [photoIdx, setPhotoIdx] = useState(0);
-
+/**
+ * Clean row-style unit card inspired by leading storage sites.
+ * Layout: [Name + features] | [Price] | [Action buttons]
+ * Works for both self_storage and business_center.
+ */
+export default function UnitCard({ unit, facilityType, facilityId, unitIndex, onAction, accentColor, buttonBg, buttonText }) {
   const isBC = facilityType === "business_center";
-  const hasMedia = (unit.photos?.length > 0) || (unit.videos?.length > 0);
-
   const moreInfoUrl = `/UnitDetailPage?facility=${facilityId}&unit=${unitIndex}`;
 
+  const primary = "#1B365D";
+  const orange = buttonBg || "#E8792F";
+  const orangeText = buttonText || "#ffffff";
+  const accent = accentColor || "#2A9D8F";
+
+  const unavailable = unit.available === false;
+
   return (
-    <div
-      className={`rounded-xl border transition-all ${unit.available !== false
-        ? "bg-white border-gray-200 hover:border-[#E8792F] hover:shadow-md"
-        : "bg-gray-50 border-gray-100 opacity-60"}`}
-    >
-      {/* Main row */}
-      <div
-        className="flex items-center justify-between p-4 cursor-pointer"
-        onClick={() => hasMedia ? setExpanded(!expanded) : (unit.available !== false && onAction(unit))}
-      >
+    <div className={`border-b last:border-b-0 py-5 ${unavailable ? "opacity-50" : ""}`}
+      style={{ borderColor: "#E5E7EB" }}>
+      <div className="flex items-center gap-4">
+
+        {/* Left: Name, size, features */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <p className="font-semibold text-gray-900">{unit.name}</p>
-            {unit.unit_type && (
-              <Badge className="bg-[#1B365D]/10 text-[#1B365D] border-0 text-xs">{unit.unit_type}</Badge>
-            )}
+          <div className="flex items-center gap-2 flex-wrap mb-1">
+            <p className="font-bold text-lg leading-tight" style={{ color: primary }}>
+              {unit.name}
+              {unit.size && unit.size !== unit.name ? ` ${unit.size}` : ""}
+            </p>
             {/* Open/Closed badge for BC */}
             {isBC && unit.show_is_open && (
-              <Badge className={unit.is_open
-                ? "bg-green-100 text-green-700 border-0 text-xs"
-                : "bg-red-100 text-red-600 border-0 text-xs"}>
-                {unit.is_open ? "● Open" : "● Closed"}
-              </Badge>
+              <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${unit.is_open ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
+                ● {unit.is_open ? "Open" : "Closed"}
+              </span>
             )}
           </div>
-          <p className="text-sm text-gray-500 mt-0.5">
-            {unit.size}
-            {unit.type && unit.type !== unit.unit_type ? ` • ${unit.type}` : ""}
-          </p>
-          {/* Unit features */}
+
+          {/* Unit type */}
+          {unit.unit_type && (
+            <p className="text-sm text-gray-500 mb-1.5">{unit.unit_type}</p>
+          )}
+
+          {/* Features as checkmarks */}
           {unit.features?.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mt-2">
+            <ul className="space-y-0.5">
               {unit.features.map((f, i) => (
-                <span key={i} className="flex items-center gap-1 text-xs bg-gray-100 rounded-full px-2 py-0.5 text-gray-600">
-                  <Check className="w-3 h-3 text-[#2A9D8F]" />{f}
-                </span>
+                <li key={i} className="flex items-center gap-1.5 text-sm text-gray-600">
+                  <Check className="w-3.5 h-3.5 flex-shrink-0" style={{ color: accent }} />
+                  {f}
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </div>
-        <div className="text-right ml-4 flex-shrink-0 flex flex-col items-end gap-2">
+
+        {/* Center: Price */}
+        {unit.price > 0 && (
+          <div className="text-right flex-shrink-0 hidden sm:block" style={{ minWidth: "110px" }}>
+            <p className="text-2xl font-black" style={{ color: primary }}>
+              ${unit.price.toLocaleString()}
+              <span className="text-sm font-semibold text-gray-500">/mo</span>
+            </p>
+            {!isBC && !unavailable && (
+              <p className="text-xs text-gray-400 mt-0.5">Starting price</p>
+            )}
+          </div>
+        )}
+
+        {/* Right: Action buttons */}
+        <div className="flex-shrink-0 flex flex-col items-center gap-1.5">
+          {/* Price (mobile only) */}
           {unit.price > 0 && (
-            <p className="font-bold text-xl text-[#1B365D]">
-              {isBC ? <>Starting at<br /><span>${unit.price.toLocaleString()}/mo</span></> : `$${unit.price}/mo`}
+            <p className="text-lg font-black sm:hidden" style={{ color: primary }}>
+              ${unit.price.toLocaleString()}<span className="text-xs font-semibold text-gray-500">/mo</span>
             </p>
           )}
-          {!isBC && (unit.available !== false
-            ? <Badge className="bg-green-100 text-green-700 border-0">Available</Badge>
-            : <Badge variant="secondary">Occupied</Badge>)}
-          <div className="flex gap-2 items-center flex-wrap justify-end">
-            {hasMedia && (
-              <button onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
-                className="text-xs flex items-center gap-1 text-[#E8792F] hover:underline">
-                <Image className="w-3.5 h-3.5" />
-                {expanded ? "Hide" : "View"} media
-                {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-              </button>
-            )}
-            {/* More Info button for BC */}
-            {isBC && unit.show_more_info && facilityId != null && (
-              <a
-                href={moreInfoUrl}
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-[#1B365D] text-[#1B365D] hover:bg-[#1B365D] hover:text-white transition font-medium"
+
+          {unavailable ? (
+            <span className="text-xs text-gray-400 font-medium px-3 py-1.5 rounded-full bg-gray-100">Occupied</span>
+          ) : isBC ? (
+            <div className="flex flex-col items-center gap-1">
+              <button
+                onClick={() => onAction(unit, "inquiry")}
+                className="px-5 py-2.5 rounded-full font-bold text-sm transition hover:opacity-90 whitespace-nowrap"
+                style={{ background: orange, color: orangeText }}
               >
-                <Info className="w-3.5 h-3.5" /> More Info
-              </a>
-            )}
-            {unit.available !== false && isBC && (
-              <Button size="sm" className="rounded-full text-xs" style={{ background: "#E8792F" }}
-                onClick={(e) => { e.stopPropagation(); onAction(unit, "inquiry"); }}>
-                Inquire
-              </Button>
-            )}
-            {unit.available !== false && !isBC && (
-              <>
-                <Button size="sm" variant="outline" className="rounded-full text-xs border-[#1B365D] text-[#1B365D] hover:bg-[#1B365D] hover:text-white"
-                  onClick={(e) => { e.stopPropagation(); onAction(unit, "reservation"); }}>
-                  Reserve
-                </Button>
-                <Button size="sm" className="rounded-full text-xs" style={{ background: "#E8792F" }}
-                  onClick={(e) => { e.stopPropagation(); onAction(unit, "rental"); }}>
-                  Rent Now
-                </Button>
-              </>
-            )}
-          </div>
+                Inquire Now
+              </button>
+              {unit.show_more_info && facilityId != null && (
+                <a
+                  href={moreInfoUrl}
+                  className="flex items-center gap-1 text-xs font-medium hover:underline mt-0.5"
+                  style={{ color: primary }}
+                >
+                  <Info className="w-3 h-3" /> More Info
+                </a>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-1.5">
+              <button
+                onClick={() => onAction(unit, "rental")}
+                className="px-5 py-2.5 rounded-full font-bold text-sm transition hover:opacity-90 whitespace-nowrap"
+                style={{ background: orange, color: orangeText }}
+              >
+                Rent Now
+              </button>
+              <button
+                onClick={() => onAction(unit, "reservation")}
+                className="text-xs font-semibold hover:underline transition"
+                style={{ color: primary }}
+              >
+                Reserve · No Obligation
+              </button>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Expanded media */}
-      {expanded && hasMedia && (
-        <div className="border-t px-4 pb-4 pt-3 space-y-3">
-          {unit.photos?.length > 0 && (
-            <div>
-              <div className="relative rounded-xl overflow-hidden bg-black">
-                <img src={unit.photos[photoIdx]} alt="" className="w-full max-h-72 object-contain mx-auto" />
-                {unit.photos.length > 1 && (
-                  <div className="absolute inset-x-0 bottom-2 flex justify-center gap-1.5">
-                    {unit.photos.map((_, i) => (
-                      <button key={i} onClick={() => setPhotoIdx(i)}
-                        className={`w-2 h-2 rounded-full transition ${i === photoIdx ? "bg-white" : "bg-white/40"}`} />
-                    ))}
-                  </div>
-                )}
-                {unit.photos.length > 1 && (
-                  <>
-                    <button onClick={() => setPhotoIdx((photoIdx - 1 + unit.photos.length) % unit.photos.length)}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1 hover:bg-black/60">‹</button>
-                    <button onClick={() => setPhotoIdx((photoIdx + 1) % unit.photos.length)}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-1 hover:bg-black/60">›</button>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
-          {unit.videos?.length > 0 && (
-            <div className="grid sm:grid-cols-2 gap-3">
-              {unit.videos.map((url, i) => (
-                <div key={i} className="rounded-xl overflow-hidden aspect-video">
-                  <iframe src={url} className="w-full h-full" allowFullScreen />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
