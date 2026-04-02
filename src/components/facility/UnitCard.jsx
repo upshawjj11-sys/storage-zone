@@ -81,11 +81,23 @@ export default function UnitCard({ unit, facilityType, facilityId, unitIndex, on
                 <Info className="w-3.5 h-3.5" /> More Info
               </a>
             )}
-            {unit.available !== false && (
+            {unit.available !== false && isBC && (
               <Button size="sm" className="rounded-full text-xs" style={{ background: "#E8792F" }}
-                onClick={(e) => { e.stopPropagation(); onAction(unit); }}>
-                {isBC ? "Inquire" : "Reserve"}
+                onClick={(e) => { e.stopPropagation(); onAction(unit, "inquiry"); }}>
+                Inquire
               </Button>
+            )}
+            {unit.available !== false && !isBC && (
+              <>
+                <Button size="sm" variant="outline" className="rounded-full text-xs border-[#1B365D] text-[#1B365D] hover:bg-[#1B365D] hover:text-white"
+                  onClick={(e) => { e.stopPropagation(); onAction(unit, "reservation"); }}>
+                  Reserve
+                </Button>
+                <Button size="sm" className="rounded-full text-xs" style={{ background: "#E8792F" }}
+                  onClick={(e) => { e.stopPropagation(); onAction(unit, "rental"); }}>
+                  Rent Now
+                </Button>
+              </>
             )}
           </div>
         </div>

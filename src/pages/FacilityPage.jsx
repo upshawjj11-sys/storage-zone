@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import RichTextRenderer from "@/components/shared/RichTextRenderer";
-import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, ChevronLeft, ChevronRight, Building2, Warehouse, Facebook, Instagram, Youtube, Twitter, Music, Info } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Star, ChevronDown, ChevronUp, Check, ChevronLeft, ChevronRight, Building2, Facebook, Instagram, Youtube, Twitter, Music, Info } from "lucide-react";
 import DynamicIcon from "../components/home/DynamicIcon";
 import { Badge } from "@/components/ui/badge";
 import ImageSlider from "../components/shared/ImageSlider";
 import UnitCard from "../components/facility/UnitCard";
-import InquiryDialog from "../components/facility/InquiryDialog";
+import RentalFlow from "../components/facility/RentalFlow";
+import ReservationFlow from "../components/facility/ReservationFlow";
+import InquiryFlow from "../components/facility/InquiryFlow";
 
 // Helper to build the canonical URL for a facility
 export function facilityUrl(facility) {
@@ -40,15 +42,9 @@ export default function FacilityPage() {
   const [hoursTab, setHoursTab] = useState("office");
   const [aboutExpanded, setAboutExpanded] = useState(false);
   const [photosExpanded, setPhotosExpanded] = useState(false);
-  const [showDialog, setShowDialog] = useState(false);
+  const [activeFlow, setActiveFlow] = useState(null); // "rental" | "reservation" | "inquiry"
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [lightboxIdx, setLightboxIdx] = useState(null);
-  const [form, setForm] = useState({
-    customer_name: "", customer_email: "", customer_phone: "",
-    move_in_date: "", notes: "",
-  });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   const { data: facility, isLoading } = useQuery({
     queryKey: ["facility", facilityIdParam, fullPathSlug],
@@ -118,31 +114,16 @@ export default function FacilityPage() {
     enabled: !!facility?.latitude && !!facility?.longitude,
   });
 
-  const isBC = facility?.facility_type === "business_center";
+  const isBC = (facility?.facility_type === "business_center");
 
-  const handleAction = (unit = null) => {
+  const handleAction = (unit = null, flowType = null) => {
     setSelectedUnit(unit);
-    setSubmitted(false);
-    setShowDialog(true);
+    // If no flowType passed, default by facility type
+    const flow = flowType || (isBC ? "inquiry" : "reservation");
+    setActiveFlow(flow);
   };
 
-  const handleSubmit = async () => {
-    setSubmitting(true);
-    await base44.entities.Reservation.create({
-      ...form,
-      facility_id: facility.id,
-      facility_name: facility.name,
-      facility_type: facility.facility_type || "self_storage",
-      unit_name: selectedUnit?.name || "",
-      unit_size: selectedUnit?.size || "",
-      unit_price: selectedUnit?.price || 0,
-      unit_type: selectedUnit?.unit_type || selectedUnit?.type || "",
-      unit_features: selectedUnit?.features || [],
-      reservation_type: isBC ? "inquiry" : "reservation",
-    });
-    setSubmitting(false);
-    setSubmitted(true);
-  };
+  const closeFlow = () => setActiveFlow(null);
 
   // Use cached page_bg so there's no flash of the wrong background while loading
   const cacheKey = `fp_bg_${facilityIdParam || slugFromPath || "default"}`;
@@ -605,20 +586,39 @@ export default function FacilityPage() {
                  </div>
                )}
                <div className="rounded-2xl p-6 text-center" style={{ background: S.cta_bg }}>
-                <h3 className="text-xl font-bold mb-2" style={{ color: S.cta_text_color }}>
-                  {isBC ? "Interested in a Space?" : "Reserve Your Unit"}
-                </h3>
-                <p className="text-sm mb-4" style={{ color: S.cta_text_color, opacity: 0.75 }}>
-                  {isBC ? "Contact us to schedule a tour or get more info." : "No commitment. Cancel anytime."}
-                </p>
-                <button
-                  className="w-full rounded-full font-semibold py-3 transition hover:opacity-90"
-                  style={{ background: S.cta_button_bg, color: S.cta_button_text }}
-                  onClick={() => handleAction(null)}
-                >
-                  {isBC ? "Inquire Now" : "Reserve Now"}
-                </button>
-              </div>
+                 <h3 className="text-xl font-bold mb-2" style={{ color: S.cta_text_color }}>
+                   {isBC ? "Interested in a Space?" : "Get Started Today"}
+                 </h3>
+                 <p className="text-sm mb-4" style={{ color: S.cta_text_color, opacity: 0.75 }}>
+                   {isBC ? "Contact us to schedule a tour or get more info." : "Reserve for free or rent now online."}
+                 </p>
+                 {isBC ? (
+                   <button
+                     className="w-full rounded-full font-semibold py-3 transition hover:opacity-90"
+                     style={{ background: S.cta_button_bg, color: S.cta_button_text }}
+                     onClick={() => handleAction(null, "inquiry")}
+                   >
+                     Inquire Now
+                   </button>
+                 ) : (
+                   <div className="space-y-2">
+                     <button
+                       className="w-full rounded-full font-semibold py-3 transition hover:opacity-90"
+                       style={{ background: S.cta_button_bg, color: S.cta_button_text }}
+                       onClick={() => handleAction(null, "rental")}
+                     >
+                       Rent Now
+                     </button>
+                     <button
+                       className="w-full rounded-full font-semibold py-2.5 transition hover:opacity-80 border"
+                       style={{ background: "transparent", color: S.cta_text_color, borderColor: S.cta_text_color + "40" }}
+                       onClick={() => handleAction(null, "reservation")}
+                     >
+                       Reserve (Free)
+                     </button>
+                   </div>
+                 )}
+               </div>
             </div>
           </div>
         </div>
@@ -638,16 +638,25 @@ export default function FacilityPage() {
         </div>
       )}
 
-      <InquiryDialog
-        open={showDialog}
-        onOpenChange={(v) => { setShowDialog(v); if (!v) setSubmitted(false); }}
+      <RentalFlow
+        open={activeFlow === "rental"}
+        onClose={closeFlow}
         facility={facility}
-        selectedUnit={selectedUnit}
-        form={form}
-        setForm={setForm}
-        submitting={submitting}
-        submitted={submitted}
-        onSubmit={handleSubmit}
+        unit={selectedUnit}
+        onSwitchToReservation={() => setActiveFlow("reservation")}
+      />
+      <ReservationFlow
+        open={activeFlow === "reservation"}
+        onClose={closeFlow}
+        facility={facility}
+        unit={selectedUnit}
+        onSwitchToRental={() => setActiveFlow("rental")}
+      />
+      <InquiryFlow
+        open={activeFlow === "inquiry"}
+        onClose={closeFlow}
+        facility={facility}
+        unit={selectedUnit}
       />
     </div>
   );
