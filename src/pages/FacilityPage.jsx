@@ -589,9 +589,10 @@ export default function FacilityPage() {
                             const isToday = date === todayStr;
                             return (
                               <div key={i} className={`rounded-lg px-2 py-1.5 ${isToday ? "bg-white/60 ring-1 ring-inset ring-amber-200" : ""}`}>
+                                {isToday && <div className="text-[10px] font-semibold text-amber-600 uppercase tracking-wide mb-1">Today</div>}
                                 <div className="flex justify-between text-sm">
                                   <span className="font-medium" style={{ color: S.sidebar_text_color }}>
-                                    {h.day}{isToday && <span className="ml-1.5 text-[10px] font-semibold text-amber-600 uppercase tracking-wide">Today</span>}
+                                    {h.day}
                                   </span>
                                   {holiday ? (
                                     <span className="font-semibold text-amber-600">
