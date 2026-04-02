@@ -566,7 +566,8 @@ export default function FacilityPage() {
                     // Build holiday lookup by date
                     const holidayByDate = {};
                     holidayHours.forEach((h) => {
-                      if (!h.applies_to || h.applies_to === "both" || h.applies_to === hoursTab) {
+                      const appliesTo = h.applies_to || "both";
+                      if (appliesTo === "both" || appliesTo === hoursTab) {
                         holidayByDate[h.date] = h;
                       }
                     });
