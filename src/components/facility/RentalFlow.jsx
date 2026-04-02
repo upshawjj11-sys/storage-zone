@@ -4,6 +4,7 @@ import { Check, ChevronRight } from "lucide-react";
 import FlowModal from "./FlowModal";
 import FlowSuccess from "./FlowSuccess";
 import FlowInput, { FlowSelect, FlowTextarea } from "./FlowInput";
+import SignaturePad from "./SignaturePad";
 
 const DEFAULT_CONFIG = {
   heading: "Complete Your Rental",
@@ -176,21 +177,54 @@ function StepProtectionPlan({ data, setData }) {
   );
 }
 
-function StepLease({ data, setData }) {
+function StepLease({ data, setData, facility, unit }) {
+  const tenantName = [data.first_name, data.middle_name, data.last_name].filter(Boolean).join(" ") || "[Tenant Name]";
+  const tenantEmail = data.email || "[Email]";
+  const tenantPhone = data.phone || "[Phone]";
+  const tenantAddress = [data.address, data.city, data.state, data.zip].filter(Boolean).join(", ") || "[Mailing Address]";
+  const unitName = unit?.name || "[Unit #]";
+  const unitSize = unit?.size || "[Size]";
+  const unitPrice = unit?.price ? `$${unit.price}/mo` : "[Price]";
+  const facilityName = facility?.name || "[Facility Name]";
+  const facilityAddress = [facility?.address, facility?.city, facility?.state, facility?.zip].filter(Boolean).join(", ") || "[Facility Address]";
+  const today = new Date().toLocaleDateString("en-US");
+
   return (
-    <div className="space-y-4">
-      <div className="bg-gray-50 rounded-xl p-4 h-48 overflow-y-auto text-sm text-gray-600 leading-relaxed border">
-        <p className="font-semibold text-gray-900 mb-2">Rental Agreement</p>
-        <p>This Storage Rental Agreement ("Agreement") is entered into between the facility operator ("Operator") and the tenant identified herein ("Tenant"). Tenant agrees to rent the storage unit as described, subject to all terms and conditions herein.</p>
-        <p className="mt-2">Rent is due on the first of each month. A late fee may be charged for payments received after the grace period. Operator reserves the right to deny access or overlook the unit if rent is not paid as agreed.</p>
-        <p className="mt-2">Tenant acknowledges that they are storing goods at their own risk. Operator is not liable for theft, damage, or loss of stored property. Tenant is encouraged to obtain insurance coverage for stored items.</p>
-        <p className="mt-2">This Agreement shall remain in force month-to-month until terminated by either party with appropriate written notice as specified by local law.</p>
+    <div className="space-y-5">
+      <div className="bg-gray-50 rounded-xl p-5 h-64 overflow-y-auto text-xs text-gray-700 leading-relaxed border space-y-3">
+        <p className="font-bold text-sm text-gray-900 text-center">SELF STORAGE LEASE AGREEMENT</p>
+        <p><strong>Facility:</strong> {facilityName} — {facilityAddress}</p>
+        <p><strong>Occupant:</strong> {tenantName} | <strong>Email:</strong> {tenantEmail} | <strong>Phone:</strong> {tenantPhone}</p>
+        <p><strong>Mailing Address:</strong> {tenantAddress}</p>
+        <p><strong>Space #:</strong> {unitName} | <strong>Size:</strong> {unitSize} | <strong>Monthly Rent:</strong> {unitPrice}</p>
+        <p><strong>Rental Agreement Date:</strong> {today} | <strong>Due Date:</strong> 1st of month</p>
+        <p><strong>Emergency Contact:</strong> {data.emergency_name || "[Emergency Contact]"} — {data.emergency_phone || "[Phone]"}</p>
+        <hr className="border-gray-200" />
+        <p><strong>1. RENT.</strong> Occupant agrees to pay Operator the monthly rental rate stated above, due on the 1st of each month. A late fee will be assessed after the grace period allowed by Florida law.</p>
+        <p><strong>2. USE OF SPACE.</strong> Occupant shall use the space solely for storage of personal property. No hazardous, flammable, perishable, or illegal items may be stored. No animals, plants, or people may reside in the space.</p>
+        <p><strong>3. ACCESS.</strong> Occupant may access the space during facility access hours. Operator may deny access for non-payment or breach of this Agreement.</p>
+        <p><strong>4. LIEN.</strong> Pursuant to Florida Statute Chapter 83, Part III, Operator has a lien on all personal property stored in the space. If rent is unpaid, Operator may sell the stored property after proper notice.</p>
+        <p><strong>5. LIABILITY.</strong> Occupant stores property at Occupant's own risk. Operator is not liable for loss, theft, or damage to stored property. Occupant is encouraged to obtain personal property insurance.</p>
+        <p><strong>6. INSURANCE.</strong> Operator does not provide insurance for Occupant's stored property. Occupant is solely responsible for insuring the stored items.</p>
+        <p><strong>7. TERMINATION.</strong> Either party may terminate this Agreement with written notice as required by Florida law. Upon vacating, Occupant shall remove all property and leave the space clean and undamaged.</p>
+        <p><strong>8. FLORIDA LAW.</strong> This Agreement is governed by the laws of the State of Florida. Any disputes shall be resolved in the county where the facility is located.</p>
+        <p><strong>9. ENTIRE AGREEMENT.</strong> This Agreement constitutes the entire agreement between the parties and supersedes all prior negotiations, representations, or agreements.</p>
+        <p className="text-gray-500 italic">By signing below, Occupant acknowledges reading, understanding, and agreeing to all terms of this Lease Agreement.</p>
       </div>
+
+      <div>
+        <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Occupant Signature</p>
+        <SignaturePad
+          value={data.signature}
+          onChange={(sig) => setData((d) => ({ ...d, signature: sig, lease_agreed: !!sig }))}
+        />
+      </div>
+
       <label className="flex items-center gap-3 cursor-pointer">
         <input
           type="checkbox"
           checked={!!data.lease_agreed}
-          onChange={(e) => setData((d) => ({ ...d, lease_agreed: e.target.checked }))}
+          onChange={(e) => setData((d) => ({ ...d, lease_agreed: e.target.checked, signature: e.target.checked ? data.signature : null }))}
           className="w-4 h-4 rounded border-gray-300"
         />
         <span className="text-sm text-gray-700 font-medium">I have read and agree to the terms of this lease agreement</span>
@@ -214,7 +248,7 @@ function StepPayment({ data, setData, inputStyle }) {
   );
 }
 
-function renderStep(stepId, data, setData, inputStyle) {
+function renderStep(stepId, data, setData, inputStyle, facility, unit) {
   switch (stepId) {
     case "personal_info": return <StepPersonalInfo data={data} setData={setData} inputStyle={inputStyle} />;
     case "id_verification": return <StepIdVerification data={data} setData={setData} inputStyle={inputStyle} />;
@@ -222,7 +256,7 @@ function renderStep(stepId, data, setData, inputStyle) {
     case "emergency_contact": return <StepEmergencyContact data={data} setData={setData} inputStyle={inputStyle} />;
     case "military": return <StepMilitary data={data} setData={setData} inputStyle={inputStyle} />;
     case "protection_plan": return <StepProtectionPlan data={data} setData={setData} />;
-    case "lease": return <StepLease data={data} setData={setData} />;
+    case "lease": return <StepLease data={data} setData={setData} facility={facility} unit={unit} />;
     case "payment": return <StepPayment data={data} setData={setData} inputStyle={inputStyle} />;
     default: return null;
   }
@@ -342,10 +376,10 @@ export default function RentalFlow({ open, onClose, facility, unit, onSwitchToRe
 
           {mode === "multi_step" ? (
             <>
-              <ProgressBar steps={enabledSteps} currentStep={currentStep} style={style} />
+              {currentStep > 0 && <ProgressBar steps={enabledSteps} currentStep={currentStep} style={style} />}
               <div className="mb-2">
                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">{enabledSteps[currentStep]?.label}</p>
-                {renderStep(enabledSteps[currentStep]?.id, data, setData, inputStyle)}
+                {renderStep(enabledSteps[currentStep]?.id, data, setData, inputStyle, facility, unit)}
               </div>
               <div className="flex justify-between mt-8">
                 {currentStep > 0 ? (
