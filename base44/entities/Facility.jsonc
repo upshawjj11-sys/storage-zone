@@ -284,6 +284,77 @@
         "units_view_less_label": {
           "type": "string",
           "description": "Label for the collapse link (default: '\u2212 Show fewer units')"
+        },
+        "reservation_flow": {
+          "type": "object",
+          "properties": {
+            "heading": {
+              "type": "string"
+            },
+            "subheading": {
+              "type": "string"
+            },
+            "submit_button_text": {
+              "type": "string"
+            },
+            "success_title": {
+              "type": "string"
+            },
+            "success_message": {
+              "type": "string"
+            },
+            "upsell": {
+              "type": "object",
+              "description": "Upsell prompt encouraging customers to rent instead of reserve",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "position": {
+                  "type": "string",
+                  "enum": [
+                    "above_form",
+                    "below_form",
+                    "modal"
+                  ],
+                  "default": "above_form"
+                },
+                "headline": {
+                  "type": "string"
+                },
+                "subtext": {
+                  "type": "string"
+                },
+                "cta_text": {
+                  "type": "string"
+                },
+                "cta_color": {
+                  "type": "string"
+                },
+                "cta_text_color": {
+                  "type": "string"
+                },
+                "show_benefits": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "benefits": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "show_urgency": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "urgency_text": {
+                  "type": "string"
+                }
+              }
+            }
+          }
         }
       }
     },
