@@ -1,0 +1,71 @@
+{
+  "name": "AbandonedRental",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string"
+    },
+    "facility_name": {
+      "type": "string"
+    },
+    "facility_type": {
+      "type": "string",
+      "enum": [
+        "self_storage",
+        "business_center"
+      ],
+      "default": "self_storage"
+    },
+    "unit_name": {
+      "type": "string"
+    },
+    "unit_size": {
+      "type": "string"
+    },
+    "unit_price": {
+      "type": "number"
+    },
+    "unit_type": {
+      "type": "string"
+    },
+    "unit_features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "customer_name": {
+      "type": "string"
+    },
+    "customer_email": {
+      "type": "string"
+    },
+    "customer_phone": {
+      "type": "string"
+    },
+    "abandoned_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "time_on_site_seconds": {
+      "type": "number"
+    },
+    "step_reached": {
+      "type": "string",
+      "description": "The last step label the user reached before abandoning"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "abandoned",
+        "recovered",
+        "contacted"
+      ],
+      "default": "abandoned"
+    }
+  },
+  "required": [
+    "facility_id",
+    "customer_email"
+  ]
+}

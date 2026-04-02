@@ -341,6 +341,25 @@ export default function RentalFlow({ open, onClose, facility, unit, onSwitchToRe
     const timeOnSiteSeconds = Math.round((Date.now() - (sessionStartRef.current || Date.now())) / 1000);
     const stepLabel = enabledSteps[stepIndex]?.label || "Personal Info";
 
+    // Save to database
+    await base44.entities.AbandonedRental.create({
+      facility_id: facility?.id || "",
+      facility_name: facility?.name || "",
+      facility_type: facility?.facility_type || "self_storage",
+      unit_name: unit?.name || "",
+      unit_size: unit?.size || "",
+      unit_price: unit?.price || 0,
+      unit_type: unit?.unit_type || "",
+      unit_features: unit?.features || [],
+      customer_name: `${formData.first_name || ""} ${formData.last_name || ""}`.trim(),
+      customer_email: formData.email || "",
+      customer_phone: formData.phone || "",
+      abandoned_at: new Date().toISOString(),
+      time_on_site_seconds: timeOnSiteSeconds,
+      step_reached: stepLabel,
+    }).catch(() => {}); // persist abandonment
+
+    // Send email notification
     await base44.functions.invoke("rentalAbandonmentEmail", {
       facility_name: facility?.name || "",
       facility_address: [facility?.address, facility?.city, facility?.state, facility?.zip].filter(Boolean).join(", "),

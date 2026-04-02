@@ -31,6 +31,35 @@ function sanitizeConversion(reservation) {
   };
 }
 
+// Sanitize abandoned rental data
+function sanitizeAbandonedRental(abandoned) {
+  return {
+    facility_id: abandoned.facility_id,
+    facility_name: abandoned.facility_name,
+    facility_type: abandoned.facility_type,
+    unit_info: {
+      unit_name: abandoned.unit_name,
+      unit_size: abandoned.unit_size,
+      unit_price: abandoned.unit_price,
+      unit_type: abandoned.unit_type,
+      unit_features: abandoned.unit_features,
+    },
+    customer_info: {
+      name: abandoned.customer_name,
+      email: abandoned.customer_email,
+      phone: abandoned.customer_phone,
+    },
+    conversion_type: 'abandoned_rental',
+    status: abandoned.status,
+    created_date: abandoned.created_date,
+    session_data: {
+      abandoned_at: abandoned.abandoned_at,
+      time_on_site_seconds: abandoned.time_on_site_seconds,
+      step_reached: abandoned.step_reached,
+    },
+  };
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -40,15 +69,21 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    // Fetch all reservations (includes reservations, rentals, inquiries, and abandoned data)
-    const reservations = await base44.asServiceRole.entities.Reservation.list();
-
-    if (!reservations || reservations.length === 0) {
-      return Response.json({ message: 'No conversions to push', count: 0 });
-    }
+    // Fetch all reservations and abandoned rentals
+    const [reservations, abandonedRentals] = await Promise.all([
+      base44.asServiceRole.entities.Reservation.list(),
+      base44.asServiceRole.entities.AbandonedRental.list(),
+    ]);
 
     // Sanitize all conversions
-    const conversions = reservations.map(sanitizeConversion);
+    const conversions = [
+      ...(reservations || []).map(sanitizeConversion),
+      ...(abandonedRentals || []).map(sanitizeAbandonedRental),
+    ];
+
+    if (!conversions || conversions.length === 0) {
+      return Response.json({ message: 'No conversions to push', count: 0 });
+    }
 
     // Push to Site B
     const response = await fetch(SITE_B_ENDPOINT, {
