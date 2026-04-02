@@ -543,10 +543,11 @@ export default function FacilityPage() {
                     const activeHours = hoursTab === "access" && facility.access_hours?.length > 0 ? facility.access_hours : facility.hours || [];
                     const holidayHours = facility.holiday_hours || [];
                     // Build a map of date -> holiday for the next 7 days
-                    const today = new Date();
+                    const now = new Date();
+                    const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
                     const next7Dates = Array.from({ length: 7 }, (_, i) => {
-                      const d = new Date(today); d.setDate(today.getDate() + i);
-                      return d.toISOString().split("T")[0];
+                      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+                      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
                     });
                     // Map day-of-week name to upcoming date
                     const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -558,7 +559,7 @@ export default function FacilityPage() {
                     // Build holiday lookup by date
                     const holidayByDate = {};
                     holidayHours.forEach((h) => {
-                      if (h.applies_to === "both" || h.applies_to === hoursTab) {
+                      if (!h.applies_to || h.applies_to === "both" || h.applies_to === hoursTab) {
                         holidayByDate[h.date] = h;
                       }
                     });
@@ -568,7 +569,7 @@ export default function FacilityPage() {
                         {activeHours.map((h, i) => {
                           const date = dayToDate[h.day];
                           const holiday = date ? holidayByDate[date] : null;
-                          const isToday = date === today.toISOString().split("T")[0];
+                          const isToday = date === todayStr;
                           return (
                             <div key={i} className={`rounded-lg px-2 py-1.5 ${isToday ? "bg-white/60 ring-1 ring-inset ring-amber-200" : ""}`}>
                               <div className="flex justify-between text-sm">
