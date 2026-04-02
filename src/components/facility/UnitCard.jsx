@@ -109,10 +109,10 @@ export default function UnitCard({ unit, facilityType, facilityId, unitIndex, on
               </button>
               <button
                 onClick={() => onAction(unit, "reservation")}
-                className="text-xs font-semibold hover:underline transition"
-                style={{ color: primary }}
+                className="px-5 py-2 rounded-full font-bold text-sm transition hover:opacity-90 whitespace-nowrap border-2"
+                style={{ color: primary, borderColor: primary, background: "transparent" }}
               >
-                Reserve · No Obligation
+                Reserve · Free
               </button>
             </div>
           )}
