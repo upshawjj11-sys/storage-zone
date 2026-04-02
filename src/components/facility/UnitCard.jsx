@@ -112,7 +112,7 @@ export default function UnitCard({ unit, facilityType, facilityId, unitIndex, on
                 className="px-5 py-2 rounded-full font-medium text-sm transition hover:opacity-90 whitespace-nowrap shadow-sm border"
                 style={{ color: primary, borderColor: "#CBD5E1", background: "#ffffff" }}
               >
-                Reserve · Free
+                Reserve
               </button>
             </div>
           )}
