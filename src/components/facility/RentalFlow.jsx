@@ -324,8 +324,47 @@ export default function RentalFlow({ open, onClose, facility, unit, onSwitchToRe
   const [data, setData] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const sessionStartRef = React.useRef(null);
+
+  // Track session start when modal opens
+  React.useEffect(() => {
+    if (open) {
+      sessionStartRef.current = Date.now();
+    }
+  }, [open]);
+
+  const fireAbandonmentEmail = async (formData, stepIndex) => {
+    // Only send if they filled in at least first name or email on step 1
+    const hasPersonalInfo = formData.first_name || formData.email || formData.phone;
+    if (!hasPersonalInfo) return;
+
+    const timeOnSiteSeconds = Math.round((Date.now() - (sessionStartRef.current || Date.now())) / 1000);
+    const stepLabel = enabledSteps[stepIndex]?.label || "Personal Info";
+
+    await base44.functions.invoke("rentalAbandonmentEmail", {
+      facility_name: facility?.name || "",
+      facility_address: [facility?.address, facility?.city, facility?.state, facility?.zip].filter(Boolean).join(", "),
+      unit_name: unit?.name || "",
+      unit_size: unit?.size || "",
+      unit_type: unit?.unit_type || "",
+      unit_features: unit?.features || [],
+      unit_price: unit?.price || 0,
+      customer_name: `${formData.first_name || ""} ${formData.last_name || ""}`.trim(),
+      customer_email: formData.email || "",
+      customer_phone: formData.phone || "",
+      abandoned_at: new Date().toISOString(),
+      time_on_site_seconds: timeOnSiteSeconds,
+      step_reached: stepLabel,
+    }).catch(() => {}); // fire-and-forget, don't block UI
+  };
 
   const handleClose = () => {
+    if (!done && currentStep > 0) {
+      fireAbandonmentEmail(data, currentStep);
+    } else if (!done && currentStep === 0) {
+      // Step 0 but they may have started typing
+      fireAbandonmentEmail(data, currentStep);
+    }
     onClose();
     setDone(false);
     setCurrentStep(0);
