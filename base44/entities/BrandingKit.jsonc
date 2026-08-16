@@ -1,0 +1,66 @@
+{
+  "name": "BrandingKit",
+  "type": "object",
+  "properties": {
+    "site_name": {
+      "type": "string"
+    },
+    "logo_url": {
+      "type": "string"
+    },
+    "logo_dark_url": {
+      "type": "string"
+    },
+    "favicon_url": {
+      "type": "string"
+    },
+    "primary_color": {
+      "type": "string"
+    },
+    "secondary_color": {
+      "type": "string"
+    },
+    "accent_color": {
+      "type": "string"
+    },
+    "text_color": {
+      "type": "string"
+    },
+    "background_color": {
+      "type": "string"
+    },
+    "font_heading": {
+      "type": "string"
+    },
+    "font_body": {
+      "type": "string"
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "footer_text": {
+      "type": "string"
+    },
+    "social_facebook": {
+      "type": "string"
+    },
+    "social_instagram": {
+      "type": "string"
+    },
+    "social_twitter": {
+      "type": "string"
+    },
+    "social_youtube": {
+      "type": "string"
+    },
+    "social_linkedin": {
+      "type": "string"
+    },
+    "custom_css": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "site_name"
+  ]
+}

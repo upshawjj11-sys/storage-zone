@@ -1,0 +1,119 @@
+{
+  "name": "FormConfig",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Internal name for this form (e.g. 'General Contact Form')"
+    },
+    "title": {
+      "type": "string",
+      "description": "Heading shown on the form"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "recipient_email": {
+      "type": "string",
+      "description": "Email address to send form submissions to"
+    },
+    "submit_button_text": {
+      "type": "string",
+      "default": "Send Message"
+    },
+    "submit_button_color": {
+      "type": "string"
+    },
+    "success_message": {
+      "type": "string",
+      "default": "Thank you! We'll be in touch shortly."
+    },
+    "show_facility_selector": {
+      "type": "boolean",
+      "default": false,
+      "description": "Show a dropdown of facilities on the form"
+    },
+    "facility_selector_label": {
+      "type": "string",
+      "default": "Select a Location"
+    },
+    "fields": {
+      "type": "array",
+      "description": "Custom form fields",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "email",
+              "phone",
+              "number",
+              "textarea",
+              "dropdown",
+              "date",
+              "checkbox"
+            ]
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean",
+            "default": false
+          },
+          "options": {
+            "type": "array",
+            "description": "For dropdown fields",
+            "items": {
+              "type": "string"
+            }
+          },
+          "condition_field": {
+            "type": "string",
+            "description": "Show this field only when another field has a specific value"
+          },
+          "condition_value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "contact_info": {
+      "type": "object",
+      "description": "Optional contact info shown beside the form",
+      "properties": {
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "hours": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

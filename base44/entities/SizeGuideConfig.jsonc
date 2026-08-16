@@ -1,0 +1,160 @@
+{
+  "name": "SizeGuideConfig",
+  "type": "object",
+  "properties": {
+    "page_key": {
+      "type": "string",
+      "default": "size_guide"
+    },
+    "hero_title": {
+      "type": "string"
+    },
+    "hero_subtitle": {
+      "type": "string"
+    },
+    "hero_bg_color": {
+      "type": "string"
+    },
+    "hero_title_color": {
+      "type": "string"
+    },
+    "hero_subtitle_color": {
+      "type": "string"
+    },
+    "tab_calculator_label": {
+      "type": "string"
+    },
+    "tab_guide_label": {
+      "type": "string"
+    },
+    "active_tab_bg": {
+      "type": "string"
+    },
+    "active_tab_text": {
+      "type": "string"
+    },
+    "recommendation_bg": {
+      "type": "string"
+    },
+    "recommendation_text": {
+      "type": "string"
+    },
+    "cta_text": {
+      "type": "string"
+    },
+    "cta_link": {
+      "type": "string"
+    },
+    "cta_bg": {
+      "type": "string"
+    },
+    "cta_text_color": {
+      "type": "string"
+    },
+    "buffer_notice": {
+      "type": "string",
+      "description": "Text shown below the fill bar in the calculator"
+    },
+    "available_unit_sizes": {
+      "type": "array",
+      "description": "The actual unit sizes this facility offers \u2014 used by the calculator to recommend sizes",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "sqft": {
+            "type": "number"
+          },
+          "widthIn": {
+            "type": "number"
+          },
+          "depthIn": {
+            "type": "number"
+          },
+          "cuft": {
+            "type": "number"
+          },
+          "desc": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "unit_sizes": {
+      "type": "array",
+      "description": "Per-unit size content shown in the Size Guide tab",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "ideal": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image_url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "categories": {
+      "type": "array",
+      "description": "Custom item categories with items",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "cuft": {
+                  "type": "number"
+                },
+                "w": {
+                  "type": "number"
+                },
+                "d": {
+                  "type": "number"
+                },
+                "h": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "page_key"
+  ]
+}

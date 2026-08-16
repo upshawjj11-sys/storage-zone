@@ -1,0 +1,88 @@
+{
+  "name": "Popup",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string",
+      "description": "Rich HTML content for the popup body"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "image_link": {
+      "type": "string",
+      "description": "Optional URL the image links to when clicked"
+    },
+    "cta_text": {
+      "type": "string"
+    },
+    "cta_link": {
+      "type": "string"
+    },
+    "cta_bg_color": {
+      "type": "string"
+    },
+    "cta_text_color": {
+      "type": "string"
+    },
+    "background_color": {
+      "type": "string"
+    },
+    "text_color": {
+      "type": "string"
+    },
+    "template": {
+      "type": "string",
+      "enum": [
+        "centered",
+        "image_top",
+        "image_left",
+        "image_only",
+        "banner"
+      ],
+      "default": "centered"
+    },
+    "max_width": {
+      "type": "string"
+    },
+    "show_on_pages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "trigger": {
+      "type": "string",
+      "enum": [
+        "on_load",
+        "on_exit",
+        "after_delay",
+        "on_scroll"
+      ],
+      "default": "on_load"
+    },
+    "delay_seconds": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive"
+      ],
+      "default": "inactive"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": []
+}

@@ -1,0 +1,81 @@
+{
+  "name": "Reservation",
+  "type": "object",
+  "properties": {
+    "facility_id": {
+      "type": "string"
+    },
+    "facility_name": {
+      "type": "string"
+    },
+    "facility_type": {
+      "type": "string",
+      "enum": [
+        "self_storage",
+        "business_center"
+      ],
+      "default": "self_storage"
+    },
+    "unit_name": {
+      "type": "string"
+    },
+    "unit_size": {
+      "type": "string"
+    },
+    "unit_price": {
+      "type": "number"
+    },
+    "unit_type": {
+      "type": "string",
+      "description": "The type of unit inquired about (e.g. Warehouse, Office Space)"
+    },
+    "unit_features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Features of the specific unit the customer inquired about"
+    },
+    "customer_name": {
+      "type": "string"
+    },
+    "customer_email": {
+      "type": "string"
+    },
+    "customer_phone": {
+      "type": "string"
+    },
+    "move_in_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "cancelled",
+        "moved_in",
+        "moved_out"
+      ],
+      "default": "pending"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "reservation_type": {
+      "type": "string",
+      "enum": [
+        "reservation",
+        "rental",
+        "inquiry"
+      ],
+      "default": "reservation"
+    }
+  },
+  "required": [
+    "customer_name",
+    "customer_email",
+    "facility_id"
+  ]
+}

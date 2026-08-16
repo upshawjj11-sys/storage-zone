@@ -1,0 +1,145 @@
+{
+  "name": "HomePageConfig",
+  "type": "object",
+  "properties": {
+    "hero_title": {
+      "type": "string"
+    },
+    "hero_subtitle": {
+      "type": "string"
+    },
+    "hero_image": {
+      "type": "string"
+    },
+    "hero_images": {
+      "type": "array",
+      "description": "Multiple images for the hero carousel",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hero_badge_text": {
+      "type": "string"
+    },
+    "hero_cta_text": {
+      "type": "string"
+    },
+    "hero_cta_link": {
+      "type": "string"
+    },
+    "hero_cta2_text": {
+      "type": "string"
+    },
+    "hero_cta2_link": {
+      "type": "string"
+    },
+    "hero_overlay_opacity": {
+      "type": "number"
+    },
+    "hero_arrows": {
+      "type": "object",
+      "description": "Side arrow button settings for the hero carousel",
+      "properties": {
+        "show": {
+          "type": "boolean",
+          "default": true
+        },
+        "style": {
+          "type": "string",
+          "enum": [
+            "circle",
+            "square",
+            "pill",
+            "arrow"
+          ],
+          "default": "circle"
+        },
+        "icon_type": {
+          "type": "string",
+          "enum": [
+            "chevron",
+            "arrow"
+          ],
+          "default": "chevron"
+        },
+        "color": {
+          "type": "string"
+        },
+        "icon_color": {
+          "type": "string"
+        }
+      }
+    },
+    "hero_dots": {
+      "type": "object",
+      "description": "Slide indicator dot settings for the hero carousel",
+      "properties": {
+        "show": {
+          "type": "boolean",
+          "default": true
+        },
+        "style": {
+          "type": "string",
+          "enum": [
+            "circle",
+            "square",
+            "line",
+            "dash"
+          ],
+          "default": "circle"
+        },
+        "active_color": {
+          "type": "string"
+        },
+        "inactive_color": {
+          "type": "string"
+        }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "features",
+              "locations",
+              "testimonials",
+              "cta_banner",
+              "text_block",
+              "gallery",
+              "faq",
+              "stats",
+              "pillars",
+              "two_column"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "subtitle": {
+            "type": "string"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "order": {
+            "type": "number"
+          },
+          "bg_color": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "required": []
+}

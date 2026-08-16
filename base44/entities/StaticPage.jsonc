@@ -1,0 +1,65 @@
+{
+  "name": "StaticPage",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL slug for the page"
+    },
+    "content_blocks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "hero",
+              "text",
+              "image",
+              "faq",
+              "cta",
+              "table",
+              "video",
+              "gallery",
+              "testimonials",
+              "features_grid",
+              "contact_form"
+            ]
+          },
+          "data": {
+            "type": "object"
+          },
+          "order": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "published",
+        "draft"
+      ],
+      "default": "draft"
+    },
+    "show_in_nav": {
+      "type": "boolean",
+      "default": false
+    },
+    "meta_title": {
+      "type": "string"
+    },
+    "meta_description": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "slug"
+  ]
+}
