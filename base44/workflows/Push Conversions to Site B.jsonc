@@ -1,0 +1,38 @@
+{
+  "name": "Push Conversions to Site B",
+  "description": "Automatically push new and updated reservations, rentals, inquiries, and abandoned rentals to Site B",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "create",
+        "update"
+      ],
+      "entity_name": "AbandonedRental"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "push_conversions_to_site_b",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_function": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "pushConversionsToSiteB",
+            "args": {}
+          },
+          "then": "end"
+        }
+      }
+    ]
+  },
+  "x-base44-migrated-from-automation": {
+    "legacy_payload_function": "pushConversionsToSiteB"
+  }
+}
